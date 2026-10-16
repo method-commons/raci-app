@@ -1,0 +1,989 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RACI – Mockups</title>
+<style>
+  /* Tokens übernommen aus morphological-matrix-app (css/tokens.css), wie in der User-Story-, 5-Warum- und 2-Achsen-App */
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --surface-2: #f2f4f7; --surface-3: #eaedf2;
+    --text: #101828; --text-2: #344054; --muted: #667085;
+    --border: #e4e7ec; --border-strong: #d0d5dd;
+    --accent: #4f46e5; --accent-hover: #4338ca; --accent-soft: #eef2ff; --accent-contrast: #fff;
+    --bad: #c92a2a; --bad-bg: #fff0f0; --warn: #a35200; --warn-bg: #fff4e0; --good: #2b8a3e; --good-bg: #e6f7ea;
+    --info: #1864ab; --info-bg: #dbeafe;
+    --root: #b42318; --root-bg: #fef3f2;
+    --lens-occ: #4f46e5; --lens-det: #0e7490; --lens-sys: #7c3aed;
+    --radius: 12px; --radius-sm: 7px;
+    --shadow-xs: 0 1px 2px rgba(16,24,40,.05);
+    --shadow: 0 1px 3px rgba(16,24,40,.08), 0 1px 2px rgba(16,24,40,.04);
+    --shadow-lg: 0 12px 32px -8px rgba(16,24,40,.18), 0 4px 8px -4px rgba(16,24,40,.06);
+    --gutter: 20px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde4; color: var(--text); font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+
+  .screen { width: 1280px; margin: 32px auto; background: var(--bg); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow-lg); position: relative; }
+  .screen.mobile { width: 390px; }
+  .caption { width: 1280px; margin: 40px auto -20px; font-weight: 700; color: #344054; }
+
+  /* Kopfzeile */
+  .app-header { position: relative; display: flex; align-items: center; gap: 16px; min-height: 56px; padding: 8px var(--gutter); background: var(--surface); border-bottom: 1px solid var(--border); }
+  .app-header::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: linear-gradient(90deg, var(--accent), #06b6d4 55%, #22c55e); }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .logo { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 8px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; letter-spacing: -.02em; box-shadow: 0 2px 6px color-mix(in srgb, var(--accent) 40%, transparent); }
+  .tabs { display: flex; gap: 4px; flex: 1; }
+  .tab { height: 36px; padding: 0 12px; display: flex; align-items: center; gap: 6px; border-radius: 9px; color: var(--muted); font-weight: 550; border: 1px solid transparent; white-space: nowrap; }
+  .tab.active { background: var(--surface); border-color: var(--border); box-shadow: var(--shadow-xs); color: var(--text); font-weight: 650; position: relative; }
+  .tab.active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; border-radius: 2px; background: var(--accent); }
+  .tab .x { color: var(--muted); font-size: 12px; margin-left: 4px; }
+  .hdr-actions { display: flex; gap: 8px; align-items: center; }
+
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; color: var(--text-2); box-shadow: var(--shadow-xs); white-space: nowrap; }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.ghost { border-color: transparent; background: transparent; box-shadow: none; }
+  .btn.sm { height: 28px; padding: 0 9px; font-size: 12.5px; }
+  .btn.dashed { border-style: dashed; box-shadow: none; color: var(--accent); background: transparent; border-color: #a5b4fc; }
+  .seg { display: inline-flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 9px; padding: 2px; }
+  .seg span { padding: 5px 12px; border-radius: 7px; color: var(--muted); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .seg span.on { background: var(--surface); color: var(--text); box-shadow: var(--shadow-xs); }
+  .seg .num { width: 18px; height: 18px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 11px; background: var(--surface-3); color: var(--text-2); }
+  .seg .on .num { background: var(--accent); color: #fff; }
+  .seg .done .num { background: var(--good-bg); color: var(--good); }
+
+  main { padding: 20px var(--gutter) 28px; }
+  h1 { font-size: 22px; letter-spacing: -.02em; margin: 0; }
+  h2 { font-size: 15px; margin: 0 0 10px; }
+  h3 { font-size: 13px; margin: 0 0 8px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .sub { color: var(--muted); }
+  .row { display: flex; gap: 12px; align-items: center; }
+  .spacer { flex: 1; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .pad { padding: 16px; }
+
+  /* Kennzahlen */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0; }
+  .kpi { padding: 12px 14px; }
+  .kpi small { color: var(--muted); font-weight: 600; font-size: 12px; }
+  .kpi b { display: block; font-size: 24px; letter-spacing: -.02em; margin: 2px 0; }
+  .kpi span { color: var(--muted); font-size: 12px; }
+
+  /* Chips */
+  .chip { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); white-space: nowrap; }
+  .chip.good { background: var(--good-bg); color: var(--good); border-color: transparent; }
+  .chip.warn { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
+  .chip.bad { background: var(--bad-bg); color: var(--bad); border-color: transparent; }
+  .chip.acc { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+  .chip.info { background: var(--info-bg); color: var(--info); border-color: transparent; }
+  .chip.root { background: var(--root); color: #fff; border-color: transparent; }
+  .chip.sm { height: 19px; font-size: 11px; padding: 0 7px; }
+  .id { font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); }
+
+  .progress { height: 6px; background: var(--surface-3); border-radius: 99px; overflow: hidden; display: flex; }
+  .progress > span { display: block; height: 100%; }
+
+  .hint { display: flex; gap: 8px; padding: 9px 10px; border-radius: 8px; background: var(--warn-bg); color: var(--warn); font-size: 12.5px; margin-top: 8px; }
+  .hint.good { background: var(--good-bg); color: var(--good); }
+  .hint.info { background: var(--accent-soft); color: var(--accent); }
+  .hint a { color: inherit; font-weight: 650; text-decoration: underline; margin-left: auto; white-space: nowrap; }
+  .stat-row { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .stat-row:last-child { border: 0; }
+  .side .card { margin-bottom: 12px; }
+  .input { border: 1px solid var(--border-strong); border-radius: 8px; padding: 8px 10px; background: var(--surface); min-height: 38px; }
+  .input.focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .input.warn { border-color: #f0b35b; }
+  .check { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border-strong); display: inline-grid; place-items: center; background: var(--surface); flex: none; font-size: 11px; font-weight: 800; }
+  .check.on { background: var(--good); border-color: var(--good); color: #fff; }
+  .kw { color: var(--muted); font-weight: 500; }
+  .crumbs { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+
+  /* Prüfpunkte (analog INVEST-Check der User-Story-App) */
+  .chk { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .chk:last-child { border: 0; }
+  .chk .ic { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+  .chk p { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+  .ic.y { background: var(--good-bg); color: var(--good); }
+  .ic.q { background: var(--warn-bg); color: var(--warn); }
+  .ic.n { background: var(--bad-bg); color: var(--bad); }
+  .ic.o { background: var(--surface-3); color: #98a2b3; }
+  .score { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .ring { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; }
+  .ring b { width: 42px; height: 42px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font-size: 14px; }
+
+
+  /* ================= RACI: eigene Bausteine ================= */
+  :root {
+    --rA: #4f46e5;                                   /* Accountable – entscheidet, genau einer */
+    --rR: #0e7490;                                   /* Responsible – führt aus */
+    --rC: #a35200; --rC-bg: #fff4e0; --rC-line: #fbdcae; /* Consulted – wird gefragt (zweiseitig) */
+    --rI: #667085; --rI-bg: #f2f4f7;                 /* Informed – wird informiert (einseitig) */
+    --rS: #0e7490; --rS-bg: #e3f6f9; --rS-line: #a5e4ee; /* Support (RASCI) */
+    --rV: #7c3aed; --rV-bg: #f3ecff;                 /* Verify / Sign-off (RACI-VS) */
+  }
+  .logo.raci { font-size: 9px; letter-spacing: .02em; }
+  .hint { display: block; line-height: 1.45; }
+  .crumb-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .crumb-row h1 { font-size: 20px; }
+  .method-chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 7px; font-size: 12px; font-weight: 700; background: var(--accent-soft); color: var(--accent); }
+  .avatar { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; color: #fff; font-size: 10px; font-weight: 700; flex: none; border: 2px solid var(--surface); }
+  .avs { display: inline-flex; }
+  .avs .avatar + .avatar { margin-left: -6px; }
+  .who { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+  .p-lea { background: #4f46e5; } .p-ayl { background: #0e7490; } .p-fri { background: #f08c00; } .p-ben { background: #2b8a3e; } .p-mia { background: #d6336c; } .p-jon { background: #7c3aed; } .p-ext { background: #98a2b3; }
+
+  /* Buchstaben */
+  .b { font-style: normal; display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 7px; font: 800 12px/1 Inter, ui-sans-serif, system-ui, sans-serif; border: 1px solid transparent; }
+  .b.A { background: var(--rA); color: #fff; }
+  .b.R { background: var(--rR); color: #fff; }
+  .b.AR { background: linear-gradient(135deg, var(--rA) 50%, var(--rR) 50%); color: #fff; min-width: 34px; font-size: 11px; }
+  .b.C { background: var(--rC-bg); color: var(--rC); border-color: var(--rC-line); }
+  .b.I { background: var(--rI-bg); color: var(--rI); border-color: var(--border); }
+  .b.S { background: var(--rS-bg); color: var(--rS); border-color: var(--rS-line); }
+  .b.V { background: var(--rV-bg); color: var(--rV); border-color: #d9c8fb; }
+  .b.sm { min-width: 20px; height: 20px; font-size: 10.5px; border-radius: 5px; padding: 0 4px; }
+  .b.AR.sm { min-width: 28px; font-size: 9.5px; }
+  .b.lg { min-width: 34px; height: 34px; font-size: 15px; border-radius: 9px; }
+  .b.empty { background: transparent; border: 1.5px dashed var(--border-strong); color: #b8c0cc; }
+  .b.old { opacity: .45; text-decoration: line-through; }
+  .b.qm { position: relative; }
+  .b.qm::after { content: "?"; position: absolute; top: -6px; right: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--warn); color: #fff; font-size: 9px; display: grid; place-items: center; border: 1.5px solid var(--surface); }
+
+  /* Übersicht */
+  .boards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 18px; }
+  .board { padding: 14px; display: grid; grid-template-columns: 132px 1fr; gap: 14px; }
+  .board h2 { margin: 0 0 2px; font-size: 14.5px; }
+  .board .sub { font-size: 12px; }
+  .board .stats { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .thumb { width: 132px; height: 112px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); overflow: hidden; }
+  .board .foot { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; border-top: 1px dashed var(--border); padding-top: 10px; font-size: 12px; color: var(--muted); }
+  .board.new { border: 2px dashed var(--border-strong); background: transparent; box-shadow: none; display: flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 650; min-height: 188px; flex-direction: column; gap: 4px; }
+  .letters-strip { display: grid; grid-template-columns: repeat(4, 1fr) 1.25fr; margin-top: 18px; overflow: hidden; }
+  .letters-strip > div { padding: 14px 16px; border-right: 1px solid var(--border); }
+  .letters-strip > div:last-child { border: 0; background: var(--surface-2); }
+  .letters-strip b { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 13.5px; }
+  .letters-strip p { margin: 0; font-size: 12px; color: var(--muted); }
+  .letters-strip q { display: block; margin-top: 8px; font-size: 12px; color: var(--text-2); font-style: italic; }
+  .letters-strip ul { margin: 6px 0 0; padding-left: 16px; font-size: 12px; color: var(--text-2); }
+  .letters-strip li { margin: 2px 0; }
+
+  /* Dialoge */
+  .overlay { position: absolute; inset: 56px 0 0 0; background: rgba(16,24,40,.42); display: grid; place-items: start center; padding-top: 26px; }
+  .dialog { width: 1080px; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .dlg-head { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .dlg-head h2 { margin: 0; font-size: 17px; }
+  .dlg-foot { display: flex; gap: 8px; align-items: center; padding: 12px 20px; background: var(--surface-2); border-top: 1px solid var(--border); }
+  .pick { display: grid; grid-template-columns: 1fr 400px; }
+  .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 16px 20px; align-content: start; }
+  .mcard { border: 1px solid var(--border); border-radius: 11px; padding: 12px; display: flex; flex-direction: column; gap: 7px; background: var(--surface); }
+  .mcard.on { border: 2px solid var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); padding: 11px; }
+  .mcard b { font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .mcard p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .mcard .ltrs { display: flex; gap: 4px; }
+  .mcard.custom { border-style: dashed; background: transparent; }
+  .pick-side { border-left: 1px solid var(--border); padding: 16px 20px; background: var(--surface-2); }
+  .def { display: grid; grid-template-columns: 34px 1fr; gap: 8px 10px; font-size: 12.5px; margin: 10px 0 14px; align-items: start; }
+  .def dd { margin: 0; color: var(--text-2); }
+  .def dd small { display: block; color: var(--muted); }
+  .opt { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .opt:last-child { border: 0; }
+  .opt b { display: block; font-size: 13px; }
+  .opt p { margin: 1px 0 0; font-size: 11.5px; color: var(--muted); }
+  .switch { width: 36px; height: 20px; border-radius: 99px; background: var(--border-strong); position: relative; flex: none; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: var(--shadow-xs); }
+  .switch.on { background: var(--accent); }
+  .switch.on::after { left: 18px; }
+  .radio { display: flex; gap: 8px; align-items: flex-start; padding: 7px 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); margin-bottom: 6px; font-size: 12.5px; }
+  .radio .dotr { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--border-strong); flex: none; margin-top: 1px; }
+  .radio.on { border-color: var(--accent); background: var(--accent-soft); }
+  .radio.on .dotr { border: 5px solid var(--accent); }
+  .radio small { display: block; color: var(--muted); font-size: 11.5px; }
+
+  /* Arbeitsfläche */
+  .work { display: grid; grid-template-columns: 1fr 290px; gap: 16px; align-items: start; }
+  .panel { padding: 14px; }
+  .panel h3 { display: flex; align-items: center; gap: 6px; }
+  .field-lbl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; margin: 12px 0 4px; }
+
+  /* Matrix */
+  .mx { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+  .mx th, .mx td { border-bottom: 1px solid var(--border); }
+  .mx thead th { background: var(--surface-2); vertical-align: bottom; padding: 8px 4px; font-size: 11.5px; font-weight: 700; color: var(--text-2); text-align: center; line-height: 1.2; }
+  .mx thead th:first-child { text-align: left; padding-left: 14px; border-top-left-radius: var(--radius); }
+  .mx thead th:last-child { border-top-right-radius: var(--radius); }
+  .mx thead th .avs, .mx thead th .avatar { margin-bottom: 4px; }
+  .mx thead th small { display: block; font-weight: 600; color: var(--muted); font-size: 10.5px; }
+  .mx thead th.ext { color: var(--muted); }
+  .mx thead th.hot { background: var(--warn-bg); color: var(--warn); box-shadow: inset 0 -2px 0 var(--warn-line, #f0b35b); }
+  .mx td { padding: 6px 4px; text-align: center; height: 40px; }
+  .mx td.task { text-align: left; padding: 6px 10px 6px 14px; font-weight: 600; color: var(--text); }
+  .mx td.task .id { margin-right: 6px; }
+  .mx td.task small { display: block; font-weight: 500; color: var(--muted); font-size: 11px; margin-left: 30px; }
+  .mx td.hotc { background: color-mix(in srgb, var(--warn-bg) 55%, transparent); }
+  .mx tr.phase td { background: var(--surface); height: auto; padding: 10px 14px 4px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 750; color: var(--muted); }
+  .mx tr.err td.task { box-shadow: inset 3px 0 0 var(--bad); }
+  .mx tr.warn td.task { box-shadow: inset 3px 0 0 #f0b35b; }
+  .mx tr.sel td { background: var(--accent-soft); }
+  .mx td.cell-sel { position: relative; }
+  .mx td.cell-sel::before { content: ""; position: absolute; inset: 4px 6px; border: 2px solid var(--accent); border-radius: 9px; }
+  .mx td.st { font-size: 11.5px; font-weight: 700; white-space: nowrap; text-align: left; padding-left: 8px; }
+  .mx td.st.ok { color: var(--good); } .mx td.st.bad { color: var(--bad); } .mx td.st.wr { color: var(--warn); } .mx td.st.inf { color: var(--warn); }
+  .mx tfoot td { background: var(--surface-2); border-bottom: 0; font-size: 10.5px; color: var(--muted); padding: 8px 4px; vertical-align: top; }
+  .mx tfoot td:first-child { text-align: left; padding-left: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; border-bottom-left-radius: var(--radius); }
+  .mx tfoot td:last-child { border-bottom-right-radius: var(--radius); }
+  .tally { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; font-weight: 700; font-size: 10.5px; }
+  .tally span { padding: 1px 0; border-radius: 3px; }
+  .tally .tA { color: var(--rA); } .tally .tR { color: var(--rR); } .tally .tC { color: var(--rC); } .tally .tI { color: var(--rI); }
+  .tally .z { opacity: .35; }
+  .addrow { color: var(--accent); font-weight: 650; text-align: left !important; padding-left: 14px !important; }
+
+  .pop { position: absolute; z-index: 5; width: 300px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-lg); padding: 12px; font-size: 12.5px; }
+  .pop h4 { margin: 0 0 2px; font-size: 13px; }
+  .pick-letters { display: flex; gap: 6px; margin: 10px 0 8px; }
+  .pick-letters .b { min-width: 38px; height: 38px; font-size: 14px; border-radius: 9px; }
+  .pick-letters .b.cur { outline: 3px solid rgba(79,70,229,.35); outline-offset: 1px; }
+  .kbd { font: 600 11px ui-monospace, SFMono-Regular, Menlo, monospace; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; background: var(--surface); color: var(--text-2); }
+
+  /* Rollen */
+  .rtbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .rtbl th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 8px 10px; background: var(--surface-2); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .rtbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .rtbl tr:last-child td { border-bottom: 0; }
+  .rtbl tr.sel td { background: var(--accent-soft); }
+  .rtbl td b { display: block; font-size: 13px; }
+  .rtbl td small { color: var(--muted); font-size: 11.5px; }
+  .load { display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: var(--surface-3); width: 240px; }
+  .load span { display: block; height: 100%; color: #fff; font-size: 9.5px; font-weight: 800; text-align: center; line-height: 14px; }
+  .load .lA { background: var(--rA); } .load .lR { background: var(--rR); } .load .lC { background: #f0b35b; color: #5c2e00; } .load .lI { background: #d0d5dd; color: #475467; }
+  .grip { color: #b8c0cc; letter-spacing: -2px; font-size: 11px; }
+  .chk { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .chk b { font-size: 13px; }
+  .chk p { font-size: 12px; }
+  .chk p a { color: var(--accent); font-weight: 650; text-decoration: none; }
+
+  /* Wer macht was? */
+  .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+  .pcard { padding: 14px 16px; }
+  .pcard .ph { display: flex; gap: 10px; align-items: center; padding-bottom: 10px; margin-bottom: 4px; border-bottom: 1px solid var(--border); }
+  .pcard .ph .avatar { width: 34px; height: 34px; font-size: 12.5px; border: 0; }
+  .pcard .ph b { font-size: 14.5px; display: block; }
+  .pcard .ph small { color: var(--muted); font-size: 12px; }
+  .grp { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 7px 0; font-size: 12.5px; border-bottom: 1px dashed var(--border); }
+  .grp:last-child { border: 0; }
+  .grp em { font-style: normal; display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+  .grp ul { margin: 0; padding: 0; list-style: none; color: var(--text-2); }
+  .grp li { margin: 1px 0; }
+  .grp li .id { font-size: 11px; margin-right: 4px; }
+  .grp .none { color: #98a2b3; }
+
+  /* Bericht */
+  .paper { width: 1000px; margin: 0 auto; background: #fff; border: 1px solid var(--border); box-shadow: var(--shadow-lg); border-radius: 4px; padding: 28px 32px; }
+  .paper h1 { font-size: 20px; }
+  .export-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
+  .pmx { width: 100%; border-collapse: collapse; font-size: 11.5px; margin-top: 14px; }
+  .pmx th, .pmx td { border: 1px solid #d0d5dd; padding: 4px 6px; text-align: center; }
+  .pmx th { background: #f2f4f7; font-size: 10.5px; }
+  .pmx td:first-child, .pmx th:first-child { text-align: left; }
+  .pmx tr.ph td { background: #f9fafb; font-weight: 750; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: left; }
+  .rep { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .rep .box { border: 1.5px solid; border-radius: 8px; padding: 10px 12px; font-size: 12px; }
+  .rep .box h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  .rep .box ul { margin: 0; padding-left: 16px; }
+  .rep .box li { margin: 2px 0; }
+
+  /* Mobil */
+  .m-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface); border-bottom: 1px solid var(--border); position: relative; }
+  .m-header::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: linear-gradient(90deg, var(--accent), #06b6d4 55%, #22c55e); }
+  .m-body { padding: 12px 14px 4px; }
+  .m-task { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; margin-bottom: 7px; box-shadow: var(--shadow-xs); }
+  .m-task .t { font-weight: 650; font-size: 13px; display: flex; gap: 6px; align-items: center; }
+  .m-task .rl { display: flex; flex-wrap: wrap; gap: 4px 8px; margin-top: 6px; font-size: 11.5px; color: var(--text-2); }
+  .m-task .rl span { display: inline-flex; gap: 4px; align-items: center; }
+  .m-task.err { border-left: 3px solid var(--bad); }
+  .sheet { background: var(--surface); border-radius: 16px 16px 0 0; box-shadow: 0 -10px 30px rgba(16,24,40,.18); padding: 8px 14px 12px; border-top: 1px solid var(--border); }
+  .sheet .handle { width: 38px; height: 4px; border-radius: 4px; background: var(--border-strong); margin: 0 auto 10px; }
+  .srow { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12.5px; font-weight: 600; }
+  .srow:last-child { border: 0; }
+  .mini-seg { display: inline-flex; gap: 3px; }
+  .mini-seg .b { min-width: 26px; height: 26px; font-size: 11px; }
+  .mini-seg .b.off { background: var(--surface); color: #b8c0cc; border-color: var(--border); }
+  .m-nav { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border-top: 1px solid var(--border); padding: 8px 0 14px; text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; }
+  .m-nav .on { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- ============ 1 Übersicht ============ -->
+<div class="caption">1 · Übersicht aller RACI-Matrizen und die vier Buchstaben</div>
+<section class="screen" id="s1-uebersicht">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span> RACI-Matrix</div>
+    <div class="tabs"><span class="tab active">Alle Matrizen</span><span class="tab">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main>
+    <div class="row">
+      <div><h1>Meine RACI-Matrizen</h1><div class="sub">5 Matrizen · 61 Aufgaben · 4 Hinweise · zuletzt bearbeitet heute, 10:24</div></div>
+      <span class="spacer"></span>
+      <div class="seg"><span class="on">Alle</span><span>RACI</span><span>RASCI</span><span>RACI-VS</span><span>DACI</span></div>
+      <button class="btn">Beispiel öffnen …</button>
+      <button class="btn">Importieren (JSON, CSV)</button>
+      <button class="btn primary">+ Neue Matrix</button>
+    </div>
+
+    <div class="boards">
+      <div class="card board">
+        <svg class="thumb" viewBox="0 0 132 112" style="width:132px;height:112px"><rect width="132" height="112" fill="#f9fafb"/><rect x="6.0" y="6.0" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="6.0" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="6.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="6.0" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="6.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="6.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="6.0" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="13.1" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="13.1" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="13.1" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="13.1" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="13.1" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="13.1" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="13.1" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="2" y="20.3" width="3" height="5.1" rx="1" fill="#c92a2a"/><rect x="6.0" y="20.3" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="20.3" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="20.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="20.3" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="20.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="20.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="20.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="27.4" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="27.4" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="27.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="27.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="27.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="27.4" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="27.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="2" y="34.6" width="3" height="5.1" rx="1" fill="#c92a2a"/><rect x="6.0" y="34.6" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="34.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="34.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="34.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="34.6" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="34.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="34.6" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="41.7" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="41.7" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="41.7" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="41.7" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="41.7" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="41.7" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="41.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="48.9" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="48.9" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="48.9" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="48.9" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="48.9" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="48.9" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="48.9" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="56.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="56.0" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="56.0" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="56.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="56.0" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="56.0" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="56.0" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="63.1" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="63.1" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="63.1" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="63.1" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="63.1" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="63.1" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="63.1" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="70.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="70.3" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="70.3" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="70.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="70.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="70.3" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="70.3" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="77.4" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="77.4" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="77.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="77.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="77.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="77.4" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="77.4" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="84.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="84.6" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="84.6" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="84.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="84.6" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="84.6" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="84.6" width="15.1" height="5.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="91.7" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="91.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="91.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="91.7" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="91.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="91.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="91.7" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="98.9" width="15.1" height="5.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="23.1" y="98.9" width="15.1" height="5.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="40.3" y="98.9" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="57.4" y="98.9" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="74.6" y="98.9" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="91.7" y="98.9" width="15.1" height="5.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="108.9" y="98.9" width="15.1" height="5.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/></svg>
+        <div>
+          <span class="method-chip">RACI</span>
+          <h2 style="margin-top:6px">Stadtfest 2026 – Ablauf</h2>
+          <div class="sub">Food-Truck · 4 Phasen · 7 Rollen</div>
+          <div class="stats"><span class="chip">14 Aufgaben</span><span class="chip warn">11 / 14 eindeutig</span><span class="chip bad">2 Fehler</span></div>
+        </div>
+        <div class="foot"><span style="color:var(--bad);font-weight:650">✗ 1.3 Ware &amp; Getränke bestellen: 2× A</span><span class="spacer"></span>heute, 10:24</div>
+      </div>
+
+      <div class="card board">
+        <svg class="thumb" viewBox="0 0 132 112" style="width:132px;height:112px"><rect width="132" height="112" fill="#f9fafb"/><rect x="6.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="6.0" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="14.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="22.7" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="31.0" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="39.3" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="47.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="56.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="64.3" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="72.7" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="81.0" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="89.3" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="26.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="46.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="86.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="106.0" y="97.7" width="18.0" height="6.3" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/></svg>
+        <div>
+          <span class="method-chip">RASCI</span>
+          <h2 style="margin-top:6px">Tagesbetrieb</h2>
+          <div class="sub">Wiederkehrende Aufgaben · Ist → Soll</div>
+          <div class="stats"><span class="chip">12 Aufgaben</span><span class="chip good">12 / 12 eindeutig</span><span class="chip acc">6 Änderungen</span></div>
+        </div>
+        <div class="foot"><span>Inhaberin entlastet: <b style="color:var(--text-2)">6 → 1 × A</b></span><span class="spacer"></span>gestern</div>
+      </div>
+
+      <div class="card board">
+        <svg class="thumb" viewBox="0 0 132 112" style="width:132px;height:112px"><rect width="132" height="112" fill="#f9fafb"/><rect x="6.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="6.0" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="17.1" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="28.2" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="39.3" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="50.4" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="61.6" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="72.7" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="83.8" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="21.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="51.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="81.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="111.0" y="94.9" width="13.0" height="9.1" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/></svg>
+        <div>
+          <span class="method-chip">RACI-VS</span>
+          <h2 style="margin-top:6px">Fester Stellplatz Domplatz</h2>
+          <div class="sub">Genehmigung 2027 · mit Ordnungsamt</div>
+          <div class="stats"><span class="chip">9 Aufgaben</span><span class="chip good">9 / 9 eindeutig</span><span class="chip warn">1 Rolle ohne Aufgabe</span></div>
+        </div>
+        <div class="foot"><span style="color:var(--warn);font-weight:650">⚠ „Steuerberaterin“ kommt nirgends vor</span><span class="spacer"></span>Mo</div>
+      </div>
+
+      <div class="card board">
+        <svg class="thumb" viewBox="0 0 132 112" style="width:132px;height:112px"><rect width="132" height="112" fill="#f9fafb"/><rect x="6.0" y="6.0" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="6.0" width="28.0" height="14.7" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="6.0" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="6.0" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="22.7" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="22.7" width="28.0" height="14.7" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="22.7" width="28.0" height="14.7" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="22.7" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="39.3" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="39.3" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="39.3" width="28.0" height="14.7" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="39.3" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="56.0" width="28.0" height="14.7" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="56.0" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="56.0" width="28.0" height="14.7" rx="2" fill="#e4e7ec" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="56.0" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="72.7" width="28.0" height="14.7" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="72.7" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="72.7" width="28.0" height="14.7" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="72.7" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/><rect x="6.0" y="89.3" width="28.0" height="14.7" rx="2" fill="#0e7490" stroke="#e4e7ec" stroke-width=".6"/><rect x="36.0" y="89.3" width="28.0" height="14.7" rx="2" fill="#4f46e5" stroke="#e4e7ec" stroke-width=".6"/><rect x="66.0" y="89.3" width="28.0" height="14.7" rx="2" fill="#ffd8a8" stroke="#e4e7ec" stroke-width=".6"/><rect x="96.0" y="89.3" width="28.0" height="14.7" rx="2" fill="#ffffff" stroke="#e4e7ec" stroke-width=".6"/></svg>
+        <div>
+          <span class="method-chip">DACI</span>
+          <h2 style="margin-top:6px">Kartenzahlung einführen</h2>
+          <div class="sub">Entscheidung · Anbieter wählen</div>
+          <div class="stats"><span class="chip">7 Fragen</span><span class="chip good">1 Approver</span><span class="chip">4 Contributors</span></div>
+        </div>
+        <div class="foot"><span>Driver: <b style="color:var(--text-2)">Ben</b> · Approver: <b style="color:var(--text-2)">Lea</b></span><span class="spacer"></span>12.10.</div>
+      </div>
+
+      <div class="card board">
+        <svg class="thumb" viewBox="0 0 132 112" style="width:132px;height:112px"><rect width="132" height="112" fill="#f9fafb"/>
+          <g fill="#fff" stroke="#d0d5dd" stroke-dasharray="2 2" stroke-width=".8">
+            <rect x="6" y="6" width="28" height="14" rx="2"/><rect x="36" y="6" width="28" height="14" rx="2"/><rect x="66" y="6" width="28" height="14" rx="2"/><rect x="96" y="6" width="28" height="14" rx="2"/>
+            <rect x="6" y="22" width="28" height="14" rx="2"/><rect x="96" y="22" width="28" height="14" rx="2"/>
+            <rect x="36" y="38" width="28" height="14" rx="2"/><rect x="66" y="38" width="28" height="14" rx="2"/><rect x="96" y="38" width="28" height="14" rx="2"/>
+            <rect x="6" y="54" width="28" height="14" rx="2"/><rect x="36" y="54" width="28" height="14" rx="2"/><rect x="66" y="54" width="28" height="14" rx="2"/><rect x="96" y="54" width="28" height="14" rx="2"/>
+            <rect x="6" y="70" width="28" height="14" rx="2"/><rect x="36" y="70" width="28" height="14" rx="2"/><rect x="96" y="70" width="28" height="14" rx="2"/>
+            <rect x="6" y="86" width="28" height="14" rx="2"/><rect x="36" y="86" width="28" height="14" rx="2"/><rect x="66" y="86" width="28" height="14" rx="2"/><rect x="96" y="86" width="28" height="14" rx="2"/></g>
+          <g stroke="#e4e7ec" stroke-width=".6"><rect x="36" y="22" width="28" height="14" rx="2" fill="#4f46e5"/><rect x="66" y="22" width="28" height="14" rx="2" fill="#0e7490"/><rect x="6" y="38" width="28" height="14" rx="2" fill="#4f46e5"/><rect x="66" y="70" width="28" height="14" rx="2" fill="#ffd8a8"/></g>
+        </svg>
+        <div>
+          <span class="method-chip">RACI</span>
+          <h2 style="margin-top:6px">Saisonstart 2027</h2>
+          <div class="sub">Entwurf · 4 Rollen</div>
+          <div class="stats"><span class="chip">6 Aufgaben</span><span class="chip warn">4 ohne A</span><span class="chip">20 Zellen leer</span></div>
+        </div>
+        <div class="foot"><span style="color:var(--warn);font-weight:650">⚠ 4 Aufgaben ohne Verantwortliche(n) (A)</span><span class="spacer"></span>08.10.</div>
+      </div>
+
+      <div class="card board new"><span style="font-size:24px;color:var(--accent)">+</span>Neue Matrix<span style="font-weight:500;font-size:12px">Variante wählen, Aufgaben und Rollen anlegen</span></div>
+    </div>
+
+    <div class="card letters-strip">
+      <div><b><i class="b R">R</i>Responsible</b><p>Führt die Aufgabe aus. Mindestens eine Rolle je Aufgabe, gern mehrere.</p><q>Wer macht es?</q></div>
+      <div><b><i class="b A">A</i>Accountable</b><p>Entscheidet, gibt frei und steht für das Ergebnis ein. <b style="display:inline;font-size:12px;color:var(--text-2)">Genau eine</b> Rolle je Aufgabe.</p><q>Wer hält den Kopf hin?</q></div>
+      <div><b><i class="b C">C</i>Consulted</b><p>Wird vorher gefragt – Austausch in beide Richtungen. Sparsam einsetzen, jede C kostet Zeit.</p><q>Wen müssen wir fragen?</q></div>
+      <div><b><i class="b I">I</i>Informed</b><p>Wird über Ergebnis oder Fortschritt informiert – Einbahnstraße, keine Abstimmung.</p><q>Wer muss es wissen?</q></div>
+      <div><b>Faustregeln</b><ul><li>Je Aufgabe genau ein A, mindestens ein R</li><li>Aufgaben als Tätigkeit: „Standplatz beantragen“</li><li>Spalten sind Rollen, nicht Personen</li><li>Senkrecht lesen: Wo ballt sich etwas?</li></ul></div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ 2 Neue Matrix ============ -->
+<div class="caption">2 · Neue Matrix: Variante wählen und Startinhalt</div>
+<section class="screen" id="s2-neu" style="height:760px">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span> RACI-Matrix</div>
+    <div class="tabs"><span class="tab active">Alle Matrizen</span><span class="tab">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main style="opacity:.5"><h1>Meine RACI-Matrizen</h1></main>
+  <div class="overlay">
+    <div class="dialog">
+      <div class="dlg-head"><h2>Neue Matrix</h2><span class="sub">Variante wählen – Buchstaben, Aufgaben und Rollen lassen sich danach jederzeit ändern</span><span class="spacer"></span><span class="sub">✕</span></div>
+      <div class="pick">
+        <div>
+          <div class="pick-grid">
+            <div class="mcard on"><b>RACI <span class="chip acc sm">Standard</span></b><div class="ltrs"><i class="b R sm">R</i><i class="b A sm">A</i><i class="b C sm">C</i><i class="b I sm">I</i></div><p>Klassische Verantwortungsmatrix: wer ausführt, wer entscheidet, wer gefragt und wer informiert wird.</p></div>
+            <div class="mcard"><b>RASCI</b><div class="ltrs"><i class="b R sm">R</i><i class="b A sm">A</i><i class="b S sm">S</i><i class="b C sm">C</i><i class="b I sm">I</i></div><p>Zusätzlich <b style="display:inline;font-size:12px">S – Support</b>: arbeitet dem R zu (Material, Hände, Zeit), ohne selbst verantwortlich zu sein.</p></div>
+            <div class="mcard"><b>RACI-VS</b><div class="ltrs"><i class="b R sm">R</i><i class="b A sm">A</i><i class="b C sm">C</i><i class="b I sm">I</i><i class="b V sm">V</i><i class="b V sm">S</i></div><p>Zusätzlich <b style="display:inline;font-size:12px">V – Verify</b> (prüft gegen Vorgaben) und <b style="display:inline;font-size:12px">S – Sign-off</b> (zeichnet ab) – z. B. bei Genehmigungen.</p></div>
+            <div class="mcard"><b>DACI <span class="chip sm">Entscheidungen</span></b><div class="ltrs"><i class="b R sm">D</i><i class="b A sm">A</i><i class="b C sm">C</i><i class="b I sm">I</i></div><p>Für eine Entscheidung statt eines Ablaufs: <b style="display:inline;font-size:12px">D</b>river treibt voran, <b style="display:inline;font-size:12px">A</b>pprover entscheidet, Contributors, Informed.</p></div>
+            <div class="mcard custom" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:12px"><span style="font-size:20px;color:var(--accent)">+</span><div><b>Eigene Buchstaben</b><p>Kürzel, Bedeutung und Regel je Buchstabe selbst festlegen (z. B. „O – Out of the loop“ wie bei CAIRO).</p></div></div>
+          </div>
+          <div style="padding:0 20px 16px">
+            <div class="field-lbl" style="margin-top:2px">Name</div>
+            <div class="input focus" style="width:420px">Stadtfest 2026 – Ablauf</div>
+          </div>
+        </div>
+        <div class="pick-side">
+          <h3>RACI – die vier Buchstaben</h3>
+          <dl class="def">
+            <dt><i class="b R">R</i></dt><dd><b>Responsible</b> – führt aus<small>mindestens eine Rolle je Aufgabe</small></dd>
+            <dt><i class="b A">A</i></dt><dd><b>Accountable</b> – entscheidet, gibt frei<small>genau eine Rolle je Aufgabe; darf zugleich R sein</small></dd>
+            <dt><i class="b C">C</i></dt><dd><b>Consulted</b> – wird vorher gefragt<small>zweiseitig, sparsam einsetzen</small></dd>
+            <dt><i class="b I">I</i></dt><dd><b>Informed</b> – wird informiert<small>einseitig, nach der Entscheidung</small></dd>
+          </dl>
+          <h3>Startinhalt</h3>
+          <div class="radio"><span class="dotr"></span><div>Leer<small>Aufgaben und Rollen selbst anlegen</small></div></div>
+          <div class="radio on"><span class="dotr"></span><div>Vorlage „Veranstaltung“<small>4 Phasen, 12 typische Aufgaben – ohne Buchstaben</small></div></div>
+          <div class="radio"><span class="dotr"></span><div>Rollen aus einer anderen Matrix<small>z. B. aus „Tagesbetrieb“ – mit Personen</small></div></div>
+          <div class="radio"><span class="dotr"></span><div>Aufgabenliste einfügen<small>eine Aufgabe je Zeile, Phasen mit „#“</small></div></div>
+        </div>
+      </div>
+      <div class="dlg-foot"><span class="sub" style="font-size:12.5px">Tipp: Zuerst Aufgaben und Rollen sammeln, dann Zeile für Zeile das <b>A</b> klären.</span><span class="spacer"></span><button class="btn">Abbrechen</button><button class="btn primary">Matrix anlegen</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 Matrix ============ -->
+<div class="caption">3 · Matrix bearbeiten: Buchstaben je Zelle, Prüfung je Zeile und Spalte</div>
+<section class="screen" id="s3-matrix">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab active">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span class="on">▦ Matrix</span><span>☺ Rollen</span><span>☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main>
+    <div class="crumb-row">
+      <h1>Stadtfest 2026 – Ablauf</h1><span class="method-chip">RACI</span><span class="sub">Food-Truck auf dem Stadtfest, 3 Tage</span>
+      <span class="spacer"></span>
+      <span class="sub" style="font-size:12.5px">Optional an: <span class="chip acc sm">Phasen</span> <span class="chip acc sm">A/R in einer Zelle</span> <span class="chip acc sm">Klären</span> · <a style="color:var(--accent);font-weight:650">Einstellungen</a></span>
+      <button class="btn sm ghost">↶</button><button class="btn sm ghost">↷</button>
+    </div>
+    <div class="work">
+      <div style="position:relative">
+        <div class="card" style="overflow:visible">
+<table class="mx"><thead><tr><th style="width:280px">Aufgabe</th>
+<th class="" style="width:78px"><span class="avs"><span class="avatar p-lea">LK</span></span><br>Inhaberin<small>Lea</small></th>
+<th class="hot" style="width:78px"><span class="avs"><span class="avatar p-ayl">AY</span></span><br>Schicht&shy;leitung<small>Aylin</small></th>
+<th class="" style="width:78px"><span class="avs"><span class="avatar p-fri">FK</span></span><br>Technik<small>Fritz</small></th>
+<th class="" style="width:78px"><span class="avs"><span class="avatar p-ben">BS</span></span><br>Einkauf &amp; Finanzen<small>Ben</small></th>
+<th class="" style="width:78px"><span class="avs"><span class="avatar p-mia">MW</span></span><br>Marketing<small>Mia</small></th>
+<th class="" style="width:78px"><span class="avs"><span class="avatar p-jon">JM</span><span class="avatar p-ext">+2</span></span><br>Service-Team<small>Jonas +2</small></th>
+<th class="ext" style="width:78px"><span class="avs"><span class="avatar p-ext">SM</span></span><br>Veranstalter<small>extern</small></th>
+<th style="width:84px;text-align:left">Prüfung</th></tr></thead><tbody>
+<tr class="phase"><td colspan="9">Vorbereitung</td></tr>
+<tr class=""><td class="task"><span class="id">1.1</span>Standplatz beantragen</td>
+<td class=""><i class="b AR">A/R</i></td>
+<td class="hotc"><i class="b I">I</i></td>
+<td class=""></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b C">C</i></td>
+<td class="st ok">✓</td></tr>
+<tr class=""><td class="task"><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</td>
+<td class=""><i class="b A">A</i></td>
+<td class="hotc"><i class="b R">R</i></td>
+<td class=""></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b I">I</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class="err sel"><td class="task"><span class="id">1.3</span>Ware &amp; Getränke bestellen</td>
+<td class=""><i class="b A">A</i></td>
+<td class="hotc"><i class="b C">C</i></td>
+<td class=""></td>
+<td class="cell-sel"><i class="b AR">A/R</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""></td>
+<td class="st bad">✗ 2× A</td></tr>
+<tr class=""><td class="task"><span class="id">1.4</span>Schichtplan erstellen</td>
+<td class=""><i class="b C">C</i></td>
+<td class="hotc"><i class="b AR">A/R</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b I">I</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class="err"><td class="task"><span class="id">1.5</span>Social-Media-Ankündigung</td>
+<td class=""><i class="b C">C</i></td>
+<td class="hotc"></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""></td>
+<td class=""><i class="b I">I</i></td>
+<td class="st bad">✗ kein A</td></tr>
+<tr class="phase"><td colspan="9">Aufbau</td></tr>
+<tr class=""><td class="task"><span class="id">2.1</span>Strom- und Gasanschluss prüfen</td>
+<td class=""></td>
+<td class="hotc"><i class="b I">I</i></td>
+<td class=""><i class="b AR">A/R</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b C">C</i></td>
+<td class="st ok">✓</td></tr>
+<tr class=""><td class="task"><span class="id">2.2</span>Aushilfen in Hygiene unterweisen</td>
+<td class=""><i class="b A">A</i></td>
+<td class="hotc"><i class="b R">R</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b I">I</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class=""><td class="task"><span class="id">2.3</span>Stand aufbauen &amp; dekorieren</td>
+<td class=""></td>
+<td class="hotc"><i class="b A">A</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class="phase"><td colspan="9">Betrieb</td></tr>
+<tr class=""><td class="task"><span class="id">3.1</span>Kasse &amp; Kartenzahlung betreuen</td>
+<td class=""></td>
+<td class="hotc"><i class="b A">A</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class=""><td class="task"><span class="id">3.2</span>Fritteuse &amp; Kühlung überwachen<small>↗ Risiko R7 aus der 2-Achsen-Matrix</small></td>
+<td class=""></td>
+<td class="hotc"><i class="b R">R</i></td>
+<td class=""><i class="b A">A</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""></td>
+<td class="st ok">✓</td></tr>
+<tr class="warn"><td class="task"><span class="id">3.3</span>Reklamationen klären</td>
+<td class=""><i class="b C">C</i></td>
+<td class="hotc"><i class="b A">A</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b I">I</i></td>
+<td class=""></td>
+<td class="st wr">! kein R</td></tr>
+<tr class="phase"><td colspan="9">Abbau &amp; Abrechnung</td></tr>
+<tr class=""><td class="task"><span class="id">4.1</span>Stand abbauen &amp; reinigen</td>
+<td class=""></td>
+<td class="hotc"><i class="b A">A</i></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""></td>
+<td class=""></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""><i class="b I">I</i></td>
+<td class="st ok">✓</td></tr>
+<tr class="warn"><td class="task"><span class="id">4.2</span>Mit Veranstalter abrechnen</td>
+<td class=""><i class="b A">A</i></td>
+<td class="hotc"><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b R">R</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class="st wr">! 5× C</td></tr>
+<tr class=""><td class="task"><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</td>
+<td class=""><i class="b A">A</i></td>
+<td class="hotc"><i class="b R">R</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""><i class="b C qm">C</i></td>
+<td class=""><i class="b C">C</i></td>
+<td class=""></td>
+<td class="st inf">? klären</td></tr>
+<tr><td class="addrow" colspan="9">+ Aufgabe &nbsp;<span class="sub" style="font-weight:500">· + Phase</span></td></tr>
+</tbody><tfoot><tr><td>Summe<br><span style="font-weight:600;text-transform:none;letter-spacing:0">A · R · C · I</span></td>
+<td><div class="tally"><span class="tA">6</span><span class="tR">1</span><span class="tC">3</span><span class="tI z">0</span></div></td>
+<td><div class="tally"><span class="tA">5</span><span class="tR">5</span><span class="tC">2</span><span class="tI">2</span></div></td>
+<td><div class="tally"><span class="tA">2</span><span class="tR">2</span><span class="tC">4</span><span class="tI z">0</span></div></td>
+<td><div class="tally"><span class="tA">1</span><span class="tR">2</span><span class="tC">4</span><span class="tI z">0</span></div></td>
+<td><div class="tally"><span class="tA z">0</span><span class="tR">1</span><span class="tC">4</span><span class="tI z">0</span></div></td>
+<td><div class="tally"><span class="tA z">0</span><span class="tR">4</span><span class="tC">2</span><span class="tI">4</span></div></td>
+<td><div class="tally"><span class="tA z">0</span><span class="tR z">0</span><span class="tC">3</span><span class="tI">2</span></div></td>
+<td></td></tr></tfoot></table>
+        </div>
+        <div class="pop" style="left:430px;top:244px">
+          <h4>1.3 Ware &amp; Getränke bestellen</h4>
+          <div class="sub" style="font-size:12px">Rolle <b style="color:var(--text-2)">Einkauf &amp; Finanzen</b> (Ben)</div>
+          <div class="pick-letters"><i class="b R">R</i><i class="b A">A</i><i class="b AR cur" style="min-width:46px">A/R</i><i class="b C">C</i><i class="b I">I</i><i class="b empty">–</i></div>
+          <div class="hint" style="background:var(--bad-bg);color:var(--bad);margin-top:0">Diese Aufgabe hat schon ein <b>A</b> bei <b>Inhaberin</b>. Wer entscheidet am Ende? <span style="display:flex;gap:6px;margin-top:6px"><button class="btn sm">Inhaberin → C</button><button class="btn sm">hier nur R</button></span></div>
+          <div class="field-lbl">Notiz zur Zelle</div>
+          <div class="input" style="min-height:32px;padding:6px 9px;color:var(--muted)">Bestellt bis 500 €, darüber gibt Lea frei</div>
+          <div class="sub" style="font-size:11.5px;margin-top:8px">Tasten <span class="kbd">R</span> <span class="kbd">A</span> <span class="kbd">C</span> <span class="kbd">I</span> <span class="kbd">Entf</span> · <span class="kbd">?</span> klären · Pfeiltasten wechseln die Zelle</div>
+        </div>
+      </div>
+      <div class="side">
+        <div class="card pad">
+          <h3>Prüfung</h3>
+          <div class="score"><div class="ring" style="background:conic-gradient(var(--warn) 0 79%, var(--surface-3) 0)"><b>11/14</b></div><div><b>Aufgaben eindeutig</b><div class="sub" style="font-size:12px">genau ein A und mindestens ein R</div></div></div>
+          <div class="chk"><span class="ic n">✗</span><div><b>Genau ein A je Aufgabe</b><p><a>1.3</a> Ware bestellen: 2× A<br><a>1.5</a> Social-Media-Ankündigung: kein A</p></div></div>
+          <div class="chk"><span class="ic q">!</span><div><b>Mindestens ein R</b><p><a>3.3</a> Reklamationen klären: nur A – erledigt die Schichtleitung es selbst? Dann A/R.</p></div></div>
+          <div class="chk"><span class="ic q">!</span><div><b>C sparsam</b><p><a>4.2</a> Abrechnung: 5× C – reicht bei manchen ein I?</p></div></div>
+          <div class="chk"><span class="ic q">!</span><div><b>Keine Engpässe</b><p><a>Schichtleitung</a> an 13 von 14 Aufgaben beteiligt, 10× A oder R</p></div></div>
+          <div class="chk"><span class="ic y">✓</span><div><b>Jede Rolle hat eine Aufgabe</b></div></div>
+          <div class="chk" style="border:0"><span class="ic y">✓</span><div><b>Aufgaben als Tätigkeit</b><p>alle 14 mit Verb formuliert</p></div></div>
+        </div>
+        <div class="card pad">
+          <h3>Offen zu klären <span class="chip warn sm" style="margin-left:auto">1</span></h3>
+          <div style="font-size:12.5px"><b>4.3 · Marketing</b> <i class="b C sm qm">C</i><div class="sub" style="font-size:12px;margin-top:2px">„Soll Mia beim Rückblick dabei sein oder reicht das Protokoll?“</div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ 4 Rollen ============ -->
+<div class="caption">4 · Rollen &amp; Personen, senkrecht gelesen: Auslastung und Engpässe je Rolle</div>
+<section class="screen" id="s4-rollen">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab active">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span>▦ Matrix</span><span class="on">☺ Rollen</span><span>☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main>
+    <div class="crumb-row"><h1>Rollen</h1><span class="sub">7 Rollen · 6 Personen · 1 extern</span><span class="spacer"></span>
+      <div class="legend" style="display:flex;gap:12px;font-size:12px;color:var(--muted)"><span><i class="b A sm">A</i> entscheidet</span><span><i class="b R sm">R</i> führt aus</span><span><i class="b C sm">C</i> gefragt</span><span><i class="b I sm">I</i> informiert</span></div>
+      <button class="btn primary">+ Rolle</button></div>
+    <div class="kpis">
+      <div class="card kpi"><small>Rollen</small><b>7</b><span>6 intern · 1 extern</span></div>
+      <div class="card kpi"><small>Ø Beteiligung je Rolle</small><b>7,9</b><span>von 14 Aufgaben</span></div>
+      <div class="card kpi" style="border-color:#f0b35b"><small>Engpass</small><b style="color:var(--warn)">1</b><span>Schichtleitung: 10× A oder R</span></div>
+      <div class="card kpi"><small>Rollen ohne Aufgabe</small><b style="color:var(--good)">0</b><span>jede Rolle kommt vor</span></div>
+    </div>
+    <div class="work" style="grid-template-columns:1fr 340px">
+      <div class="card" style="overflow:hidden">
+        <table class="rtbl">
+          <tr><th style="width:18px"></th><th>Rolle</th><th>Person(en)</th><th style="text-align:right">Beteiligt</th><th>Verteilung A · R · C · I</th><th>Hinweis</th></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Inhaberin</b><small>Geld, Auftritt, Freigaben</small></td><td><span class="who"><span class="avatar p-lea">LK</span>Lea</span></td><td style="text-align:right"><b>9</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lA" style="width:37.5%">6</span><span class="lR" style="width:6.25%">1</span><span class="lC" style="width:18.75%">3</span></div></td><td><span class="chip warn">6× A</span></td></tr>
+          <tr class="sel"><td class="grip">⋮⋮</td><td><b>Schichtleitung</b><small>vor Ort, Team und Gäste</small></td><td><span class="who"><span class="avatar p-ayl">AY</span>Aylin</span></td><td style="text-align:right"><b>13</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lA" style="width:31.25%">5</span><span class="lR" style="width:31.25%">5</span><span class="lC" style="width:12.5%">2</span><span class="lI" style="width:12.5%">2</span></div></td><td><span class="chip warn">Engpass</span></td></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Technik</b><small>Geräte, Strom, Gas</small></td><td><span class="who"><span class="avatar p-fri">FK</span>Fritz</span></td><td style="text-align:right"><b>7</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lA" style="width:12.5%">2</span><span class="lR" style="width:12.5%">2</span><span class="lC" style="width:25%">4</span></div></td><td><span class="chip good">✓</span></td></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Einkauf &amp; Finanzen</b><small>Bestellung, Kasse, Abrechnung</small></td><td><span class="who"><span class="avatar p-ben">BS</span>Ben</span></td><td style="text-align:right"><b>6</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lA" style="width:6.25%">1</span><span class="lR" style="width:12.5%">2</span><span class="lC" style="width:25%">4</span></div></td><td><span class="chip good">✓</span></td></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Marketing</b><small>Social Media, Aktionen</small></td><td><span class="who"><span class="avatar p-mia">MW</span>Mia</span></td><td style="text-align:right"><b>5</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lR" style="width:6.25%">1</span><span class="lC" style="width:25%">4</span></div></td><td><span class="chip">nie A</span></td></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Service-Team</b><small>Verkauf, Auf- und Abbau</small></td><td><span class="who"><span class="avs"><span class="avatar p-jon">JM</span><span class="avatar p-ext">+2</span></span>Jonas, 2 Aushilfen</span></td><td style="text-align:right"><b>10</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lR" style="width:25%">4</span><span class="lC" style="width:12.5%">2</span><span class="lI" style="width:25%">4</span></div></td><td><span class="chip good">✓</span></td></tr>
+          <tr><td class="grip">⋮⋮</td><td><b>Veranstalter</b> <span class="chip sm">extern</span><small>Stadtmarketing, Fr. Sommer</small></td><td><span class="who"><span class="avatar p-ext">SM</span>extern</span></td><td style="text-align:right"><b>5</b><small>/ 14</small></td>
+            <td><div class="load"><span class="lC" style="width:18.75%">3</span><span class="lI" style="width:12.5%">2</span></div></td><td><span class="chip good">✓</span></td></tr>
+        </table>
+        <div style="padding:12px 14px;border-top:1px solid var(--border);background:var(--surface-2);font-size:12.5px;color:var(--muted)">
+          <b style="color:var(--text-2)">Senkrecht lesen:</b> viele A → Entscheidungen bündeln sich, viele R → Arbeitslast, nur C/I → Rolle nötig? Spalten sind <b style="color:var(--text-2)">Rollen</b>; eine Person kann mehrere Rollen haben.
+        </div>
+      </div>
+      <div class="side">
+        <div class="card pad">
+          <h3>Rolle</h3>
+          <div class="field-lbl" style="margin-top:0">Name</div><div class="input" style="min-height:34px;padding:6px 10px">Schichtleitung</div>
+          <div class="field-lbl">Aufgabe der Rolle</div><div class="input" style="min-height:34px;padding:6px 10px">Leitet die Schicht vor Ort, Ansprechpartnerin für Team und Gäste</div>
+          <div class="row" style="gap:10px">
+            <div style="flex:1"><div class="field-lbl">Person</div><div class="input" style="min-height:34px;padding:5px 10px"><span class="who"><span class="avatar p-ayl">AY</span>Aylin</span></div></div>
+            <div style="flex:1"><div class="field-lbl">Vertretung</div><div class="input" style="min-height:34px;padding:5px 10px"><span class="who"><span class="avatar p-jon">JM</span>Jonas</span></div></div>
+          </div>
+          <div class="field-lbl">Art</div><div class="seg-sm" style="display:inline-flex;border:1px solid var(--border-strong);border-radius:8px;overflow:hidden;font-size:12px;font-weight:600"><span style="padding:5px 10px;background:var(--accent-soft);color:var(--accent)">intern</span><span style="padding:5px 10px;color:var(--muted);border-left:1px solid var(--border)">extern</span></div>
+        </div>
+        <div class="card pad">
+          <h3>Engpass entschärfen</h3>
+          <p class="sub" style="font-size:12.5px;margin:0 0 6px">An <b style="color:var(--text)">13 von 14</b> Aufgaben beteiligt, davon <b style="color:var(--text)">10× A oder R</b>. Fällt Aylin aus, stockt fast alles.</p>
+          <div class="chk"><span class="ic q" style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800">R</span><div><b>1.2 Speisekarte &amp; Preise</b><p>R → C, Inhaberin macht A/R</p></div></div>
+          <div class="chk"><span class="ic q" style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800">C</span><div><b>4.2 Abrechnung</b><p>C → I, Ergebnis reicht</p></div></div>
+          <div class="chk" style="border:0"><span class="ic q" style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-weight:800">I</span><div><b>2.1 Strom- und Gasanschluss</b><p>I streichen? Technik meldet nur bei Problemen</p></div></div>
+          <div class="hint info" style="margin-top:6px">Vorschläge sind Denkanstöße – übernehmen ändert die Zelle in der Matrix, Rückgängig mit <span class="kbd">Strg+Z</span>.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ 5 Ist / Soll ============ -->
+<style>
+  .mx td.chg { background: color-mix(in srgb, var(--accent-soft) 70%, transparent); }
+  .mx td.chg .b + .b { margin-left: 3px; }
+  .arr { color: var(--accent); font-weight: 800; font-size: 11px; margin: 0 2px; }
+  .cmp { width: 100%; font-size: 12.5px; border-collapse: collapse; }
+  .cmp td { padding: 5px 0; border-bottom: 1px dashed var(--border); }
+  .cmp tr:last-child td { border: 0; }
+  .cmp td:nth-child(n+2) { text-align: right; font-weight: 700; width: 48px; }
+</style>
+<div class="caption">5 · Ist / Soll (optional): heutige Zuständigkeiten neben der Zielverteilung</div>
+<section class="screen" id="s5-ist-soll">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab active">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span class="on">▦ Matrix</span><span>☺ Rollen</span><span>☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main>
+    <div class="crumb-row">
+      <h1>Tagesbetrieb</h1><span class="method-chip">RASCI</span><span class="sub">Wer macht was an einem normalen Verkaufstag?</span>
+      <span class="spacer"></span>
+      <span class="sub" style="font-size:12.5px">Ansicht</span>
+      <div class="seg"><span>Ist</span><span>Soll</span><span class="on">Ist → Soll</span></div>
+      <button class="btn sm">Soll als neuen Ist-Stand übernehmen</button>
+    </div>
+    <div class="work">
+      <div class="card" style="overflow:hidden">
+        <table class="mx">
+          <thead><tr><th style="width:300px">Aufgabe</th>
+            <th><span class="avatar p-lea">LK</span><br>Inhaberin<small>Lea</small></th>
+            <th><span class="avatar p-ayl">AY</span><br>Schicht&shy;leitung<small>Aylin</small></th>
+            <th><span class="avatar p-fri">FK</span><br>Technik<small>Fritz</small></th>
+            <th><span class="avatar p-ben">BS</span><br>Einkauf &amp; Finanzen<small>Ben</small></th>
+            <th><span class="avatar p-mia">MW</span><br>Marketing<small>Mia</small></th>
+            <th><span class="avs"><span class="avatar p-jon">JM</span><span class="avatar p-ext">+2</span></span><br>Service-Team<small>Jonas +2</small></th></tr></thead>
+          <tbody>
+            <tr><td class="task"><span class="id">1</span>Öffnungs-Checkliste durchgehen<small>↗ Maßnahme aus 5 Warum „Lange Wartezeit am Samstag“</small></td>
+              <td class="chg"><i class="b A sm old">A</i><span class="arr">→</span><i class="b empty sm">–</i></td><td class="chg"><span class="arr">+</span><i class="b A sm">A</i></td><td class="chg"><span class="arr">+</span><i class="b S sm">S</i></td><td></td><td></td><td><i class="b R sm">R</i></td></tr>
+            <tr><td class="task"><span class="id">2</span>Fettfilter wöchentlich wechseln<small>↗ Maßnahme aus 5 Warum</small></td>
+              <td class="chg"><i class="b A sm old">A</i><span class="arr">→</span><i class="b empty sm">–</i></td><td class="chg"><span class="arr">+</span><i class="b I sm">I</i></td><td class="chg"><i class="b R sm old">R</i><span class="arr">→</span><i class="b AR sm">A/R</i></td><td></td><td></td><td></td></tr>
+            <tr><td class="task"><span class="id">3</span>Frischware einkaufen</td>
+              <td class="chg"><i class="b AR sm old">A/R</i><span class="arr">→</span><i class="b I sm">I</i></td><td class="chg"><span class="arr">+</span><i class="b R sm">R</i></td><td></td><td class="chg"><span class="arr">+</span><i class="b A sm">A</i></td><td></td><td></td></tr>
+            <tr><td class="task"><span class="id">4</span>Kasse abrechnen</td>
+              <td class="chg"><i class="b A sm old">A</i><span class="arr">→</span><i class="b empty sm">–</i></td><td class="chg"><i class="b R sm old">R</i><span class="arr">→</span><i class="b AR sm">A/R</i></td><td></td><td class="chg"><span class="arr">+</span><i class="b I sm">I</i></td><td></td><td></td></tr>
+            <tr><td class="task"><span class="id">5</span>Tagesstandort posten</td>
+              <td class="chg"><i class="b A sm old">A</i><span class="arr">→</span><i class="b I sm">I</i></td><td></td><td></td><td></td><td class="chg"><i class="b R sm old">R</i><span class="arr">→</span><i class="b AR sm">A/R</i></td><td></td></tr>
+            <tr><td class="task"><span class="id">6</span>Reinigungsplan abhaken</td>
+              <td></td><td><i class="b A sm">A</i></td><td><i class="b S sm">S</i></td><td></td><td></td><td><i class="b R sm">R</i></td></tr>
+            <tr><td class="task"><span class="id">7</span>Standorte der Woche planen</td>
+              <td class="chg"><i class="b AR sm old">A/R</i><span class="arr">→</span><i class="b A sm">A</i></td><td class="chg"><span class="arr">+</span><i class="b R sm">R</i></td><td></td><td></td><td class="chg"><span class="arr">+</span><i class="b C sm">C</i></td><td class="chg"><span class="arr">+</span><i class="b I sm">I</i></td></tr>
+            <tr><td class="task"><span class="id">8</span>Aushilfen einarbeiten</td>
+              <td></td><td><i class="b AR sm">A/R</i></td><td></td><td></td><td></td><td><i class="b S sm">S</i></td></tr>
+            <tr><td class="addrow" colspan="7" style="color:var(--muted);font-weight:500">+ 4 weitere Aufgaben ohne Änderung</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="side">
+        <div class="card pad">
+          <h3>Ist → Soll</h3>
+          <div class="score"><div class="ring" style="background:conic-gradient(var(--accent) 0 50%, var(--surface-3) 0)"><b>6</b></div><div><b>Aufgaben ändern sich</b><div class="sub" style="font-size:12px">18 Zellen, 6 von 12 Aufgaben</div></div></div>
+          <div class="field-lbl">A je Rolle</div>
+          <table class="cmp">
+            <tr><td></td><td class="sub" style="font-weight:600">Ist</td><td class="sub" style="font-weight:600">Soll</td></tr>
+            <tr><td>Inhaberin</td><td>6</td><td style="color:var(--good)">1</td></tr>
+            <tr><td>Schichtleitung</td><td>2</td><td>4</td></tr>
+            <tr><td>Technik</td><td>0</td><td>1</td></tr>
+            <tr><td>Einkauf &amp; Finanzen</td><td>0</td><td>1</td></tr>
+            <tr><td>Marketing</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="hint good">Die Inhaberin gibt fünf Tagesentscheidungen ab und wird dort nur noch informiert.</div>
+          <div class="hint">Schichtleitung: 4× A und 4× R im Soll – mit der Stadtfest-Matrix zusammen prüfen.</div>
+        </div>
+        <div class="card pad">
+          <h3>Legende</h3>
+          <div style="display:grid;gap:6px;font-size:12.5px">
+            <span><i class="b A sm old">A</i><span class="arr">→</span><i class="b AR sm">A/R</i> &nbsp;geändert</span>
+            <span><span class="arr">+</span><i class="b I sm">I</i> &nbsp;neu im Soll</span>
+            <span><i class="b A sm old">A</i><span class="arr">→</span><i class="b empty sm">–</i> &nbsp;entfällt</span>
+            <span><i class="b S sm">S</i> &nbsp;Support (RASCI): arbeitet dem R zu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ 6 Wer macht was? ============ -->
+<div class="caption">6 · Wer macht was? – die Matrix je Rolle gelesen, als Steckbrief zum Aushängen</div>
+<section class="screen" id="s6-wer-macht-was">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab active">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span>▦ Matrix</span><span>☺ Rollen</span><span class="on">☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main>
+    <div class="crumb-row"><h1>Wer macht was?</h1><span class="sub">Stadtfest 2026 – Ablauf · 6 interne Rollen</span><span class="spacer"></span>
+      <div class="seg"><span class="on">Je Rolle</span><span>Je Person</span></div>
+      <button class="btn">☐ Leere Gruppen ausblenden</button><button class="btn">⎙ Steckbriefe drucken</button></div>
+<div class="people">
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-lea">LK</span></span><div><b>Inhaberin</b><small>Lea · Führt den Food-Truck, entscheidet über Geld und Auftritt</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 6</em><ul><li><span class="id">1.1</span>Standplatz beantragen</li><li><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</li><li><span class="id">1.3</span>Ware &amp; Getränke bestellen</li><li><span class="id">2.2</span>Aushilfen in Hygiene unterweisen</li><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 1</em><ul><li><span class="id">1.1</span>Standplatz beantragen <span class="chip sm">auch A</span></li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 3</em><ul><li><span class="id">1.4</span>Schichtplan erstellen</li><li><span class="id">1.5</span>Social-Media-Ankündigung</li><li><span class="id">3.3</span>Reklamationen klären</li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 0</em><ul><li class="none">–</li></ul></div></div>
+</div>
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-ayl">AY</span></span><div><b>Schichtleitung</b><small>Aylin · Leitet die Schicht vor Ort, Ansprechpartnerin für Team und Gäste</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 5</em><ul><li><span class="id">1.4</span>Schichtplan erstellen</li><li><span class="id">2.3</span>Stand aufbauen &amp; dekorieren</li><li><span class="id">3.1</span>Kasse &amp; Kartenzahlung betreuen</li><li><span class="id">3.3</span>Reklamationen klären</li><li><span class="id">4.1</span>Stand abbauen &amp; reinigen</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 5</em><ul><li><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</li><li><span class="id">1.4</span>Schichtplan erstellen <span class="chip sm">auch A</span></li><li><span class="id">2.2</span>Aushilfen in Hygiene unterweisen</li><li><span class="id">3.2</span>Fritteuse &amp; Kühlung überwachen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 2</em><ul><li><span class="id">1.3</span>Ware &amp; Getränke bestellen</li><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 2</em><ul><li><span class="id">1.1</span>Standplatz beantragen</li><li><span class="id">2.1</span>Strom- und Gasanschluss prüfen</li></ul></div></div>
+</div>
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-fri">FK</span></span><div><b>Technik</b><small>Fritz · Geräte, Strom, Gas, Kühlung und Wartung</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 2</em><ul><li><span class="id">2.1</span>Strom- und Gasanschluss prüfen</li><li><span class="id">3.2</span>Fritteuse &amp; Kühlung überwachen</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 2</em><ul><li><span class="id">2.1</span>Strom- und Gasanschluss prüfen <span class="chip sm">auch A</span></li><li><span class="id">4.1</span>Stand abbauen &amp; reinigen</li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 4</em><ul><li><span class="id">2.3</span>Stand aufbauen &amp; dekorieren</li><li><span class="id">3.1</span>Kasse &amp; Kartenzahlung betreuen</li><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 0</em><ul><li class="none">–</li></ul></div></div>
+</div>
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-ben">BS</span></span><div><b>Einkauf &amp; Finanzen</b><small>Ben · Bestellungen, Kasse, Abrechnung</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 1</em><ul><li><span class="id">1.3</span>Ware &amp; Getränke bestellen</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 2</em><ul><li><span class="id">1.3</span>Ware &amp; Getränke bestellen <span class="chip sm">auch A</span></li><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 4</em><ul><li><span class="id">1.1</span>Standplatz beantragen</li><li><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</li><li><span class="id">3.1</span>Kasse &amp; Kartenzahlung betreuen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 0</em><ul><li class="none">–</li></ul></div></div>
+</div>
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-mia">MW</span></span><div><b>Marketing</b><small>Mia · Social Media, Aktionen, Gestaltung</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 0</em><ul><li class="none">–</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 1</em><ul><li><span class="id">1.5</span>Social-Media-Ankündigung</li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 4</em><ul><li><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</li><li><span class="id">2.3</span>Stand aufbauen &amp; dekorieren</li><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten <span class="chip warn sm">klären</span></li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 0</em><ul><li class="none">–</li></ul></div></div>
+</div>
+<div class="card pcard"><div class="ph"><span class="avs"><span class="avatar p-jon">JM</span><span class="avatar p-ext">+2</span></span><div><b>Service-Team</b><small>Jonas +2 · Verkauf, Ausgabe, Auf- und Abbau</small></div></div>
+<div class="grp"><i class="b A sm">A</i><div><em>Entscheidet · 0</em><ul><li class="none">–</li></ul></div></div>
+<div class="grp"><i class="b R sm">R</i><div><em>Führt aus · 4</em><ul><li><span class="id">2.3</span>Stand aufbauen &amp; dekorieren</li><li><span class="id">3.1</span>Kasse &amp; Kartenzahlung betreuen</li><li><span class="id">3.2</span>Fritteuse &amp; Kühlung überwachen</li><li><span class="id">4.1</span>Stand abbauen &amp; reinigen</li></ul></div></div>
+<div class="grp"><i class="b C sm">C</i><div><em>Wird gefragt · 2</em><ul><li><span class="id">4.2</span>Mit Veranstalter abrechnen</li><li><span class="id">4.3</span>Rückblick &amp; Gelerntes festhalten</li></ul></div></div>
+<div class="grp"><i class="b I sm">I</i><div><em>Wird informiert · 4</em><ul><li><span class="id">1.2</span>Speisekarte &amp; Preise festlegen</li><li><span class="id">1.4</span>Schichtplan erstellen</li><li><span class="id">2.2</span>Aushilfen in Hygiene unterweisen</li><li><span class="id">3.3</span>Reklamationen klären</li></ul></div></div>
+</div>
+</div>
+  </main>
+</section>
+
+<!-- ============ 7 Bericht ============ -->
+<div class="caption">7 · Bericht: Matrix, Prüfergebnis und offene Punkte – Drucken/PDF, Markdown, CSV, JSON</div>
+<section class="screen" id="s7-bericht">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab active">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span>▦ Matrix</span><span>☺ Rollen</span><span>☰ Wer macht was?</span><span class="on">▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main style="background:var(--surface-3)">
+    <div class="export-bar" style="width:1000px;margin:0 auto 14px">
+      <button class="btn primary">⎙ Drucken / PDF</button><button class="btn">Markdown kopieren</button><button class="btn">CSV (Tabellen&shy;kalkulation)</button><button class="btn">JSON</button>
+      <span class="spacer"></span>
+      <span class="sub" style="font-size:12.5px">Enthält:</span><span class="chip acc">Matrix</span><span class="chip acc">Prüfung</span><span class="chip acc">Offene Punkte</span><span class="chip">Steckbriefe</span><span class="chip">Notizen</span>
+    </div>
+    <div class="paper">
+      <div class="row" style="align-items:flex-start">
+        <div><h1>Stadtfest 2026 – Ablauf</h1><div class="sub">RACI-Matrix · Food-Truck auf dem Stadtfest, 3 Tage · Stand 16.10.2026</div></div>
+        <span class="spacer"></span>
+        <div style="display:flex;gap:10px;font-size:11px;color:var(--muted);flex-wrap:wrap;max-width:360px;justify-content:flex-end"><span><i class="b R sm">R</i> führt aus</span><span><i class="b A sm">A</i> entscheidet</span><span><i class="b AR sm">A/R</i> beides</span><span><i class="b C sm">C</i> wird gefragt</span><span><i class="b I sm">I</i> wird informiert</span></div>
+      </div>
+<table class="pmx"><tr><th style="width:260px">Aufgabe</th>
+<th>Inhaberin<br><span style="font-weight:500">Lea</span></th>
+<th>Schichtleitung<br><span style="font-weight:500">Aylin</span></th>
+<th>Technik<br><span style="font-weight:500">Fritz</span></th>
+<th>Einkauf &amp; Finanzen<br><span style="font-weight:500">Ben</span></th>
+<th>Marketing<br><span style="font-weight:500">Mia</span></th>
+<th>Service-Team<br><span style="font-weight:500">Jonas +2</span></th>
+<th>Veranstalter<br><span style="font-weight:500">extern</span></th>
+<th>Prüfung</th></tr>
+<tr class="ph"><td colspan="9">Vorbereitung</td></tr>
+<tr><td><span class="id">1.1</span> Standplatz beantragen</td><td><i class="b AR sm">A/R</i></td><td><i class="b I sm">I</i></td><td></td><td><i class="b C sm">C</i></td><td></td><td></td><td><i class="b C sm">C</i></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">1.2</span> Speisekarte &amp; Preise festlegen</td><td><i class="b A sm">A</i></td><td><i class="b R sm">R</i></td><td></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td><i class="b I sm">I</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">1.3</span> Ware &amp; Getränke bestellen</td><td><i class="b A sm">A</i></td><td><i class="b C sm">C</i></td><td></td><td><i class="b AR sm">A/R</i></td><td></td><td></td><td></td><td class="bad" style="font-weight:700;color:var(--bad)">✗ 2× A</td></tr>
+<tr><td><span class="id">1.4</span> Schichtplan erstellen</td><td><i class="b C sm">C</i></td><td><i class="b AR sm">A/R</i></td><td></td><td></td><td></td><td><i class="b I sm">I</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">1.5</span> Social-Media-Ankündigung</td><td><i class="b C sm">C</i></td><td></td><td></td><td></td><td><i class="b R sm">R</i></td><td></td><td><i class="b I sm">I</i></td><td class="bad" style="font-weight:700;color:var(--bad)">✗ kein A</td></tr>
+<tr class="ph"><td colspan="9">Aufbau</td></tr>
+<tr><td><span class="id">2.1</span> Strom- und Gasanschluss prüfen</td><td></td><td><i class="b I sm">I</i></td><td><i class="b AR sm">A/R</i></td><td></td><td></td><td></td><td><i class="b C sm">C</i></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">2.2</span> Aushilfen in Hygiene unterweisen</td><td><i class="b A sm">A</i></td><td><i class="b R sm">R</i></td><td></td><td></td><td></td><td><i class="b I sm">I</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">2.3</span> Stand aufbauen &amp; dekorieren</td><td></td><td><i class="b A sm">A</i></td><td><i class="b C sm">C</i></td><td></td><td><i class="b C sm">C</i></td><td><i class="b R sm">R</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr class="ph"><td colspan="9">Betrieb</td></tr>
+<tr><td><span class="id">3.1</span> Kasse &amp; Kartenzahlung betreuen</td><td></td><td><i class="b A sm">A</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td></td><td><i class="b R sm">R</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">3.2</span> Fritteuse &amp; Kühlung überwachen</td><td></td><td><i class="b R sm">R</i></td><td><i class="b A sm">A</i></td><td></td><td></td><td><i class="b R sm">R</i></td><td></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">3.3</span> Reklamationen klären</td><td><i class="b C sm">C</i></td><td><i class="b A sm">A</i></td><td></td><td></td><td></td><td><i class="b I sm">I</i></td><td></td><td class="wr" style="font-weight:700;color:var(--warn)">! kein R</td></tr>
+<tr class="ph"><td colspan="9">Abbau &amp; Abrechnung</td></tr>
+<tr><td><span class="id">4.1</span> Stand abbauen &amp; reinigen</td><td></td><td><i class="b A sm">A</i></td><td><i class="b R sm">R</i></td><td></td><td></td><td><i class="b R sm">R</i></td><td><i class="b I sm">I</i></td><td class="ok" style="font-weight:700;color:var(--good)">✓</td></tr>
+<tr><td><span class="id">4.2</span> Mit Veranstalter abrechnen</td><td><i class="b A sm">A</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td><i class="b R sm">R</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td class="wr" style="font-weight:700;color:var(--warn)">! 5× C</td></tr>
+<tr><td><span class="id">4.3</span> Rückblick &amp; Gelerntes festhalten</td><td><i class="b A sm">A</i></td><td><i class="b R sm">R</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm">C</i></td><td><i class="b C sm qm">C</i></td><td><i class="b C sm">C</i></td><td></td><td class="inf" style="font-weight:700;color:var(--warn)">? klären</td></tr>
+</table>
+      <div class="rep">
+        <div class="box" style="border-color:#f0b35b"><h4 style="color:var(--warn)">Prüfung · 11 / 14 eindeutig</h4><ul><li><b>1.3</b> Ware bestellen: 2× A</li><li><b>1.5</b> Social-Media-Ankündigung: kein A</li><li><b>3.3</b> Reklamationen: kein R</li><li><b>4.2</b> Abrechnung: 5× C</li></ul></div>
+        <div class="box" style="border-color:#f0b35b"><h4 style="color:var(--warn)">Rollen</h4><ul><li><b>Schichtleitung</b> an 13 von 14 Aufgaben, 10× A/R – Engpass</li><li><b>Inhaberin</b> 6× A</li><li>Jede Rolle kommt vor</li></ul></div>
+        <div class="box" style="border-color:var(--border-strong)"><h4 style="color:var(--muted)">Offen zu klären</h4><ul><li><b>4.3 · Marketing (C?)</b> Beim Rückblick dabei oder reicht das Protokoll?</li><li><b>1.3 · Notiz</b> Bestellt bis 500 €, darüber gibt Lea frei</li></ul></div>
+      </div>
+    </div>
+  </main>
+</section>
+
+<!-- ============ 8 Einstellungen ============ -->
+<div class="caption">8 · Einstellungen der Matrix (Datei → Einstellungen): Variante, optionale Bereiche, Prüfregeln</div>
+<section class="screen" id="s8-einstellungen" style="height:740px">
+  <header class="app-header">
+    <div class="brand"><span class="logo raci">RACI</span></div>
+    <div class="tabs"><span class="tab">Alle Matrizen</span><span class="tab active">Stadtfest 2026 – Ablauf <span class="x">✕</span></span><span class="tab">Tagesbetrieb <span class="x">✕</span></span><span class="tab" style="font-size:18px">+</span></div>
+    <div class="seg"><span class="on">▦ Matrix</span><span>☺ Rollen</span><span>☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <div class="hdr-actions"><button class="btn ghost">? Methodik</button><button class="btn ghost">Datei ▾</button></div>
+  </header>
+  <main style="opacity:.5"><h1>Stadtfest 2026 – Ablauf</h1></main>
+  <div class="overlay">
+    <div class="dialog" style="width:900px">
+      <div class="dlg-head"><h2>Einstellungen der Matrix</h2><span class="sub">Stadtfest 2026 – Ablauf</span><span class="spacer"></span><span class="sub">✕</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:16px 20px">
+          <h3>Variante</h3>
+          <div class="seg" style="margin-bottom:6px"><span class="on">RACI</span><span>RASCI</span><span>RACI-VS</span><span>DACI</span><span>Eigene</span></div>
+          <p class="sub" style="font-size:12px;margin:4px 0 14px">Wechseln behält alle Zellen; Buchstaben, die die neue Variante nicht kennt, werden angezeigt und angemerkt.</p>
+          <h3>Optionale Bereiche</h3>
+          <div class="opt"><div><b>Phasen</b><p>Aufgaben in Abschnitte gliedern (Vorbereitung, Aufbau …)</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>A und R in einer Zelle</b><p>„A/R“ für Aufgaben, die die verantwortliche Rolle selbst erledigt</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Personen zu Rollen</b><p>Namen, Vertretung und „Je Person“-Ansicht</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Klären &amp; Notizen je Zelle</b><p>Zellen als „noch offen“ markieren, Bedingungen notieren</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Ist / Soll</b><p>zweiter Stand je Zelle, Vergleichsansicht</p></div><span class="switch"></span></div>
+          <div class="opt"><div><b>Externe Rollen</b><p>Spalten als extern kennzeichnen und grau darstellen</p></div><span class="switch on"></span></div>
+        </div>
+        <div style="padding:16px 20px;border-left:1px solid var(--border);background:var(--surface-2)">
+          <h3>Prüfregeln</h3>
+          <div class="opt"><div><b>Genau ein A je Aufgabe</b><p>Kernregel – immer an</p></div><span class="switch on" style="opacity:.5"></span></div>
+          <div class="opt"><div><b>Mindestens ein R</b><p>ausgenommen Aufgaben mit A/R</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Viele C anmerken</b><p>ab <span class="input" style="display:inline-block;min-height:0;padding:0 8px;width:36px;text-align:center">5</span> C je Aufgabe</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Engpass anmerken</b><p>Rolle an mehr als <span class="input" style="display:inline-block;min-height:0;padding:0 8px;width:60px;white-space:nowrap;text-align:center">80 %</span> der Aufgaben beteiligt</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Rolle ohne Aufgabe</b><p>Spalte ganz leer</p></div><span class="switch on"></span></div>
+          <div class="opt"><div><b>Aufgabe als Tätigkeit</b><p>Hinweis, wenn kein Verb erkannt wird („Kasse“ → „Kasse abrechnen“)</p></div><span class="switch on"></span></div>
+          <div class="hint info" style="margin-top:10px">Ausgeschaltete Bereiche blenden nur aus – Personen, Notizen und Ist-Stände bleiben gespeichert.</div>
+        </div>
+      </div>
+      <div class="dlg-foot"><label class="row" style="gap:8px;font-size:12.5px"><span class="check on">✓</span>Als Standard für neue Matrizen</label><span class="spacer"></span><button class="btn">Abbrechen</button><button class="btn primary">Übernehmen</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9 Mobil ============ -->
+<div class="caption" style="width:390px">9 · Mobil: Aufgaben als Liste, Buchstaben je Rolle im Blatt</div>
+<section class="screen mobile" id="s9-mobil">
+  <div class="m-header"><span class="logo raci">RACI</span><b style="flex:1;font-size:14px">Stadtfest 2026 – Ablauf</b><span class="chip warn sm">11/14</span><span class="sub">⋯</span></div>
+  <div class="m-body">
+    <div class="seg" style="display:flex;margin-bottom:10px"><span class="on" style="flex:1;justify-content:center">Vorbereitung</span><span style="flex:1;justify-content:center">Aufbau</span><span style="flex:1;justify-content:center">Betrieb</span><span style="flex:1;justify-content:center">Abbau</span></div>
+    <div class="m-task"><div class="t"><span class="id">1.1</span>Standplatz beantragen<span class="spacer"></span><span style="color:var(--good);font-weight:800">✓</span></div><div class="rl"><span><i class="b AR sm">A/R</i>Inhaberin</span><span><i class="b C sm">C</i>Finanzen</span><span><i class="b C sm">C</i>Veranstalter</span><span><i class="b I sm">I</i>Schichtl.</span></div></div>
+    <div class="m-task"><div class="t"><span class="id">1.2</span>Speisekarte &amp; Preise festlegen<span class="spacer"></span><span style="color:var(--good);font-weight:800">✓</span></div><div class="rl"><span><i class="b A sm">A</i>Inhaberin</span><span><i class="b R sm">R</i>Schichtl.</span><span class="sub">+3</span></div></div>
+    <div class="m-task err" style="box-shadow:0 0 0 2px var(--accent)"><div class="t"><span class="id">1.3</span>Ware &amp; Getränke bestellen<span class="spacer"></span><span class="chip bad sm">2× A</span></div><div class="rl"><span><i class="b A sm">A</i>Inhaberin</span><span><i class="b AR sm">A/R</i>Finanzen</span><span><i class="b C sm">C</i>Schichtl.</span></div></div>
+  </div>
+  <div class="sheet">
+    <div class="handle"></div>
+    <div style="font-weight:700;font-size:13.5px">1.3 Ware &amp; Getränke bestellen</div>
+    <div class="hint" style="background:var(--bad-bg);color:var(--bad);margin:6px 0 4px">Zwei Rollen mit A – wer entscheidet am Ende?</div>
+    <div class="srow"><span><span class="avatar p-lea" style="width:20px;height:20px;font-size:9px">LK</span> Inhaberin</span><span class="mini-seg"><i class="b off">R</i><i class="b A">A</i><i class="b off">C</i><i class="b off">I</i></span></div>
+    <div class="srow"><span><span class="avatar p-ayl" style="width:20px;height:20px;font-size:9px">AY</span> Schichtleitung</span><span class="mini-seg"><i class="b off">R</i><i class="b off">A</i><i class="b C">C</i><i class="b off">I</i></span></div>
+    <div class="srow"><span><span class="avatar p-ben" style="width:20px;height:20px;font-size:9px">BS</span> Einkauf &amp; Fin.</span><span class="mini-seg"><i class="b R">R</i><i class="b A">A</i><i class="b off">C</i><i class="b off">I</i></span></div>
+    <div class="srow"><span><span class="avatar p-mia" style="width:20px;height:20px;font-size:9px">MW</span> Marketing</span><span class="mini-seg"><i class="b off">R</i><i class="b off">A</i><i class="b off">C</i><i class="b off">I</i></span></div>
+    <div class="sub" style="font-size:11.5px;text-align:center;margin-top:4px">+ 3 weitere Rollen</div>
+  </div>
+  <div class="m-nav"><span class="on">▦<br>Matrix</span><span>☺<br>Rollen</span><span>☰<br>Wer?</span><span>▤<br>Bericht</span></div>
+</section>
+
+</body>
+</html>
