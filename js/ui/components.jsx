@@ -169,9 +169,29 @@ export function pickFile(accept) {
   });
 }
 
-/** Logo: „RACI“ im Quadrat der Schwester-Apps. */
+/** Zeilen des Logos: je Aufgabe drei Rollen, genau eine kräftig (A), eine halb (R). */
+const LOGO_ROWS = [['R', 'A', 'I'], ['A', 'C', 'R'], ['I', 'R', 'A']];
+const LOGO_OPACITY = /** @type {Record<string, number>} */ ({ A: 1, R: 0.5 });
+
+/**
+ * Logo „Aufgabenzeilen“: drei Aufgaben als Balken, rechts je drei Rollen-Zellen, in jeder
+ * Zeile genau eine kräftige – die Kernregel der Methode. Farbe aus `currentColor` auf dem
+ * Quadrat `.logo` (Entwurf: docs/mockups/logo.html, Variante G).
+ */
 export function Logo() {
-  return <span class="logo raci" aria-hidden="true">RACI</span>;
+  return (
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true" style={{ width: '28px', height: '28px' }}>
+      {LOGO_ROWS.map((keys, r) => {
+        const y = 7.6 + r * 6.4;
+        return (
+          <g key={r} fill="currentColor">
+            <rect x="5.5" y={y} width="8" height="4.4" rx="2.2" opacity=".85" />
+            {keys.map((k, c) => <rect key={c} x={15.6 + c * 4.1} y={y} width="3.3" height="4.4" rx="1" opacity={LOGO_OPACITY[k] ?? 0.2} />)}
+          </g>
+        );
+      })}
+    </svg>
+  );
 }
 
 /** Kreis mit Initialen (Farbe aus dem Namen). @param {{ name: string, sm?: boolean }} props */
