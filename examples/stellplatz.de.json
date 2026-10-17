@@ -1,0 +1,407 @@
+{
+  "version": 1,
+  "id": "example-stellplatz",
+  "name": "Fester Stellplatz Domplatz",
+  "context": "Genehmigung 2027 · mit Ordnungsamt",
+  "variant": "raci-vs",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "führt aus"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "entscheidet"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "wird gefragt"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "wird informiert"
+    },
+    {
+      "key": "V",
+      "kind": "verify",
+      "count": "any",
+      "color": "violet",
+      "name": "Verify",
+      "meaning": "prüft"
+    },
+    {
+      "key": "S",
+      "kind": "signoff",
+      "count": "max1",
+      "color": "pink",
+      "name": "Sign-off",
+      "meaning": "zeichnet ab"
+    }
+  ],
+  "options": {
+    "phases": false,
+    "combined": true,
+    "people": true,
+    "notes": false,
+    "plan": false,
+    "external": true
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [],
+  "tasks": [
+    {
+      "id": "s1",
+      "phase": "",
+      "name": "Standortkonzept erstellen",
+      "ref": "Stakeholder-Matrix „Standort Domplatz“ (2-Achsen-Matrix)"
+    },
+    {
+      "id": "s2",
+      "phase": "",
+      "name": "Antrag auf Sondernutzung stellen",
+      "ref": ""
+    },
+    {
+      "id": "s3",
+      "phase": "",
+      "name": "Lärmschutz nachweisen",
+      "ref": ""
+    },
+    {
+      "id": "s4",
+      "phase": "",
+      "name": "Hygienekonzept vorlegen",
+      "ref": ""
+    },
+    {
+      "id": "s5",
+      "phase": "",
+      "name": "Anwohner informieren",
+      "ref": ""
+    },
+    {
+      "id": "s6",
+      "phase": "",
+      "name": "Gebühren kalkulieren",
+      "ref": ""
+    },
+    {
+      "id": "s7",
+      "phase": "",
+      "name": "Genehmigung erteilen",
+      "ref": ""
+    },
+    {
+      "id": "s8",
+      "phase": "",
+      "name": "Stellplatzvertrag unterzeichnen",
+      "ref": ""
+    },
+    {
+      "id": "s9",
+      "phase": "",
+      "name": "Eröffnung bekannt machen",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Inhaberin",
+      "description": "Führt den Food-Truck, entscheidet über Geld und Auftritt",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technik",
+      "description": "Geräte, Strom, Gas, Kühlung und Wartung",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Einkauf & Finanzen",
+      "description": "Bestellungen, Kasse, Abrechnung",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social Media, Aktionen, Gestaltung",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-ord",
+      "name": "Ordnungsamt",
+      "description": "Sondernutzung, Auflagen",
+      "person": "Hr. Krause",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-sm",
+      "name": "Stadtmarketing",
+      "description": "Vergibt die Stellplätze am Domplatz",
+      "person": "Fr. Sommer",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-anw",
+      "name": "Anwohnerinitiative",
+      "description": "Vertritt die Anwohner am Domplatz",
+      "person": "",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-stb",
+      "name": "Steuerberaterin",
+      "description": "Steuern und Gebühren",
+      "person": "",
+      "deputy": "",
+      "external": true
+    }
+  ],
+  "cells": {
+    "s1": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s2": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s3": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "V"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s4": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "V"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s5": {
+      "r-inh": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-anw": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s6": {
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s7": {
+      "r-ord": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s8": {
+      "r-inh": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s9": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

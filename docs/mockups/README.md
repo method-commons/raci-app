@@ -1,6 +1,6 @@
 # Mockups – RACI-Matrix
 
-Statische Entwürfe (keine Funktion) für eine App, mit der man **Zuständigkeiten nach der RACI-Methode** klärt: Aufgaben als Zeilen, Rollen als Spalten, je Zelle *R – führt aus*, *A – entscheidet*, *C – wird gefragt*, *I – wird informiert*. Gestaltet im Stil der Schwester-Apps [Morphologische Matrix](https://github.com/method-commons/morphological-matrix-app), [User Stories](https://github.com/method-commons/user-story-app), [5 Warum](https://github.com/method-commons/5-why-app) und [2-Achsen-Matrix](https://github.com/method-commons/two-axis-matrix-app): gleiche Design-Tokens, Kopfzeile mit Tabs je geöffneter Matrix, Kennzahl-Kacheln, Prüf-Seitenleiste, Einstellungen je Matrix mit optionalen Bereichen, Bericht zum Drucken, mobile Ansicht mit Navigation unten. Quelle: [`mockups.html`](mockups.html) – im Browser öffnen.
+Statische Entwürfe (keine Funktion) – inzwischen umgesetzt, siehe [README](../../README.md) – für eine App, mit der man **Zuständigkeiten nach der RACI-Methode** klärt: Aufgaben als Zeilen, Rollen als Spalten, je Zelle *R – führt aus*, *A – entscheidet*, *C – wird gefragt*, *I – wird informiert*. Gestaltet im Stil der Schwester-Apps [Morphologische Matrix](https://github.com/method-commons/morphological-matrix-app), [User Stories](https://github.com/method-commons/user-story-app), [5 Warum](https://github.com/method-commons/5-why-app) und [2-Achsen-Matrix](https://github.com/method-commons/two-axis-matrix-app): gleiche Design-Tokens, Kopfzeile mit Tabs je geöffneter Matrix, Kennzahl-Kacheln, Prüf-Seitenleiste, Einstellungen je Matrix mit optionalen Bereichen, Bericht zum Drucken, mobile Ansicht mit Navigation unten. Quelle: [`mockups.html`](mockups.html) – im Browser öffnen.
 
 | # | Ansicht | Datei |
 |---|---------|-------|
@@ -36,7 +36,7 @@ Eine Matrix besteht aus **Aufgaben** (Zeilen, optional in Phasen), **Rollen** (S
 - **Senkrecht je Rolle:** Engpass (an sehr vielen Aufgaben beteiligt, viele A/R) · viele A bei einer Rolle · Rolle ohne Aufgabe · Rolle nur mit C/I.
 - Treffer erscheinen an der Zeile, an der Spaltenüberschrift und in der Seitenleiste; ein Klick springt zur Zelle.
 
-## Zur Entscheidung
+## Entscheidungen (umgesetzt wie empfohlen)
 
 1. **Eine App mit mehreren Varianten** (RACI, RASCI, RACI-VS, DACI, eigene) statt nur RACI – empfohlen; gleiches Datenmodell, nur andere Buchstaben und Regeln.
 2. **Spalten sind Rollen, Personen optional** – empfohlen; so bleibt die Matrix gültig, wenn Personen wechseln. „Je Person“ fasst mehrere Rollen einer Person zusammen.
@@ -49,3 +49,11 @@ Eine Matrix besteht aus **Aufgaben** (Zeilen, optional in Phasen), **Rollen** (S
 ## Abgrenzung
 
 Die App unterstützt das **Klären von Zuständigkeiten** mit der RACI-Methode und ist kein Aufgaben- oder Projektmanagement-Werkzeug: keine Termine, kein Erledigt-Status, keine Erinnerungen oder Benachrichtigungen. Daten bleiben wie bei den Schwester-Apps nur im Browser.
+
+## Abweichungen in der Umsetzung
+
+- Die Matrizen erscheinen wie in der 5-Warum- und 2-Achsen-App nicht als Browser-Tabs, sondern mit Namen in der Kopfzeile.
+- Bei **DACI** ist die Engpass-Prüfung standardmäßig aus: Der Approver entscheidet naturgemäß jede Frage. „Viele A bei einer Rolle“ hängt an derselben Regel.
+- Das Beispiel *Fester Stellplatz Domplatz* hat eine Rolle ohne Aufgabe (Steuerberaterin) und sonst keine Hinweise; *Tagesbetrieb* hat 18 geänderte Zellen in 6 Aufgaben.
+- Mobil öffnet ein Tipp auf eine Aufgabe den Aufgaben-Dialog (Blatt von unten) mit den Buchstaben je Rolle; derselbe Dialog dient am Desktop zum Bearbeiten von Phase, Verweis und Reihenfolge.
+- Zusätzlich: CSV-Import, Vorlage „Projekt“, Rollen aus anderer Matrix und Aufgabenliste auch über das Menü „Datei“.

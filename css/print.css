@@ -1,0 +1,10 @@
+/* Druck: nur der Bericht bzw. der Inhalt, ohne Schatten und Bedienelemente */
+@layer print {
+  @media print {
+    body { background: #fff; color: #000; font-size: 12px; }
+    .app-header, .no-print, .toasts, .overlay { display: none !important; }
+    main { padding: 0; max-width: none; }
+    .card, .paper { box-shadow: none; }
+    .paper { border: 0; padding: 0; max-width: none; }
+  }
+}

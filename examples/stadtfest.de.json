@@ -1,0 +1,694 @@
+{
+  "version": 1,
+  "id": "example-stadtfest",
+  "name": "Stadtfest 2026 – Ablauf",
+  "context": "Food-Truck auf dem Stadtfest, 3 Tage",
+  "variant": "raci",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "führt aus"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "entscheidet"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "wird gefragt"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "wird informiert"
+    }
+  ],
+  "options": {
+    "phases": true,
+    "combined": true,
+    "people": true,
+    "notes": true,
+    "plan": false,
+    "external": true
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Vorbereitung"
+    },
+    {
+      "id": "p2",
+      "name": "Aufbau"
+    },
+    {
+      "id": "p3",
+      "name": "Betrieb"
+    },
+    {
+      "id": "p4",
+      "name": "Abbau & Abrechnung"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t11",
+      "phase": "p1",
+      "name": "Standplatz beantragen",
+      "ref": ""
+    },
+    {
+      "id": "t12",
+      "phase": "p1",
+      "name": "Speisekarte & Preise festlegen",
+      "ref": ""
+    },
+    {
+      "id": "t13",
+      "phase": "p1",
+      "name": "Ware & Getränke bestellen",
+      "ref": ""
+    },
+    {
+      "id": "t14",
+      "phase": "p1",
+      "name": "Schichtplan erstellen",
+      "ref": ""
+    },
+    {
+      "id": "t15",
+      "phase": "p1",
+      "name": "Social-Media-Ankündigung posten",
+      "ref": ""
+    },
+    {
+      "id": "t21",
+      "phase": "p2",
+      "name": "Strom- und Gasanschluss prüfen",
+      "ref": ""
+    },
+    {
+      "id": "t22",
+      "phase": "p2",
+      "name": "Aushilfen in Hygiene unterweisen",
+      "ref": ""
+    },
+    {
+      "id": "t23",
+      "phase": "p2",
+      "name": "Stand aufbauen & dekorieren",
+      "ref": ""
+    },
+    {
+      "id": "t31",
+      "phase": "p3",
+      "name": "Kasse & Kartenzahlung betreuen",
+      "ref": ""
+    },
+    {
+      "id": "t32",
+      "phase": "p3",
+      "name": "Fritteuse & Kühlung überwachen",
+      "ref": "Risiko R7 aus der 2-Achsen-Matrix „Stadtfest 2026 – Risiken“"
+    },
+    {
+      "id": "t33",
+      "phase": "p3",
+      "name": "Reklamationen klären",
+      "ref": ""
+    },
+    {
+      "id": "t41",
+      "phase": "p4",
+      "name": "Stand abbauen & reinigen",
+      "ref": ""
+    },
+    {
+      "id": "t42",
+      "phase": "p4",
+      "name": "Mit Veranstalter abrechnen",
+      "ref": ""
+    },
+    {
+      "id": "t43",
+      "phase": "p4",
+      "name": "Rückblick & Gelerntes festhalten",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Inhaberin",
+      "description": "Führt den Food-Truck, entscheidet über Geld und Auftritt",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-sl",
+      "name": "Schichtleitung",
+      "description": "Leitet die Schicht vor Ort, Ansprechpartnerin für Team und Gäste",
+      "person": "Aylin",
+      "deputy": "Jonas",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technik",
+      "description": "Geräte, Strom, Gas, Kühlung und Wartung",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Einkauf & Finanzen",
+      "description": "Bestellungen, Kasse, Abrechnung",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social Media, Aktionen, Gestaltung",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-team",
+      "name": "Service-Team",
+      "description": "Verkauf, Ausgabe, Auf- und Abbau (mit 2 Aushilfen)",
+      "person": "Jonas",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-ver",
+      "name": "Veranstalter",
+      "description": "Stadtmarketing, Ansprechpartnerin Fr. Sommer",
+      "person": "Fr. Sommer",
+      "deputy": "",
+      "external": true
+    }
+  ],
+  "cells": {
+    "t11": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t12": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t13": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": "Bestellt bis 500 €, darüber gibt Lea frei"
+      }
+    },
+    "t14": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t15": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t21": {
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t22": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t23": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t31": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t32": {
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t33": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t41": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t42": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t43": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": true,
+        "note": "Soll Mia beim Rückblick dabei sein oder reicht das Protokoll?"
+      },
+      "r-team": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

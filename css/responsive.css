@@ -1,0 +1,61 @@
+/* Schmale Bildschirme: Seitenleisten unter die Matrix, mobil Aufgaben als Liste und Navigation unten */
+@layer responsive {
+  @media (max-width: 1150px) {
+    .work, .roles-work { grid-template-columns: minmax(0, 1fr); }
+    .work .side { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; align-items: start; }
+    .work .side .card { margin: 0; }
+    .letters-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .letters-strip > div { border-bottom: 1px solid var(--border); }
+  }
+  @media (max-width: 900px) {
+    .pick, .settings { grid-template-columns: 1fr; }
+    .pick-side, .settings-col.alt { border-left: 0; border-top: 1px solid var(--border); }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    :root { --gutter: 12px; }
+    main { padding-bottom: 90px; }
+    .brand-name, .hide-narrow { display: none; }
+    /* backdrop-filter würde die feste Navigation an die Kopfzeile binden */
+    .app-header { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); gap: 6px; }
+    .app-header .icon-btn { width: 28px; }
+    .app-header .btn.ghost { padding: 0 8px; }
+    .project-name { max-width: 150px; padding: 0 9px; }
+    .nav {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; border-radius: 0; border: 0; border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px 4px calc(8px + env(safe-area-inset-bottom)); background: var(--surface);
+    }
+    .nav > a { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 11px; white-space: normal; text-align: center; }
+    .nav > a.on { box-shadow: none; color: var(--accent); background: var(--accent-soft); }
+    .nav-icon { display: block; font-size: 17px; }
+    .page-head .actions { width: 100%; }
+    .boards { grid-template-columns: 1fr; }
+    .mcard-home { grid-template-columns: 96px minmax(0, 1fr); }
+    .thumb-link { width: 96px; height: 80px; }
+    .thumb-link .thumb { width: 96px !important; height: 80px !important; }
+    .letters-strip { grid-template-columns: 1fr; }
+    .title-input { font-size: 16px; flex-basis: 100%; }
+    .ctx-input { flex-basis: 100%; max-width: none; }
+    /* Matrix: Aufgaben als Liste, bearbeitet im Aufgaben-Dialog */
+    .mx-card, .legend-row { display: none; }
+    .m-list { display: grid; gap: 12px; }
+    .m-group { display: grid; gap: 7px; }
+    .m-group h3 { margin: 4px 0 0; }
+    .m-group .link { justify-self: start; }
+    .m-task { display: grid; gap: 6px; text-align: left; padding: 9px 11px; font: inherit; color: inherit; cursor: pointer; }
+    .m-task.err { border-left: 3px solid var(--bad); }
+    .m-task .t { display: flex; gap: 6px; align-items: center; font-weight: 650; }
+    .m-task .rl { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11.5px; color: var(--text-2); }
+    .m-task .rl span { display: inline-flex; gap: 4px; align-items: center; }
+    .overlay { place-items: end center; padding: 0; }
+    .overlay .dialog { width: 100%; border-radius: 16px 16px 0 0; max-height: 92vh; overflow: auto; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .row.two { grid-template-columns: 1fr; }
+    .paper { padding: 16px; }
+    .help { grid-template-columns: 1fr; }
+    .help-nav { flex-direction: row; flex-wrap: wrap; border-right: 0; border-bottom: 1px solid var(--border); padding: 0 12px 10px; }
+    .form-grid { grid-template-columns: 1fr; gap: 4px; }
+    .form-grid > label { padding-top: 6px; }
+    .toasts { bottom: 84px; }
+  }
+}

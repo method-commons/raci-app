@@ -1,0 +1,401 @@
+{
+  "version": 1,
+  "id": "example-kartenzahlung",
+  "name": "Kartenzahlung einführen",
+  "context": "Entscheidung · Anbieter wählen",
+  "variant": "daci",
+  "letters": [
+    {
+      "key": "D",
+      "kind": "driver",
+      "count": "one",
+      "color": "teal",
+      "name": "Driver",
+      "meaning": "treibt voran"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Approver",
+      "meaning": "entscheidet"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Contributor",
+      "meaning": "trägt bei"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "wird informiert"
+    }
+  ],
+  "options": {
+    "phases": false,
+    "combined": true,
+    "people": true,
+    "notes": false,
+    "plan": false,
+    "external": true
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 0,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [],
+  "tasks": [
+    {
+      "id": "k1",
+      "phase": "",
+      "name": "Anforderungen sammeln",
+      "ref": ""
+    },
+    {
+      "id": "k2",
+      "phase": "",
+      "name": "Anbieter vergleichen",
+      "ref": ""
+    },
+    {
+      "id": "k3",
+      "phase": "",
+      "name": "Gebühren durchrechnen",
+      "ref": ""
+    },
+    {
+      "id": "k4",
+      "phase": "",
+      "name": "Kassenintegration prüfen",
+      "ref": ""
+    },
+    {
+      "id": "k5",
+      "phase": "",
+      "name": "Anbieter auswählen",
+      "ref": ""
+    },
+    {
+      "id": "k6",
+      "phase": "",
+      "name": "Team schulen",
+      "ref": ""
+    },
+    {
+      "id": "k7",
+      "phase": "",
+      "name": "Entscheidung bekannt geben",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Inhaberin",
+      "description": "Führt den Food-Truck, entscheidet über Geld und Auftritt",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Einkauf & Finanzen",
+      "description": "Bestellungen, Kasse, Abrechnung",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-sl",
+      "name": "Schichtleitung",
+      "description": "Leitet die Schicht vor Ort, Ansprechpartnerin für Team und Gäste",
+      "person": "Aylin",
+      "deputy": "Jonas",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technik",
+      "description": "Geräte, Strom, Gas, Kühlung und Wartung",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-team",
+      "name": "Service-Team",
+      "description": "Verkauf, Ausgabe, Auf- und Abbau (mit 2 Aushilfen)",
+      "person": "Jonas",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-stb",
+      "name": "Steuerberaterin",
+      "description": "Steuern und Gebühren",
+      "person": "Fr. Yilmaz",
+      "deputy": "",
+      "external": true
+    }
+  ],
+  "cells": {
+    "k1": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k2": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k3": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-stb": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k4": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k5": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-stb": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k6": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "k7": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "D"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

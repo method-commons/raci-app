@@ -1,0 +1,694 @@
+{
+  "version": 1,
+  "id": "example-stadtfest",
+  "name": "City festival 2026 – schedule",
+  "context": "Food truck at the city festival, 3 days",
+  "variant": "raci",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "does the work"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "decides"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "is consulted"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "is informed"
+    }
+  ],
+  "options": {
+    "phases": true,
+    "combined": true,
+    "people": true,
+    "notes": true,
+    "plan": false,
+    "external": true
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [
+    {
+      "id": "p1",
+      "name": "Preparation"
+    },
+    {
+      "id": "p2",
+      "name": "Set-up"
+    },
+    {
+      "id": "p3",
+      "name": "Operation"
+    },
+    {
+      "id": "p4",
+      "name": "Dismantling & accounts"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t11",
+      "phase": "p1",
+      "name": "Apply for the pitch",
+      "ref": ""
+    },
+    {
+      "id": "t12",
+      "phase": "p1",
+      "name": "Set menu & prices",
+      "ref": ""
+    },
+    {
+      "id": "t13",
+      "phase": "p1",
+      "name": "Order food & drinks",
+      "ref": ""
+    },
+    {
+      "id": "t14",
+      "phase": "p1",
+      "name": "Draw up the shift plan",
+      "ref": ""
+    },
+    {
+      "id": "t15",
+      "phase": "p1",
+      "name": "Post the social media announcement",
+      "ref": ""
+    },
+    {
+      "id": "t21",
+      "phase": "p2",
+      "name": "Check power and gas connection",
+      "ref": ""
+    },
+    {
+      "id": "t22",
+      "phase": "p2",
+      "name": "Brief temps on hygiene",
+      "ref": ""
+    },
+    {
+      "id": "t23",
+      "phase": "p2",
+      "name": "Set up & decorate the stall",
+      "ref": ""
+    },
+    {
+      "id": "t31",
+      "phase": "p3",
+      "name": "Run till & card payment",
+      "ref": ""
+    },
+    {
+      "id": "t32",
+      "phase": "p3",
+      "name": "Monitor fryer & cooling",
+      "ref": "Risk R7 from the 2-axis matrix “City festival 2026 – risks”"
+    },
+    {
+      "id": "t33",
+      "phase": "p3",
+      "name": "Handle complaints",
+      "ref": ""
+    },
+    {
+      "id": "t41",
+      "phase": "p4",
+      "name": "Dismantle & clean the stall",
+      "ref": ""
+    },
+    {
+      "id": "t42",
+      "phase": "p4",
+      "name": "Settle accounts with the organiser",
+      "ref": ""
+    },
+    {
+      "id": "t43",
+      "phase": "p4",
+      "name": "Record review & lessons learned",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Owner",
+      "description": "Runs the food truck, decides on money and image",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-sl",
+      "name": "Shift lead",
+      "description": "Leads the shift on site, contact for team and guests",
+      "person": "Aylin",
+      "deputy": "Jonas",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technology",
+      "description": "Equipment, power, gas, cooling and maintenance",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Purchasing & finance",
+      "description": "Orders, till, accounts",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social media, promotions, design",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-team",
+      "name": "Service team",
+      "description": "Sales, serving, set-up and dismantling (with 2 temps)",
+      "person": "Jonas",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-ver",
+      "name": "Organiser",
+      "description": "City marketing, contact Ms Sommer",
+      "person": "Fr. Sommer",
+      "deputy": "",
+      "external": true
+    }
+  ],
+  "cells": {
+    "t11": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t12": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t13": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": "Orders up to €500, above that Lea approves"
+      }
+    },
+    "t14": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t15": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t21": {
+      "r-sl": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t22": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t23": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t31": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t32": {
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t33": {
+      "r-inh": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t41": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t42": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ver": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "t43": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": true,
+        "note": "Should Mia join the review or are the minutes enough?"
+      },
+      "r-team": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

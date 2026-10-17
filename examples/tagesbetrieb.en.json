@@ -1,0 +1,486 @@
+{
+  "version": 1,
+  "id": "example-tagesbetrieb",
+  "name": "Daily operations",
+  "context": "Who does what on a normal sales day? As-is → to-be",
+  "variant": "rasci",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "does the work"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "decides"
+    },
+    {
+      "key": "S",
+      "kind": "support",
+      "count": "any",
+      "color": "cyan",
+      "name": "Support",
+      "meaning": "supports"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "is consulted"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "is informed"
+    }
+  ],
+  "options": {
+    "phases": false,
+    "combined": true,
+    "people": true,
+    "notes": false,
+    "plan": true,
+    "external": false
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [],
+  "tasks": [
+    {
+      "id": "d1",
+      "phase": "",
+      "name": "Go through the opening checklist",
+      "ref": "Action from 5 Whys “Long waiting time on Saturday”"
+    },
+    {
+      "id": "d2",
+      "phase": "",
+      "name": "Change the grease filter weekly",
+      "ref": "Action from 5 Whys"
+    },
+    {
+      "id": "d3",
+      "phase": "",
+      "name": "Buy fresh produce",
+      "ref": ""
+    },
+    {
+      "id": "d4",
+      "phase": "",
+      "name": "Cash up the till",
+      "ref": ""
+    },
+    {
+      "id": "d5",
+      "phase": "",
+      "name": "Post today's location",
+      "ref": ""
+    },
+    {
+      "id": "d6",
+      "phase": "",
+      "name": "Tick off the cleaning plan",
+      "ref": ""
+    },
+    {
+      "id": "d7",
+      "phase": "",
+      "name": "Plan the week's locations",
+      "ref": ""
+    },
+    {
+      "id": "d8",
+      "phase": "",
+      "name": "Train temps",
+      "ref": ""
+    },
+    {
+      "id": "d9",
+      "phase": "",
+      "name": "Document the cold chain",
+      "ref": ""
+    },
+    {
+      "id": "d10",
+      "phase": "",
+      "name": "Swap gas bottles",
+      "ref": ""
+    },
+    {
+      "id": "d11",
+      "phase": "",
+      "name": "File invoices",
+      "ref": ""
+    },
+    {
+      "id": "d12",
+      "phase": "",
+      "name": "Answer customer feedback",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Owner",
+      "description": "Runs the food truck, decides on money and image",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-sl",
+      "name": "Shift lead",
+      "description": "Leads the shift on site, contact for team and guests",
+      "person": "Aylin",
+      "deputy": "Jonas",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technology",
+      "description": "Equipment, power, gas, cooling and maintenance",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Purchasing & finance",
+      "description": "Orders, till, accounts",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social media, promotions, design",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-team",
+      "name": "Service team",
+      "description": "Sales, serving, set-up and dismantling (with 2 temps)",
+      "person": "Jonas",
+      "deputy": "",
+      "external": false
+    }
+  ],
+  "cells": {
+    "d1": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [],
+        "s": [
+          "S"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d2": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d3": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d4": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d5": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d6": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d7": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [],
+        "s": [
+          "C"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d8": {
+      "r-sl": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d9": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d10": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d11": {
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d12": {
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}
