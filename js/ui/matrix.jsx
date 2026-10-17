@@ -6,7 +6,7 @@
  * im Aufgaben-Dialog.
  */
 import { signal } from '@preact/signals';
-import { useEffect, useLayoutEffect, useRef } from 'preact/hooks';
+import { useEffect, useLayoutEffect, useRef, useState } from 'preact/hooks';
 import { Checks } from '../checks.js';
 import { Model } from '../model.js';
 import { Ops } from '../ops.js';
@@ -245,6 +245,7 @@ function MatrixTable({ m }) {
  */
 function CellPopover({ m }) {
   const ref = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const [chosen, setChosen] = useState(/** @type {PlanMode | null} */ (null));
   const sel = selectedCell.value;
   const T = Texts.matrix;
   useLayoutEffect(() => {
@@ -284,7 +285,7 @@ function CellPopover({ m }) {
   const task = m.tasks.find(t => t.id === sel.task);
   const role = m.roles.find(r => r.id === sel.role);
   if (!task || !role) return null;
-  const md = viewMode(m);
+  const md = m.options.plan ? chosen || viewMode(m) : 'ist';
   const cur = Model.keys(m, task.id, role.id, md);
   const c = Model.cell(m, task.id, role.id);
   const owner = m.letters.find(l => l.kind === 'owner');
@@ -300,8 +301,9 @@ function CellPopover({ m }) {
   return (
     <div class="pop" id="cellPopover" ref={ref} role="dialog" aria-label={fill(T.cellTitle, { task: task.name || Texts.ui.untitledTask, role: role.name || Texts.ui.untitledRole })}>
       <h4>{task.name || Texts.ui.untitledTask}</h4>
-      <div class="sub small">{fill(T.roleOf, { role: role.name || Texts.ui.untitledRole })}{m.options.people && role.person ? ` (${role.person})` : ''}{m.options.plan ? ` · ${T.modes[md]}` : ''}</div>
-      {m.options.plan && md === 'soll' && c && c.s && <div class="sub small">{T.modes.ist}: {Model.label(c.v) || '–'}</div>}
+      <div class="sub small">{fill(T.roleOf, { role: role.name || Texts.ui.untitledRole })}{m.options.people && role.person ? ` (${role.person})` : ''}</div>
+      {m.options.plan && <StateSwitch md={md} set={setChosen} id="cellMode" />}
+      <OtherState m={m} task={task.id} role={role.id} md={md} />
       <div class="pick-letters">
         {m.letters.map(l => (
           <button type="button" key={l.key} class={`pl${isCur([l.key]) ? ' cur' : ''}`} data-pick-key={l.key} aria-pressed={isCur([l.key])} title={`${l.name} – ${l.meaning}`} onClick={() => set(isCur([l.key]) ? [] : [l.key])}>
@@ -338,6 +340,34 @@ function CellPopover({ m }) {
   );
 }
 
+/**
+ * Umschalter Ist / Soll in Aufgaben-Dialog und Zellen-Auswahl (nur bei Ist/Soll).
+ * @param {{ md: PlanMode, set: (md: PlanMode) => void, id: string }} props
+ */
+function StateSwitch({ md, set, id }) {
+  const T = Texts.matrix;
+  return (
+    <div class="state-switch">
+      <span class="sub small">{T.editState}</span>
+      <div class="seg" role="group" aria-label={T.editState} id={id}>
+        {/** @type {const} */ (['ist', 'soll']).map(k => (
+          <button type="button" key={k} class={md === k ? 'on' : ''} aria-pressed={md === k} data-mode={k} onClick={() => set(k)}>{T.modes[k]}</button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Der andere Stand einer Zelle als Hinweis („Ist: A/R“), wenn er abweicht. @param {{ m: Matrix, task: string, role: string, md: PlanMode }} props */
+function OtherState({ m, task, role, md }) {
+  if (!m.options.plan) return null;
+  const other = md === 'ist' ? 'soll' : 'ist';
+  const a = Model.keys(m, task, role, md);
+  const b = Model.keys(m, task, role, other);
+  if (Model.same(a, b)) return null;
+  return <small class="other-state">{Texts.matrix.modes[other]}: {Model.label(b) || '–'}</small>;
+}
+
 /** Aufgabe bearbeiten (auch die Ansicht auf schmalen Bildschirmen). @param {string} id */
 export function openTaskDialog(id) {
   openDialog(() => <TaskDialog id={id} />);
@@ -346,10 +376,12 @@ export function openTaskDialog(id) {
 /** @param {{ id: string }} props */
 function TaskDialog({ id }) {
   const m = useMatrix();
+  // Stand, der bearbeitet wird: anfangs der der Ansicht, bei Ist/Soll umschaltbar
+  const [chosen, setChosen] = useState(/** @type {PlanMode | null} */ (null));
   const t = m && m.tasks.find(x => x.id === id);
   if (!m || !t) return null;
   const T = Texts.matrix;
-  const md = viewMode(m);
+  const md = m.options.plan ? chosen || viewMode(m) : 'ist';
   const st = Checks.status(m, t, md);
   const no = Model.numbers(m);
   const remove = () => confirmDialog({ title: T.removeTask, text: fill(T.removeTaskText, { name: t.name || Texts.ui.untitledTask }), ok: Texts.ui.delete, danger: true, onOk: () => mutate(x => Ops.removeTask(x, id)) });
@@ -370,14 +402,15 @@ function TaskDialog({ id }) {
           <label for="tdRef">{T.ref}</label>
           <input class="input" id="tdRef" placeholder={T.refPlaceholder} {...fieldProps(() => t.ref, v => { t.ref = v; })} />
         </div>
-        <h3 class="sheet-title">{T.rolesTitle}{m.options.plan ? ` · ${T.modes[md]}` : ''}</h3>
+        <h3 class="sheet-title">{T.rolesTitle}</h3>
+        {m.options.plan && <StateSwitch md={md} set={setChosen} id="tdMode" />}
         <p class="sub small">{T.sheetHint}</p>
         <div class="sheet-roles">
           {m.roles.map(r => {
             const k = Model.keys(m, t.id, r.id, md);
             return (
               <div class="srow" key={r.id} data-sheet-role={r.id}>
-                <span class="srole">{m.options.people && r.person.trim() && <Avatar name={r.person} sm />}{r.name || Texts.ui.untitledRole}</span>
+                <span class="srole">{m.options.people && r.person.trim() && <Avatar name={r.person} sm />}<span>{r.name || Texts.ui.untitledRole}<OtherState m={m} task={t.id} role={r.id} md={md} /></span></span>
                 <span class="mini-seg">
                   {m.letters.map(l => (
                     <button type="button" key={l.key} class={k.includes(l.key) ? 'on' : ''} aria-pressed={k.includes(l.key)} data-key={l.key} title={l.name} onClick={() => mutate(x => Ops.press(x, t.id, r.id, l.key, md))}>

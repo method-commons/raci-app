@@ -126,4 +126,35 @@ test.describe('Matrix', () => {
     await page.click('#planMode [data-mode="ist"]');
     await expect(cell(page, '3', 0)).toHaveText('I');
   });
+
+  test('Ist / Soll: im Aufgaben-Dialog und an der Zelle beide Stände bearbeiten', async ({ page }) => {
+    await openExample(page, 'tagesbetrieb');
+    // Aufgabe 3 „Frischware einkaufen“: Ist Inhaberin A/R, Soll Inhaberin I
+    await row(page, '3').locator('[data-action="editTask"]').click();
+    const inh = page.locator('#taskDialog [data-sheet-role]').first();
+    await expect(page.locator('#tdMode [data-mode="soll"]')).toHaveAttribute('aria-pressed', 'true');
+    await expect(inh.locator('.other-state')).toHaveText('Ist: A/R');
+    await page.click('#tdMode [data-mode="ist"]');
+    await expect(inh.locator('.other-state')).toHaveText('Soll: I');
+    await inh.locator('[data-key="R"]').click();
+    await expect(inh.locator('.other-state')).toHaveText('Soll: I');
+    await page.click('#taskDialog .btn.primary');
+    await expect(cell(page, '3', 0)).toHaveText('A→I');
+    let [m] = await stored(page);
+    let c = m.cells.d3['r-inh'];
+    expect([c.v, c.s]).toEqual([['A'], ['I']]);
+
+    // Zelle: Ist ändern, Soll bleibt
+    await cell(page, '4', 1).click();
+    await page.click('#cellMode [data-mode="ist"]');
+    await page.click('#cellPopover [data-pick-key="C"]');
+    await expect(page.locator('#cellPopover .other-state')).toHaveText('Soll: A/R');
+    await page.click('#cellMode [data-mode="soll"]');
+    await page.click('#cellPopover [data-pick-key="A"]');
+    await page.keyboard.press('Escape');
+    await expect(cell(page, '4', 1)).toHaveText('C→A');
+    [m] = await stored(page);
+    c = m.cells.d4['r-sl'];
+    expect([c.v, c.s]).toEqual([['C'], ['A']]);
+  });
 });

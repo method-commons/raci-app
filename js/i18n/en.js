@@ -173,6 +173,7 @@ export const TextsEn = {
     planChanges: '{n} cells in {tasks} tasks',
     planNone: 'No changes yet – choose the “To-be” view and change cells.',
     perRole: '{key} per role',
+    editState: 'Editing:',
     legend: 'Legend',
     legendChanged: 'changed',
     legendNew: 'new in to-be',
