@@ -58,8 +58,8 @@ Die App unterstützt das **Klären von Zuständigkeiten** mit der RACI-Methode u
 - Mobil öffnet ein Tipp auf eine Aufgabe den Aufgaben-Dialog (Blatt von unten) mit den Buchstaben je Rolle; derselbe Dialog dient am Desktop zum Bearbeiten von Phase, Verweis und Reihenfolge.
 - Zusätzlich: CSV-Import, Vorlage „Projekt“, Rollen aus anderer Matrix und Aufgabenliste auch über das Menü „Datei“.
 
-## Logo-Vorschläge (zur Entscheidung)
+## Logo-Vorschläge (entschieden: G)
 
 „RACI“ als Text ist im Quadrat der Schwester-Apps zu klein (im Browser-Tab bei 16 px unlesbar). Vorschläge A–H für ein Symbol in derselben Form (Indigo-Quadrat, Weiß darauf), jeweils groß, in der Kopfzeile hell/dunkel und als Browser-Symbol: [`logo.html`](logo.html), Bild `logo.png`.
 
-Empfohlen: **G – Aufgabenzeilen** – drei Aufgaben als Balken, rechts je drei Rollen-Zellen, in jeder Zeile genau eine kräftige (das A). Zeigt die Kernregel der Methode und hebt sich anders als das reine Zellraster (A) klar vom Logo der Morphologischen Matrix ab.
+Gewählt und umgesetzt (Kopfzeile und Browser-Symbol): **G – Aufgabenzeilen** – drei Aufgaben als Balken, rechts je drei Rollen-Zellen, in jeder Zeile genau eine kräftige (das A). Zeigt die Kernregel der Methode und hebt sich anders als das reine Zellraster (A) klar vom Logo der Morphologischen Matrix ab.
