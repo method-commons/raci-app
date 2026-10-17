@@ -33,7 +33,7 @@ Auf `main` veröffentlicht die CI die App auf GitHub Pages, sobald alle Prüfung
 - **Speichern** automatisch im Browser (localStorage), Rückgängig/Wiederholen (Knöpfe bzw. `Strg+Z` / `Strg+Umschalt+Z` außerhalb von Textfeldern), Export/Import je Matrix als JSON, **CSV-Import** (Spalten „Aufgabe“, optional „Nr.“, „Phase“, „Prüfung“, dazu je Rolle eine Spalte; Variante wird aus den Buchstaben erkannt), Sicherung aller Matrizen, Änderungen aus einem anderen Browser-Tab werden übernommen.
 - **Beispiele** (Food-Truck der Schwester-Apps, Deutsch und Englisch): *Stadtfest 2026 – Ablauf* (RACI mit typischen Fehlern), *Tagesbetrieb* (RASCI, Ist → Soll), *Fester Stellplatz Domplatz* (RACI-VS), *Kartenzahlung einführen* (DACI).
 - **Methodik-Hilfe** (Knopf „? Methodik“): Methode, Vorgehen, Varianten, Prüfen, Ist/Soll, Bedienung.
-- **Sprachen:** Deutsch und Englisch (Menü „Datei“). Hell/dunkel nach Systemeinstellung, mobil mit Aufgabenliste und Navigation unten.
+- **Sprachen:** Deutsch und Englisch (Menü „Datei“). Hell/dunkel nach Systemeinstellung, mobil mit Aufgabenliste und Navigation unten; dort öffnet ein Tipp auf eine Aufgabe den Aufgaben-Dialog (Buchstaben je Rolle, Phase, Verweis), ein Tipp auf eine Phase den Phasen-Dialog (umbenennen, verschieben, entfernen), „+ Phase“ legt eine neue an.
 
 ## Aufbau
 

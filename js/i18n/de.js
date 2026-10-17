@@ -133,6 +133,8 @@ export const TextsDe = {
     newTaskPlaceholder: 'Neue Aufgabe, z. B. „Ware bestellen“',
     phasePlaceholder: 'Name der Phase',
     noPhase: 'Ohne Phase',
+    editPhase: 'Phase bearbeiten',
+    phaseTasks: '{n} Aufgaben in dieser Phase – sie bleiben beim Entfernen erhalten (ohne Phase).',
     removePhase: 'Phase entfernen',
     removePhaseText: 'Phase „{name}“ entfernen? Ihre Aufgaben bleiben erhalten (ohne Phase).',
     removeTask: 'Aufgabe entfernen',
