@@ -256,7 +256,8 @@ export const Ops = (() => {
   }
 
   /**
-   * Buchstaben ändern; ein neues Kürzel wird in allen Zellen übernommen.
+   * Buchstaben ändern; ein neues Kürzel wird in allen Zellen übernommen, eine neue Bedeutung
+   * (`kind`) ordnet die Buchstaben in den Zellen neu („A/R“).
    * @param {Matrix} m @param {string} key @param {Partial<Letter>} patch
    * @returns {boolean} false, wenn das neue Kürzel leer oder schon vergeben ist
    */
@@ -273,6 +274,10 @@ export const Ops = (() => {
     if (patch.meaning != null) l.meaning = patch.meaning;
     if (patch.count && Variants.COUNTS.includes(patch.count)) l.count = patch.count;
     if (patch.color && Variants.COLORS.includes(patch.color)) l.color = patch.color;
+    if (patch.kind && Variants.KIND_ORDER.includes(patch.kind) && patch.kind !== l.kind) {
+      l.kind = patch.kind;
+      renameKey(m, '', null);
+    }
     m.variant = 'custom';
     return true;
   }

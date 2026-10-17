@@ -58,6 +58,10 @@ Die App unterstützt das **Klären von Zuständigkeiten** mit der RACI-Methode u
 - Mobil öffnet ein Tipp auf eine Aufgabe den Aufgaben-Dialog (Blatt von unten) mit den Buchstaben je Rolle; derselbe Dialog dient am Desktop zum Bearbeiten von Phase, Verweis und Reihenfolge.
 - Zusätzlich: CSV-Import, Vorlage „Projekt“, Rollen aus anderer Matrix und Aufgabenliste auch über das Menü „Datei“.
 
+## Buchstaben bearbeiten (umgesetzt)
+
+In den Einstellungen standen je Buchstabe sechs Felder in einer Zeile – Name und Bedeutung waren nicht lesbar. Vorschlag: Liste zum Lesen, ein Buchstabe zum Bearbeiten aufgeklappt (beschriftete Felder, Regel als Schalter, Farbe als Farbfelder, Vorschau mit Anzahl der Zellen, Fehler am Feld), Standard-Varianten nur lesen mit „Buchstaben anpassen“, dazu „Zählt in der Prüfung wie“: [`buchstaben.html`](buchstaben.html), Bild `buchstaben.png`.
+
 ## Logo-Vorschläge (entschieden: G)
 
 „RACI“ als Text ist im Quadrat der Schwester-Apps zu klein (im Browser-Tab bei 16 px unlesbar). Vorschläge A–H für ein Symbol in derselben Form (Indigo-Quadrat, Weiß darauf), jeweils groß, in der Kopfzeile hell/dunkel und als Browser-Symbol: [`logo.html`](logo.html), Bild `logo.png`.

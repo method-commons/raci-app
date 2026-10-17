@@ -60,14 +60,40 @@ test.describe('Ansichten', () => {
     await menu(page, 'settings');
     await page.click('#variantSeg [data-variant="rasci"]');
     await expect(page.locator('#letterEditor [data-letter]')).toHaveCount(5);
-    await page.click('#variantSeg [data-variant="custom"]');
+    // Standard-Variante: nur lesen, „Buchstaben anpassen“ wechselt zu „Eigene“
+    await expect(page.locator('#letterEditor button.letter-head')).toHaveCount(0);
+    await page.click('#variantSeg [data-variant="raci"]');
+    await page.click('#customizeLetters');
+    await expect(page.locator('#variantSeg [data-variant="custom"]')).toHaveClass(/on/);
+    // neuer Buchstabe ist sofort aufgeklappt
     await page.click('#addLetterBtn');
-    await page.locator('#letterEditor [data-letter="O"] input').nth(1).fill('Out of the loop');
-    await page.locator('#letterEditor [data-letter="C"] .key-input').fill('K');
-    await page.locator('#letterEditor [data-letter="C"] .key-input').press('Tab');
-    await page.locator('#letterEditor [data-letter="I"] .key-input').fill('A');
-    await page.locator('#letterEditor [data-letter="I"] .key-input').press('Tab');
-    await expect(page.locator('.toast')).toContainText('Kürzel leer oder schon vergeben.');
+    await expect(page.locator('#letterEditor [data-letter="O"]')).toHaveClass(/open/);
+    await page.fill('#letterName', 'Out of the loop');
+    await page.fill('#letterMeaning', 'bewusst nicht beteiligt');
+    await page.locator('#letterMeaning').press('Tab');
+    await page.click('#letterColor [data-color="violet"]');
+    await expect(page.locator('#letterEditor [data-letter="O"] .letter-head .b')).toHaveClass(/lc-violet/);
+    await expect(page.locator('#letterEditor [data-letter="O"] .letter-text')).toContainText('bewusst nicht beteiligt');
+    await expect(page.locator('#letterEditor .letter-preview')).toContainText('kommt noch in keiner Zelle vor');
+    // C umbenennen: Liste zeigt immer nur einen offenen Buchstaben
+    await page.click('#letterEditor [data-letter="C"] .letter-head');
+    await expect(page.locator('#letterEditor .letter-item.open')).toHaveCount(1);
+    await page.fill('#letterKey', 'K');
+    await page.locator('#letterKey').press('Tab');
+    await expect(page.locator('#letterEditor [data-letter="K"]')).toHaveClass(/open/);
+    // vergebenes Kürzel: Hinweis am Feld, alter Wert bleibt
+    await page.click('#letterEditor [data-letter="I"] .letter-head');
+    await expect(page.locator('#letterEditor .letter-preview')).toContainText('kommt in');
+    await page.fill('#letterKey', 'A');
+    await page.locator('#letterKey').press('Tab');
+    await expect(page.locator('#letterKeyErr')).toHaveText('„A“ ist leer oder schon vergeben – bleibt „I“.');
+    await expect(page.locator('#letterKey')).toHaveValue('I');
+    // Bedeutung für die Prüfung und Regel je Aufgabe
+    await page.click('#letterEditor [data-letter="O"] .letter-head');
+    await expect(page.locator('#letterKind [data-kind="other"]')).toHaveAttribute('aria-pressed', 'true');
+    await page.click('#letterKind [data-kind="inform"]');
+    await page.click('#letterCount [data-count="max1"]');
+    await expect(page.locator('#letterEditor [data-letter="O"] .rule-chip')).toHaveText('höchstens einer');
     await page.uncheck('#opt-notes');
     await page.uncheck('#opt-manyConsult');
     await page.fill('#bottleneckN', '95');
@@ -80,7 +106,8 @@ test.describe('Ansichten', () => {
     await expect(page.locator('[data-hint="bottleneck"]')).toHaveAttribute('data-state', 'ok');
     await expect(page.locator('.letters-legend')).toContainText('Out of the loop');
     const [m] = await stored(page);
-    expect([m.variant, m.letters.map(l => l.key), m.options.notes, m.rules.bottleneck]).toEqual(['custom', ['R', 'A', 'S', 'K', 'I', 'O'], false, 95]);
+    expect([m.variant, m.letters.map(l => l.key), m.options.notes, m.rules.bottleneck]).toEqual(['custom', ['R', 'A', 'K', 'I', 'O'], false, 95]);
+    expect(m.letters.find(l => l.key === 'O')).toMatchObject({ name: 'Out of the loop', meaning: 'bewusst nicht beteiligt', kind: 'inform', count: 'max1', color: 'violet' });
     const d = await page.evaluate(() => JSON.parse(localStorage.getItem('raci:defaults')));
     expect(d.rules.bottleneck).toBe(95);
   });

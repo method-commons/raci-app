@@ -185,6 +185,13 @@ export const Model = (() => {
     return (m.cells[task] && m.cells[task][role]) || null;
   }
 
+  /** In wie vielen Zellen kommt das Kürzel vor (Ist oder Soll)? @param {Matrix} m @param {string} key */
+  function usage(m, key) {
+    let n = 0;
+    for (const row of Object.values(m.cells)) for (const c of Object.values(row)) if (c.v.includes(key) || (c.s && c.s.includes(key))) n++;
+    return n;
+  }
+
   /** Stand, den Ansicht und Prüfung zeigen, wenn nichts anderes gewählt ist. @param {Matrix} m @returns {PlanMode} */
   function mode(m) {
     return m.options.plan ? 'soll' : 'ist';
@@ -244,5 +251,5 @@ export const Model = (() => {
     return out;
   }
 
-  return { SCHEMA_VERSION, MIGRATIONS, DEFAULT_OPTIONS, DEFAULT_RULES, normalize, normOptions, normRules, normCell, normKeys, sortKeys, isEmpty, same, create, cell, mode, keys, letter, label, groups, ordered, numbers };
+  return { SCHEMA_VERSION, MIGRATIONS, DEFAULT_OPTIONS, DEFAULT_RULES, normalize, normOptions, normRules, normCell, normKeys, sortKeys, isEmpty, same, create, cell, usage, mode, keys, letter, label, groups, ordered, numbers };
 })();
