@@ -27,7 +27,7 @@ Eine RACI-Matrix wird als JSON gespeichert (localStorage, Schlüssel `raci:matri
 | Feld | Bedeutung |
 |---|---|
 | `variant` | `raci`, `rasci`, `raci-vs`, `daci` oder `custom`; bestimmt nur die Vorlage der Buchstaben |
-| `letters[]` | Buchstaben der Matrix. `key` (1–3 Zeichen, eindeutig, groß), `kind` (`owner`, `driver`, `exec`, `support`, `consult`, `verify`, `signoff`, `inform`, `other` – steuert Prüfungen, Reihenfolge in der Zelle und Vorschläge), `count` je Aufgabe (`one` genau einer, `min1` mindestens einer, `max1` höchstens einer, `any`), `color` (`indigo`, `teal`, `cyan`, `orange`, `violet`, `blue`, `pink`, `gray`), `name`, `meaning` |
+| `letters[]` | Buchstaben der Matrix. `key` (1–3 Zeichen, eindeutig, groß), `kind` (`owner`, `driver`, `exec`, `support`, `consult`, `verify`, `signoff`, `inform`, `other` – steuert Prüfungen, Reihenfolge in der Zelle und Vorschläge; in den Einstellungen als „Zählt in der Prüfung wie“ wählbar, neue Buchstaben beginnen mit `other`), `count` je Aufgabe (`one` genau einer, `min1` mindestens einer, `max1` höchstens einer, `any`), `color` (`indigo`, `teal`, `cyan`, `orange`, `violet`, `blue`, `pink`, `gray`), `name`, `meaning` |
 | `options` | optionale Bereiche: Phasen, „A/R“ in einer Zelle, Personen, Klären & Notizen, Ist/Soll, externe Rollen |
 | `rules` | `minExec` (Regel `min1` prüfen), `manyConsult` (viele C ab dieser Zahl, 0 = aus), `bottleneck` (Engpass ab diesem Anteil in Prozent, 0 = aus; schaltet auch „viele A“), `emptyRole`, `verb` |
 | `phases[]` | Reihenfolge der Phasen |

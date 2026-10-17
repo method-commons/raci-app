@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { Checks } from '../../js/checks.js';
 import { Model } from '../../js/model.js';
 import { Ops } from '../../js/ops.js';
 import { build } from './fixtures.js';
@@ -137,6 +138,28 @@ describe('Ops', () => {
     one.letters = [one.letters[0]];
     Ops.removeLetter(one, 'R');
     expect(one.letters).toHaveLength(1);
+  });
+
+  it('ändert die Bedeutung eines Buchstabens und ordnet die Zellen neu', () => {
+    const { m, roles, task } = build({ 'Ware bestellen': { L: 'A', T: 'R' }, Kochen: { L: 'A', T: 'C' } });
+    const t = task('Kochen').id;
+    Ops.setVariant(m, 'custom');
+    const e = Ops.addLetter(m);
+    expect(Ops.updateLetter(m, e.key, { key: 'E', kind: 'exec' })).toBe(true);
+    expect(Model.letter(m, 'E')?.kind).toBe('exec');
+    // E zählt jetzt wie R: tragend für die Rolle und mit A in einer Zelle
+    Ops.setKeys(m, t, roles.L.id, ['E', 'A']);
+    expect(Model.keys(m, t, roles.L.id)).toEqual(['A', 'E']);
+    expect(Checks.roleStats(m, roles.T).lead).toBe(1);
+    Ops.setKeys(m, t, roles.T.id, ['E']);
+    expect(Checks.roleStats(m, roles.T).lead).toBe(2);
+    // neue Bedeutung vor „entscheidet“: Reihenfolge in den Zellen folgt
+    Ops.updateLetter(m, 'E', { kind: 'owner' });
+    expect(Model.keys(m, t, roles.L.id)).toEqual(['A', 'E']);
+    Ops.updateLetter(m, 'A', { kind: 'inform' });
+    expect(Model.keys(m, t, roles.L.id)).toEqual(['E', 'A']);
+    Ops.updateLetter(m, 'E', { kind: /** @type {any} */ ('quatsch') });
+    expect(Model.letter(m, 'E')?.kind).toBe('owner');
   });
 
   it('setzt Optionen und Regeln', () => {

@@ -4,6 +4,7 @@
  * Änderungen in den Einstellungen wirken sofort (mit Rückgängig).
  */
 import { useState } from 'preact/hooks';
+import { Model } from '../model.js';
 import { Ops } from '../ops.js';
 import { Store } from '../storage.js';
 import { Texts } from '../texts.js';
@@ -26,31 +27,98 @@ function Switch({ id, label, help, on, disabled, onChange, children }) {
   );
 }
 
-/** Buchstaben bearbeiten (eigene Variante). @param {{ m: Matrix }} props */
+/** Bedeutungen zur Auswahl im Editor; eine andere aktuelle Bedeutung (z. B. aus RACI-VS) kommt dazu. @type {readonly LetterKind[]} */
+const KIND_CHOICES = ['owner', 'exec', 'consult', 'inform', 'other'];
+
+/**
+ * Buchstaben: Liste zum Lesen, ein Buchstabe zum Bearbeiten aufgeklappt. Bei Standard-Varianten
+ * nur lesen; „Buchstaben anpassen“ wechselt zu „Eigene“.
+ * @param {{ m: Matrix }} props
+ */
 function LetterEditor({ m }) {
   const S = Texts.settings;
   const custom = m.variant === 'custom';
+  const [open, setOpen] = useState(/** @type {string | null} */ (null));
+  const [keyErr, setKeyErr] = useState(/** @type {string | null} */ (null));
+  const toggle = (/** @type {string} */ key) => { setKeyErr(null); setOpen(open === key ? null : key); };
+  /** @param {Letter} l @param {Partial<Letter>} patch */
+  const update = (l, patch) => mutate(x => Ops.updateLetter(x, l.key, patch));
   return (
     <div class="letters-edit" id="letterEditor">
-      {m.letters.map(l => (
-        <div class="letter-row" key={l.key} data-letter={l.key}>
-          <Badge m={m} keys={[l.key]} />
-          {custom ? <>
-            <input class="input key-input" aria-label={S.letterKey} value={l.key} maxLength={3}
-              onChange={e => { const el = /** @type {HTMLInputElement} */ (e.currentTarget); const v = el.value; if (!mutate(x => Ops.updateLetter(x, l.key, { key: v }))) { el.value = l.key; toast(S.keyTaken); } }} />
-            <input class="input" aria-label={S.letterName} placeholder={S.letterName} {...fieldProps(() => l.name, v => { l.name = v; })} />
-            <input class="input" aria-label={S.letterMeaning} placeholder={S.letterMeaning} {...fieldProps(() => l.meaning, v => { l.meaning = v; })} />
-            <select class="input select sm" aria-label={S.letterCount} value={l.count} onChange={e => { const v = /** @type {CountRule} */ (/** @type {HTMLSelectElement} */ (e.currentTarget).value); mutate(x => Ops.updateLetter(x, l.key, { count: v })); }}>
-              {Variants.COUNTS.map(c => <option key={c} value={c}>{S.counts[c]}</option>)}
-            </select>
-            <select class="input select sm" aria-label={S.letterColor} value={l.color} onChange={e => { const v = /** @type {LetterColor} */ (/** @type {HTMLSelectElement} */ (e.currentTarget).value); mutate(x => Ops.updateLetter(x, l.key, { color: v })); }}>
-              {Variants.COLORS.map(c => <option key={c} value={c}>{S.colors[c]}</option>)}
-            </select>
-            <button type="button" class="icon-btn sm" title={S.removeLetter} aria-label={S.removeLetter} disabled={m.letters.length <= 1} onClick={() => mutate(x => Ops.removeLetter(x, l.key))}>✕</button>
-          </> : <span class="letter-text"><b>{l.name}</b> – {l.meaning} <span class="sub small">· {S.counts[l.count]}</span></span>}
-        </div>
-      ))}
-      {custom ? <button type="button" class="btn sm dashed" id="addLetterBtn" onClick={() => mutate(x => Ops.addLetter(x))}>{S.addLetter}</button> : <p class="sub small">{S.customHint}</p>}
+      <div class="letter-list">
+        {m.letters.map(l => {
+          const isOpen = custom && open === l.key;
+          const head = <>
+            <Badge m={m} keys={[l.key]} />
+            <span class="letter-text"><b>{l.name || '–'}</b><small>{l.meaning || '–'}</small></span>
+            <span class={`rule-chip${l.count === 'one' || l.count === 'min1' ? ' strict' : ''}`}>{S.counts[l.count]}</span>
+          </>;
+          return (
+            <div class={`letter-item${isOpen ? ' open' : ''}`} key={l.key} data-letter={l.key}>
+              {custom
+                ? <button type="button" class="letter-head" aria-expanded={isOpen} aria-label={fill(S.editLetter, { key: l.key })} onClick={() => toggle(l.key)}>{head}<span class="chev" aria-hidden="true">▾</span></button>
+                : <div class="letter-head">{head}</div>}
+              {isOpen && <div class="letter-form">
+                <div class="letter-form-two">
+                  <div>
+                    <label class="field-lbl" for="letterKey">{S.letterKey}</label>
+                    <input class={`input key-input${keyErr != null ? ' invalid' : ''}`} id="letterKey" value={l.key} maxLength={3} aria-invalid={keyErr != null}
+                      onChange={e => {
+                        const el = /** @type {HTMLInputElement} */ (e.currentTarget);
+                        const v = el.value;
+                        if (update(l, { key: v })) { setKeyErr(null); setOpen(l.key); } else { setKeyErr(v.trim().toUpperCase()); el.value = l.key; }
+                      }} />
+                  </div>
+                  <div>
+                    <label class="field-lbl" for="letterName">{S.letterName}</label>
+                    <input class="input" id="letterName" {...fieldProps(() => l.name, v => { l.name = v; })} />
+                  </div>
+                </div>
+                {keyErr != null && <p class="field-err" id="letterKeyErr">{fill(S.keyTaken, { value: keyErr, key: l.key })}</p>}
+                <div>
+                  <label class="field-lbl" for="letterMeaning">{S.letterMeaning}</label>
+                  <input class="input" id="letterMeaning" {...fieldProps(() => l.meaning, v => { l.meaning = v; })} />
+                  <p class="sub small">{S.meaningHelp}</p>
+                </div>
+                <div>
+                  <span class="field-lbl">{S.letterCount}</span>
+                  <div class="seg full" role="group" aria-label={S.letterCount} id="letterCount">
+                    {Variants.COUNTS.map(c => <button type="button" key={c} class={l.count === c ? 'on' : ''} data-count={c} aria-pressed={l.count === c} onClick={() => update(l, { count: c })}>{S.counts[c]}</button>)}
+                  </div>
+                  <p class="sub small">{S.countHelp}</p>
+                </div>
+                <div>
+                  <span class="field-lbl">{S.letterColor}</span>
+                  <div class="swatches" role="group" aria-label={S.letterColor} id="letterColor">
+                    {Variants.COLORS.map(c => <button type="button" key={c} class={`b sw lc-${c}${l.color === c ? ' on' : ''}`} data-color={c} aria-pressed={l.color === c} title={S.colors[c]} aria-label={S.colors[c]} onClick={() => update(l, { color: c })}>{l.key}</button>)}
+                  </div>
+                </div>
+                <div>
+                  <span class="field-lbl">{S.letterKind}</span>
+                  <div class="seg wrap" role="group" aria-label={S.letterKind} id="letterKind">
+                    {(KIND_CHOICES.includes(l.kind) ? KIND_CHOICES : [...KIND_CHOICES.slice(0, -1), l.kind, 'other']).map(k => (
+                      <button type="button" key={k} class={l.kind === k ? 'on' : ''} data-kind={k} aria-pressed={l.kind === k} onClick={() => update(l, { kind: k })}>{S.kinds[k]}</button>
+                    ))}
+                  </div>
+                  <p class="sub small">{S.kindHelp}</p>
+                </div>
+                <div class="letter-preview">
+                  <span class="cell-demo"><Badge m={m} keys={[l.key]} /></span>
+                  <span class="small">{S.preview} · {(n => n ? fill(S.usage, { n }) : S.usageNone)(Model.usage(m, l.key))}</span>
+                </div>
+                <div class="letter-form-foot">
+                  <button type="button" class="btn sm danger-text" id="removeLetterBtn" disabled={m.letters.length <= 1} onClick={() => { setOpen(null); mutate(x => Ops.removeLetter(x, l.key)); }}>✕ {S.removeLetter}</button>
+                  <span class="spacer" />
+                  <button type="button" class="btn sm" onClick={() => toggle(l.key)}>▲ {S.collapse}</button>
+                </div>
+              </div>}
+            </div>
+          );
+        })}
+      </div>
+      {custom
+        ? <button type="button" class="btn sm dashed" id="addLetterBtn" onClick={() => { const l = mutate(x => Ops.addLetter(x)); if (l) { setKeyErr(null); setOpen(l.key); } }}>{S.addLetter}</button>
+        : <div class="letters-customize"><button type="button" class="btn sm" id="customizeLetters" onClick={() => mutate(x => Ops.setVariant(x, 'custom'))}>✎ {S.customize}</button><span class="sub small">{S.customizeHelp}</span></div>}
     </div>
   );
 }

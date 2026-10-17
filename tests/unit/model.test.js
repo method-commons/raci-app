@@ -60,6 +60,15 @@ describe('Model', () => {
     expect(Model.letter(m, 'A')?.name).toBe('Accountable');
   });
 
+  it('zählt, in wie vielen Zellen ein Kürzel vorkommt (Ist oder Soll)', () => {
+    const { m, roles, task } = build({ Kochen: { L: 'A', T: 'R' }, Spülen: { L: 'AR', G: 'I' } });
+    expect(Model.usage(m, 'A')).toBe(2);
+    expect(Model.usage(m, 'R')).toBe(2);
+    expect(Model.usage(m, 'C')).toBe(0);
+    m.cells[task('Kochen').id][roles.T.id].s = ['C'];
+    expect(Model.usage(m, 'C')).toBe(1);
+  });
+
   it('ordnet A vor R und unbekannte Kürzel ans Ende', () => {
     const letters = Variants.letters('raci');
     expect(Model.sortKeys(letters, ['R', 'Z', 'A', 'B'])).toEqual(['A', 'R', 'B', 'Z']);
