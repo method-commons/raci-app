@@ -1,0 +1,407 @@
+{
+  "version": 1,
+  "id": "example-stellplatz",
+  "name": "Permanent pitch at Cathedral Square",
+  "context": "Permit 2027 · with the public order office",
+  "variant": "raci-vs",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "does the work"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "decides"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "is consulted"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "is informed"
+    },
+    {
+      "key": "V",
+      "kind": "verify",
+      "count": "any",
+      "color": "violet",
+      "name": "Verify",
+      "meaning": "verifies"
+    },
+    {
+      "key": "S",
+      "kind": "signoff",
+      "count": "max1",
+      "color": "pink",
+      "name": "Sign-off",
+      "meaning": "signs off"
+    }
+  ],
+  "options": {
+    "phases": false,
+    "combined": true,
+    "people": true,
+    "notes": false,
+    "plan": false,
+    "external": true
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [],
+  "tasks": [
+    {
+      "id": "s1",
+      "phase": "",
+      "name": "Draw up the location concept",
+      "ref": "Stakeholder matrix “Cathedral Square site” (2-axis matrix)"
+    },
+    {
+      "id": "s2",
+      "phase": "",
+      "name": "Apply for special use",
+      "ref": ""
+    },
+    {
+      "id": "s3",
+      "phase": "",
+      "name": "Prove noise protection",
+      "ref": ""
+    },
+    {
+      "id": "s4",
+      "phase": "",
+      "name": "Submit the hygiene concept",
+      "ref": ""
+    },
+    {
+      "id": "s5",
+      "phase": "",
+      "name": "Inform residents",
+      "ref": ""
+    },
+    {
+      "id": "s6",
+      "phase": "",
+      "name": "Calculate fees",
+      "ref": ""
+    },
+    {
+      "id": "s7",
+      "phase": "",
+      "name": "Grant the permit",
+      "ref": ""
+    },
+    {
+      "id": "s8",
+      "phase": "",
+      "name": "Sign the pitch contract",
+      "ref": ""
+    },
+    {
+      "id": "s9",
+      "phase": "",
+      "name": "Announce the opening",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Owner",
+      "description": "Runs the food truck, decides on money and image",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technology",
+      "description": "Equipment, power, gas, cooling and maintenance",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Purchasing & finance",
+      "description": "Orders, till, accounts",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social media, promotions, design",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-ord",
+      "name": "Public order office",
+      "description": "Special use, conditions",
+      "person": "Hr. Krause",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-sm",
+      "name": "City marketing",
+      "description": "Allocates the pitches at Cathedral Square",
+      "person": "Fr. Sommer",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-anw",
+      "name": "Residents' group",
+      "description": "Represents the residents",
+      "person": "",
+      "deputy": "",
+      "external": true
+    },
+    {
+      "id": "r-stb",
+      "name": "Tax adviser",
+      "description": "Taxes and fees",
+      "person": "",
+      "deputy": "",
+      "external": true
+    }
+  ],
+  "cells": {
+    "s1": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s2": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s3": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "V"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s4": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "V"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s5": {
+      "r-inh": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-anw": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s6": {
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s7": {
+      "r-ord": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s8": {
+      "r-inh": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-ord": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "s9": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-sm": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

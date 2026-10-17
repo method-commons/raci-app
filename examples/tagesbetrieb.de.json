@@ -1,0 +1,486 @@
+{
+  "version": 1,
+  "id": "example-tagesbetrieb",
+  "name": "Tagesbetrieb",
+  "context": "Wer macht was an einem normalen Verkaufstag? Ist → Soll",
+  "variant": "rasci",
+  "letters": [
+    {
+      "key": "R",
+      "kind": "exec",
+      "count": "min1",
+      "color": "teal",
+      "name": "Responsible",
+      "meaning": "führt aus"
+    },
+    {
+      "key": "A",
+      "kind": "owner",
+      "count": "one",
+      "color": "indigo",
+      "name": "Accountable",
+      "meaning": "entscheidet"
+    },
+    {
+      "key": "S",
+      "kind": "support",
+      "count": "any",
+      "color": "cyan",
+      "name": "Support",
+      "meaning": "unterstützt"
+    },
+    {
+      "key": "C",
+      "kind": "consult",
+      "count": "any",
+      "color": "orange",
+      "name": "Consulted",
+      "meaning": "wird gefragt"
+    },
+    {
+      "key": "I",
+      "kind": "inform",
+      "count": "any",
+      "color": "gray",
+      "name": "Informed",
+      "meaning": "wird informiert"
+    }
+  ],
+  "options": {
+    "phases": false,
+    "combined": true,
+    "people": true,
+    "notes": false,
+    "plan": true,
+    "external": false
+  },
+  "rules": {
+    "minExec": true,
+    "manyConsult": 5,
+    "bottleneck": 80,
+    "emptyRole": true,
+    "verb": true
+  },
+  "phases": [],
+  "tasks": [
+    {
+      "id": "d1",
+      "phase": "",
+      "name": "Öffnungs-Checkliste durchgehen",
+      "ref": "Maßnahme aus 5 Warum „Lange Wartezeit am Samstag“"
+    },
+    {
+      "id": "d2",
+      "phase": "",
+      "name": "Fettfilter wöchentlich wechseln",
+      "ref": "Maßnahme aus 5 Warum"
+    },
+    {
+      "id": "d3",
+      "phase": "",
+      "name": "Frischware einkaufen",
+      "ref": ""
+    },
+    {
+      "id": "d4",
+      "phase": "",
+      "name": "Kasse abrechnen",
+      "ref": ""
+    },
+    {
+      "id": "d5",
+      "phase": "",
+      "name": "Tagesstandort posten",
+      "ref": ""
+    },
+    {
+      "id": "d6",
+      "phase": "",
+      "name": "Reinigungsplan abhaken",
+      "ref": ""
+    },
+    {
+      "id": "d7",
+      "phase": "",
+      "name": "Standorte der Woche planen",
+      "ref": ""
+    },
+    {
+      "id": "d8",
+      "phase": "",
+      "name": "Aushilfen einarbeiten",
+      "ref": ""
+    },
+    {
+      "id": "d9",
+      "phase": "",
+      "name": "Kühlkette dokumentieren",
+      "ref": ""
+    },
+    {
+      "id": "d10",
+      "phase": "",
+      "name": "Gasflaschen tauschen",
+      "ref": ""
+    },
+    {
+      "id": "d11",
+      "phase": "",
+      "name": "Rechnungen ablegen",
+      "ref": ""
+    },
+    {
+      "id": "d12",
+      "phase": "",
+      "name": "Kundenfeedback beantworten",
+      "ref": ""
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inh",
+      "name": "Inhaberin",
+      "description": "Führt den Food-Truck, entscheidet über Geld und Auftritt",
+      "person": "Lea",
+      "deputy": "Ben",
+      "external": false
+    },
+    {
+      "id": "r-sl",
+      "name": "Schichtleitung",
+      "description": "Leitet die Schicht vor Ort, Ansprechpartnerin für Team und Gäste",
+      "person": "Aylin",
+      "deputy": "Jonas",
+      "external": false
+    },
+    {
+      "id": "r-tech",
+      "name": "Technik",
+      "description": "Geräte, Strom, Gas, Kühlung und Wartung",
+      "person": "Fritz",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-fin",
+      "name": "Einkauf & Finanzen",
+      "description": "Bestellungen, Kasse, Abrechnung",
+      "person": "Ben",
+      "deputy": "Lea",
+      "external": false
+    },
+    {
+      "id": "r-mkt",
+      "name": "Marketing",
+      "description": "Social Media, Aktionen, Gestaltung",
+      "person": "Mia",
+      "deputy": "",
+      "external": false
+    },
+    {
+      "id": "r-team",
+      "name": "Service-Team",
+      "description": "Verkauf, Ausgabe, Auf- und Abbau (mit 2 Aushilfen)",
+      "person": "Jonas",
+      "deputy": "",
+      "external": false
+    }
+  ],
+  "cells": {
+    "d1": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [],
+        "s": [
+          "S"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d2": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d3": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d4": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-fin": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d5": {
+      "r-inh": {
+        "v": [
+          "A"
+        ],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "R"
+        ],
+        "s": [
+          "A",
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d6": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-tech": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d7": {
+      "r-inh": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": [
+          "A"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-sl": {
+        "v": [],
+        "s": [
+          "R"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [],
+        "s": [
+          "C"
+        ],
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [],
+        "s": [
+          "I"
+        ],
+        "q": false,
+        "note": ""
+      }
+    },
+    "d8": {
+      "r-sl": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "S"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d9": {
+      "r-sl": {
+        "v": [
+          "A"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d10": {
+      "r-tech": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-team": {
+        "v": [
+          "I"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d11": {
+      "r-fin": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    },
+    "d12": {
+      "r-sl": {
+        "v": [
+          "C"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      },
+      "r-mkt": {
+        "v": [
+          "A",
+          "R"
+        ],
+        "s": null,
+        "q": false,
+        "note": ""
+      }
+    }
+  },
+  "createdAt": "2026-10-12T08:00:00.000Z",
+  "updatedAt": "2026-10-16T10:24:00.000Z"
+}

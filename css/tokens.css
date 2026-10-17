@@ -1,0 +1,76 @@
+/* Farben, Abstände, Schatten (hell/dunkel) – übernommen aus den Schwester-Apps; dazu die Farben der Buchstaben */
+@layer tokens {
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --surface-2: #f2f4f7;
+    --surface-3: #eaedf2;
+    --text: #101828;
+    --text-2: #344054;
+    --muted: #667085;
+    --border: #e4e7ec;
+    --border-strong: #d0d5dd;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-soft: #eef2ff;
+    --accent-contrast: #ffffff;
+    --bad: #c92a2a; --bad-bg: #fff0f0;
+    --warn: #a35200; --warn-bg: #fff4e0; --warn-line: #f0b35b;
+    --good: #2b8a3e; --good-bg: #e6f7ea;
+    --danger: #d92d20;
+    --info: #1864ab; --info-bg: #dbeafe;
+    --radius: 12px;
+    --radius-sm: 7px;
+    --shadow-xs: 0 1px 2px rgba(16, 24, 40, .05);
+    --shadow: 0 1px 3px rgba(16, 24, 40, .08), 0 1px 2px rgba(16, 24, 40, .04);
+    --shadow-lg: 0 12px 32px -8px rgba(16, 24, 40, .18), 0 4px 8px -4px rgba(16, 24, 40, .06);
+    --gutter: 20px;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0c0e13;
+      --surface: #13161d;
+      --surface-2: #1a1e27;
+      --surface-3: #222733;
+      --text: #f2f4f7;
+      --text-2: #d0d5dd;
+      --muted: #98a2b3;
+      --border: #252a35;
+      --border-strong: #333a47;
+      --accent: #8b8cf8;
+      --accent-hover: #a5a6fb;
+      --accent-soft: #1f2140;
+      --accent-contrast: #0c0e13;
+      --bad: #ff8787; --bad-bg: #3a1a1c;
+      --warn: #ffc078; --warn-bg: #3b2a10; --warn-line: #8a5a1c;
+      --good: #8ce99a; --good-bg: #173322;
+      --danger: #f97066;
+      --info: #a5d8ff; --info-bg: #16304d;
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, .4);
+      --shadow: 0 1px 3px rgba(0, 0, 0, .45);
+      --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, .6);
+      color-scheme: dark;
+    }
+  }
+
+  /*
+   * Farben der Buchstaben: --lc-<Farbe> kräftige Fläche (Kennzeichen „A“), dazu Schrift und Rand
+   * für helle Kennzeichen (C, I, S …). Klasse `lc-<Farbe>` am Kennzeichen, `lt-<Farbe>` für Text.
+   */
+  :root {
+    --lc-indigo: #4f46e5; --lc-teal: #0e7490; --lc-blue: #1864ab;
+    --lc-cyan: #c5edf3; --lc-orange: #ffd8a8; --lc-violet: #e5d7fd; --lc-pink: #fcd6e5; --lc-gray: #e4e7ec;
+    --lt-indigo: #4f46e5; --lt-teal: #0e7490; --lt-blue: #1864ab;
+    --lt-cyan: #0e7490; --lt-orange: #a35200; --lt-violet: #7c3aed; --lt-pink: #c2255c; --lt-gray: #667085;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --lc-indigo: #6366f1; --lc-teal: #0e8aa8; --lc-blue: #2f74c0;
+      --lc-cyan: #1a444c; --lc-orange: #5a3a14; --lc-violet: #3a2b63; --lc-pink: #5a1f36; --lc-gray: #2b313c;
+      --lt-indigo: #a5a6fb; --lt-teal: #66d9e8; --lt-blue: #a5d8ff;
+      --lt-cyan: #66d9e8; --lt-orange: #ffc078; --lt-violet: #c4b5fd; --lt-pink: #faa2c1; --lt-gray: #adb5bd;
+    }
+  }
+}
