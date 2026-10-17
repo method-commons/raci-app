@@ -410,7 +410,12 @@ function MobileList({ m }) {
     <div class="m-list" id="mobileList">
       {Model.groups(m).map(g => (
         <section key={g.phase ? g.phase.id : 'none'} class="m-group">
-          {g.phase && <h3>{g.phase.name || Texts.ui.untitledPhase}</h3>}
+          {g.phase && (
+            <button type="button" class="m-phase" data-m-phase={g.phase.id} aria-label={`${T.editPhase}: ${g.phase.name || Texts.ui.untitledPhase}`} onClick={() => openPhaseDialog(/** @type {Phase} */ (g.phase).id)}>
+              <span>{g.phase.name || Texts.ui.untitledPhase}</span><span class="m-phase-edit" aria-hidden="true">✎</span>
+            </button>
+          )}
+          {!g.phase && m.options.phases && m.phases.length > 0 && g.tasks.length > 0 && <h3>{T.noPhase}</h3>}
           {g.tasks.map(t => {
             const st = Checks.status(m, t, md);
             return (
@@ -430,7 +435,41 @@ function MobileList({ m }) {
           <button type="button" class="link sm" onClick={() => { const nt = mutate(x => Ops.addTask(x, { phase: g.phase ? g.phase.id : '' })); if (nt) openTaskDialog(nt.id); }}>{T.addTask}</button>
         </section>
       ))}
+      {m.options.phases && (
+        <button type="button" class="link sm m-add-phase" id="mAddPhase" onClick={() => { const p = mutate(x => Ops.addPhase(x)); if (p) openPhaseDialog(p.id); }}>{T.addPhase}</button>
+      )}
     </div>
+  );
+}
+
+/** Phase bearbeiten (vor allem auf schmalen Bildschirmen). @param {string} id */
+export function openPhaseDialog(id) {
+  openDialog(() => <PhaseDialog id={id} />);
+}
+
+/** @param {{ id: string }} props */
+function PhaseDialog({ id }) {
+  const m = useMatrix();
+  const p = m && m.phases.find(x => x.id === id);
+  if (!m || !p) return null;
+  const T = Texts.matrix;
+  const n = m.tasks.filter(t => t.phase === id).length;
+  const remove = () => confirmDialog({ title: T.removePhase, text: fill(T.removePhaseText, { name: p.name || Texts.ui.untitledPhase }), ok: Texts.ui.delete, danger: true, onOk: () => mutate(x => Ops.removePhase(x, id)) });
+  return (
+    <Dialog title={T.editPhase} id="phaseDialog">
+      <div class="dialog-body">
+        <label class="field-lbl" for="pdName">{T.phase}</label>
+        <input class="input" id="pdName" placeholder={T.phasePlaceholder} {...fieldProps(() => p.name, v => { p.name = v; })} />
+        <p class="sub small">{fill(T.phaseTasks, { n })}</p>
+      </div>
+      <div class="dialog-foot">
+        <button type="button" class="btn sm danger-text" id="pdRemove" onClick={remove}>{T.removePhase}</button>
+        <span class="spacer" />
+        <button type="button" class="icon-btn" title={Texts.ui.moveUp} aria-label={Texts.ui.moveUp} data-action="phaseUp" onClick={() => mutate(x => Ops.movePhase(x, id, -1))}>↑</button>
+        <button type="button" class="icon-btn" title={Texts.ui.moveDown} aria-label={Texts.ui.moveDown} data-action="phaseDown" onClick={() => mutate(x => Ops.movePhase(x, id, 1))}>↓</button>
+        <button type="button" class="btn primary" onClick={closeDialog}>{Texts.ui.done}</button>
+      </div>
+    </Dialog>
   );
 }
 

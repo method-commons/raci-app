@@ -132,6 +132,8 @@ export const TextsEn = {
     newTaskPlaceholder: 'New task, e.g. “Order goods”',
     phasePlaceholder: 'Name of the phase',
     noPhase: 'No phase',
+    editPhase: 'Edit phase',
+    phaseTasks: '{n} tasks in this phase – they are kept when the phase is removed (without phase).',
     removePhase: 'Remove phase',
     removePhaseText: 'Remove phase “{name}”? Its tasks are kept (without phase).',
     removeTask: 'Remove task',

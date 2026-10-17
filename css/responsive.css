@@ -42,6 +42,9 @@
     .m-group { display: grid; gap: 7px; }
     .m-group h3 { margin: 4px 0 0; }
     .m-group .link { justify-self: start; }
+    .m-phase { display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0 0; padding: 6px 2px; border: 0; border-bottom: 1px dashed var(--border); background: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 750; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); text-align: left; }
+    .m-phase-edit { margin-left: auto; color: var(--accent); font-size: 14px; text-transform: none; }
+    .m-add-phase { justify-self: start; }
     .m-task { display: grid; gap: 6px; text-align: left; padding: 9px 11px; font: inherit; color: inherit; cursor: pointer; }
     .m-task.err { border-left: 3px solid var(--bad); }
     .m-task .t { display: flex; gap: 6px; align-items: center; font-weight: 650; }
