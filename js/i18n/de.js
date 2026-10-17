@@ -174,6 +174,7 @@ export const TextsDe = {
     planChanges: '{n} Zellen in {tasks} Aufgaben',
     planNone: 'Noch keine Änderungen – Ansicht „Soll“ wählen und Zellen ändern.',
     perRole: '{key} je Rolle',
+    editState: 'Bearbeiten:',
     legend: 'Legende',
     legendChanged: 'geändert',
     legendNew: 'neu im Soll',

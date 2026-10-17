@@ -195,6 +195,8 @@
 
   /* Aufgaben-Dialog (auch mobil) */
   .sheet-title { margin-top: 16px; }
+  .state-switch { display: flex; align-items: center; gap: 8px; margin: 8px 0 4px; }
+  .other-state { display: block; font-size: 11px; font-weight: 600; color: var(--accent); }
   .sheet-roles { display: grid; }
   .srow { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 13px; }
   .srow:last-child { border: 0; }
