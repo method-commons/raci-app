@@ -49,10 +49,18 @@ export function cell(page, no, roleIndex) {
   return row(page, no).locator('[data-cell]').nth(roleIndex);
 }
 
-/** Gespeicherte Matrizen aus dem localStorage (wartet auf das verzögerte Speichern). */
-export async function stored(page) {
-  await page.waitForTimeout(400);
-  return page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('raci:matrix:')).map(k => JSON.parse(localStorage.getItem(k))));
+/**
+ * Gespeicherte Matrizen aus dem localStorage. Die App speichert verzögert (300 ms); statt fest zu
+ * warten, wird gelesen, bis `check` (Erwartungen an die Liste) besteht – höchstens 5 s. Schlägt
+ * `check` bis dahin fehl, erscheint seine Meldung.
+ */
+export async function stored(page, check = () => {}) {
+  let list = [];
+  await expect.poll(async () => {
+    list = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('raci:matrix:')).map(k => JSON.parse(localStorage.getItem(k))));
+    try { check(list); return ''; } catch (e) { return e.message; }
+  }, { timeout: 5000 }).toBe('');
+  return list;
 }
 
 /** Download auslösen und Inhalt lesen. */

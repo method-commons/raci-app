@@ -218,18 +218,31 @@ export const Ops = (() => {
     if (s.other) setKeys(m, s.task, s.other.role, s.other.to, md);
   }
 
-  /** Kürzel in allen Zellen umbenennen bzw. entfernen (`to` = null). @param {Matrix} m @param {string} from @param {string | null} to */
-  function renameKey(m, from, to) {
+  /**
+   * Kürzel aller Zellen (Ist und Soll) umwandeln, danach ordnen und leere Zellen entfernen.
+   * @param {Matrix} m @param {(keys: string[]) => string[]} conv
+   */
+  function mapKeys(m, conv) {
     for (const row of Object.keys(m.cells)) {
       for (const r of Object.keys(m.cells[row])) {
         const c = m.cells[row][r];
         /** @param {string[]} k */
-        const conv = k => Model.sortKeys(m.letters, [...new Set(k.flatMap(x => (x === from ? (to ? [to] : []) : [x])))]);
-        c.v = conv(c.v);
-        if (c.s) c.s = conv(c.s);
+        const apply = k => Model.sortKeys(m.letters, [...new Set(conv(k))]);
+        c.v = apply(c.v);
+        if (c.s) c.s = apply(c.s);
         tidy(m, row, r);
       }
     }
+  }
+
+  /** Kürzel in allen Zellen umbenennen bzw. entfernen (`to` = null). @param {Matrix} m @param {string} from @param {string | null} to */
+  function renameKey(m, from, to) {
+    mapKeys(m, k => k.flatMap(x => (x === from ? (to ? [to] : []) : [x])));
+  }
+
+  /** Kürzel aller Zellen neu ordnen (nach geänderter Bedeutung oder Variante). @param {Matrix} m */
+  function resortCells(m) {
+    mapKeys(m, k => k);
   }
 
   // ===== Variante und Buchstaben =====
@@ -241,7 +254,7 @@ export const Ops = (() => {
   function setVariant(m, id) {
     m.variant = id;
     if (id !== 'custom') m.letters = Variants.letters(id);
-    renameKey(m, '', null);
+    resortCells(m);
   }
 
   /** Eigenen Buchstaben ergänzen. @param {Matrix} m @returns {Letter} */
@@ -276,7 +289,7 @@ export const Ops = (() => {
     if (patch.color && Variants.COLORS.includes(patch.color)) l.color = patch.color;
     if (patch.kind && Variants.KIND_ORDER.includes(patch.kind) && patch.kind !== l.kind) {
       l.kind = patch.kind;
-      renameKey(m, '', null);
+      resortCells(m);
     }
     m.variant = 'custom';
     return true;
@@ -361,7 +374,7 @@ export const Ops = (() => {
   return {
     touch, addPhase, removePhase, movePhase, addTask, task, updateTask, removeTask, moveTask,
     addRole, removeRole, moveRole, copyRoles, setKeys, canCombine, press, setQuestion, setNote,
-    applyPlan, applySuggestion, renameKey, setVariant, addLetter, updateLetter, removeLetter,
+    applyPlan, applySuggestion, renameKey, resortCells, setVariant, addLetter, updateLetter, removeLetter,
     setOption, setRule, addTaskList, applyTemplate, duplicate,
   };
 })();

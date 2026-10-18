@@ -4,6 +4,7 @@
  */
 import { Checks } from './checks.js';
 import { Model } from './model.js';
+import { Ops } from './ops.js';
 import { Texts } from './texts.js';
 import { Util } from './util.js';
 import { Variants } from './variants.js';
@@ -118,28 +119,24 @@ export const IO = (() => {
     const skip = new Set([col('no'), col('phase'), col('check'), taskCol]);
     const roleCols = head.map((h, i) => i).filter(i => !skip.has(i));
     const phaseCol = col('phase');
-    const m = Model.create({ name: fileName.replace(/\.[^.]+$/, '') || Texts.io.csvName });
-    const roles = roleCols.map(i => ({ id: Util.uid('r'), name: rows[0][i].trim(), description: '', person: '', deputy: '', external: false }));
+    const items = rows.slice(1)
+      .map(row => ({
+        name: (row[taskCol] || '').trim(),
+        phase: phaseCol >= 0 ? (row[phaseCol] || '').trim() : '',
+        keys: roleCols.map(i => (row[i] || '').toUpperCase().split(/[^A-Z]+/).filter(Boolean)),
+      }))
+      .filter(x => x.name);
+    // Variante aus allen Kürzeln, damit die Zellen gleich nach ihren Buchstaben geordnet werden
+    const variant = Variants.guess(items.flatMap(x => x.keys.flat()));
+    const m = Model.create({ name: fileName.replace(/\.[^.]+$/, '') || Texts.io.csvName, variant });
+    const roles = roleCols.map(i => Ops.addRole(m, { name: rows[0][i].trim() }));
     /** @type {Record<string, string>} */
     const phases = {};
-    /** @type {Set<string>} */
-    const keys = new Set();
-    for (const row of rows.slice(1)) {
-      const name = (row[taskCol] || '').trim();
-      if (!name) continue;
-      const pn = phaseCol >= 0 ? (row[phaseCol] || '').trim() : '';
-      if (pn && !phases[pn]) { phases[pn] = Util.uid('p'); m.phases.push({ id: phases[pn], name: pn }); }
-      const t = { id: Util.uid('t'), phase: pn ? phases[pn] : '', name, ref: '' };
-      m.tasks.push(t);
-      roleCols.forEach((i, j) => {
-        const k = (row[i] || '').toUpperCase().split(/[^A-Z]+/).filter(Boolean);
-        k.forEach(x => keys.add(x));
-        if (k.length) (m.cells[t.id] ||= {})[roles[j].id] = { v: k, s: null, q: false, note: '' };
-      });
+    for (const x of items) {
+      if (x.phase && !phases[x.phase]) phases[x.phase] = Ops.addPhase(m, x.phase).id;
+      const t = Ops.addTask(m, { name: x.name, phase: x.phase ? phases[x.phase] : '' });
+      x.keys.forEach((k, j) => { if (k.length) Ops.setKeys(m, t.id, roles[j].id, k, 'ist'); });
     }
-    m.roles = roles;
-    m.variant = Variants.guess(keys);
-    m.letters = Variants.letters(m.variant);
     m.options.phases = m.phases.length > 0;
     return Model.normalize(m);
   }
