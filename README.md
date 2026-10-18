@@ -48,7 +48,11 @@ Auf `main` veröffentlicht die CI die App auf GitHub Pages, sobald alle Prüfung
 | `js/examples.js`, `examples/` | Beispiel-Matrizen je Sprache |
 | `js/texts.js`, `js/i18n/` | Texte (Deutsch maßgeblich, Englisch gleiche Struktur) |
 | `js/ui/core.js` | Route, geöffnete Matrix, Speichern, Verlauf, Auswahl, Dialoge, Meldungen |
-| `js/ui/*.jsx` | Ansichten: Start, Matrix, Rollen, Wer macht was?, Bericht, Einstellungen, Hilfe |
+| `js/ui/matrix.jsx` | Ansicht „Matrix“ mit Seitenleiste (Prüfung, Ist → Soll, offene Punkte) |
+| `js/ui/matrix-table.jsx` | Matrix als Tabelle (Phasen, Zellen, Prüfspalte, Summen) und als Liste für schmale Bildschirme |
+| `js/ui/cell.jsx` | Zellen: Auswahl, Inhalt, Tastatur, Auswahl-Feld an der Zelle, Umschalter Ist / Soll |
+| `js/ui/task-dialogs.jsx` | Dialoge „Aufgabe bearbeiten“ und „Phase bearbeiten“ |
+| `js/ui/*.jsx` (übrige) | Start, Rollen, Wer macht was?, Bericht, Einstellungen, Hilfe |
 | `css/` | Design-Tokens (aus den Schwester-Apps) und Farben der Buchstaben, Bausteine, Ansichten, mobil, Druck |
 | `tests/unit/`, `tests/e2e/` | Vitest (Logik, Mindestabdeckung) und Playwright (gegen den Build) |
 

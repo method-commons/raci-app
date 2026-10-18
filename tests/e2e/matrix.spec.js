@@ -45,10 +45,11 @@ test.describe('Matrix', () => {
     await expect(page.locator('[data-hint="count-A"]')).toHaveAttribute('data-state', 'ok');
     await expect(page.locator('[data-tally]').first()).toContainText('2');
 
-    const [m] = await stored(page);
-    expect(m.phases.map(p => p.name)).toEqual(['Vorbereitung']);
-    expect(m.tasks.map(t => t.name)).toEqual(['Ware bestellen', 'Kasse']);
-    expect(Object.values(m.cells[m.tasks[0].id]).map(c => c.v)).toEqual([['A', 'R'], ['C']]);
+    await stored(page, ([m]) => {
+      expect(m.phases.map(p => p.name)).toEqual(['Vorbereitung']);
+      expect(m.tasks.map(t => t.name)).toEqual(['Ware bestellen', 'Kasse']);
+      expect(Object.values(m.cells[m.tasks[0].id]).map(c => c.v)).toEqual([['A', 'R'], ['C']]);
+    });
 
     // Rückgängig und Wiederholen
     await page.click('#undoBtn');
@@ -140,9 +141,10 @@ test.describe('Matrix', () => {
     await expect(inh.locator('.other-state')).toHaveText('Soll: I');
     await page.click('#taskDialog .btn.primary');
     await expect(cell(page, '3', 0)).toHaveText('A→I');
-    let [m] = await stored(page);
-    let c = m.cells.d3['r-inh'];
-    expect([c.v, c.s]).toEqual([['A'], ['I']]);
+    await stored(page, ([m]) => {
+      const c = m.cells.d3['r-inh'];
+      expect([c.v, c.s]).toEqual([['A'], ['I']]);
+    });
 
     // Zelle: Ist ändern, Soll bleibt
     await cell(page, '4', 1).click();
@@ -153,8 +155,9 @@ test.describe('Matrix', () => {
     await page.click('#cellPopover [data-pick-key="A"]');
     await page.keyboard.press('Escape');
     await expect(cell(page, '4', 1)).toHaveText('C→A');
-    [m] = await stored(page);
-    c = m.cells.d4['r-sl'];
-    expect([c.v, c.s]).toEqual([['C'], ['A']]);
+    await stored(page, ([m]) => {
+      const c = m.cells.d4['r-sl'];
+      expect([c.v, c.s]).toEqual([['C'], ['A']]);
+    });
   });
 });

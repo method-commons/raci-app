@@ -31,7 +31,8 @@ E2E-Tests laufen gegen `dist/` – nach Codeänderungen vorher bauen. Chromium i
 
 ## Architektur
 
-- **Logik ohne DOM** in `js/*.js` (`Model`, `Variants`, `Checks`, `Ops`, `Store`, `IO`, `Examples`), Oberfläche in `js/ui/*.jsx`.
+- **Logik ohne DOM** in `js/*.js` (`Model`, `Variants`, `Checks`, `Ops`, `Store`, `IO`, `Examples`), Oberfläche in `js/ui/*.jsx`; die Matrix-Ansicht ist aufgeteilt in `matrix.jsx` (Ansicht, Seitenleiste), `matrix-table.jsx` (Tabelle, mobile Liste), `cell.jsx` (Zellen, Auswahl-Feld) und `task-dialogs.jsx`.
+- **Kürzel in allen Zellen ändern** nur über `Ops.renameKey` bzw. `Ops.resortCells` – beide ordnen die Kürzel und räumen leere Zellen auf.
 - **Eine Matrix trägt ihre Buchstaben selbst** (`letters`); die Variante liefert nur die Vorlage.
 - **Zellen:** `cells[taskId][roleId] = { v, s, q, note }` – `v` Ist, `s` Soll (`null` = wie Ist). Gelesen wird immer über `Model.keys(m, task, role, mode)`; der Stand der Ansicht kommt aus `viewMode(m)` (`js/ui/core.js`).
 - **Zustand:** `matrix` in `js/ui/core.js` ist ein normales Objekt; neu gezeichnet wird über das Signal `revision`, Komponenten lesen es mit `useMatrix()`. Neuzeichnen ist synchron (`options.debounceRendering = cb => cb()`).
@@ -48,6 +49,6 @@ E2E-Tests laufen gegen `dist/` – nach Codeänderungen vorher bauen. Chromium i
 
 - **Auswahlfelder und `mutate`:** Den Wert eines `<select>` bzw. einer Checkbox **vor** `mutate` lesen, sonst setzt das synchrone Neuzeichnen ihn zurück.
 - **Eingabefelder in Tests:** Preact setzt `value` als Eigenschaft, nicht als Attribut – E2E-Tests finden Aufgaben über ihre Nummer (`row(page, '1.3')`), nicht über `[value=…]`.
-- **Speichern ist verzögert** (300 ms) – E2E-Tests lesen den localStorage über `stored(page)`.
+- **Speichern ist verzögert** (300 ms) – E2E-Tests lesen den localStorage über `stored(page, check)`, das wartet, bis die Erwartungen in `check` erfüllt sind (keine festen Wartezeiten).
 - **Auswahl an der Zelle** (`#cellPopover`) ist `position: fixed` und richtet sich nach der Zelle; Escape oder Klick daneben schließt sie.
 - **`backdrop-filter`** an der Kopfzeile bindet `position: fixed` an sie – mobil daher abgeschaltet.

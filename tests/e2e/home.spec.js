@@ -58,8 +58,7 @@ test.describe('Startseite', () => {
     await page.selectOption('#nmFrom', { label: 'Projekt X' });
     await page.click('#nmCreate');
     await expect(page.locator('.role-head')).toHaveCount(5);
-    const all = await stored(page);
-    expect(all.map(m => m.variant).sort()).toEqual(['raci', 'raci', 'rasci']);
+    await stored(page, all => expect(all.map(m => m.variant).sort()).toEqual(['raci', 'raci', 'rasci']));
   });
 
   test('dupliziert, löscht mit Rückgängig und sichert alle Matrizen', async ({ page }) => {

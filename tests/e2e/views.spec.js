@@ -21,8 +21,7 @@ test.describe('Ansichten', () => {
     await page.click('[data-nav="matrix"]');
     await expect(cell(page, '1.2', 0)).toHaveText('A/R');
     await expect(cell(page, '1.2', 1)).toHaveText('C');
-    const [m] = await stored(page);
-    expect(m.roles.find(r => r.name === 'Schichtleitung')).toMatchObject({ deputy: 'Ben', external: true });
+    await stored(page, ([m]) => expect(m.roles.find(r => r.name === 'Schichtleitung')).toMatchObject({ deputy: 'Ben', external: true }));
   });
 
   test('Wer macht was? je Rolle und je Person', async ({ page }) => {
@@ -105,9 +104,10 @@ test.describe('Ansichten', () => {
     await expect(row(page, '4.2').locator('[data-status]')).toHaveText('✓');
     await expect(page.locator('[data-hint="bottleneck"]')).toHaveAttribute('data-state', 'ok');
     await expect(page.locator('.letters-legend')).toContainText('Out of the loop');
-    const [m] = await stored(page);
-    expect([m.variant, m.letters.map(l => l.key), m.options.notes, m.rules.bottleneck]).toEqual(['custom', ['R', 'A', 'K', 'I', 'O'], false, 95]);
-    expect(m.letters.find(l => l.key === 'O')).toMatchObject({ name: 'Out of the loop', meaning: 'bewusst nicht beteiligt', kind: 'inform', count: 'max1', color: 'violet' });
+    await stored(page, ([m]) => {
+      expect([m.variant, m.letters.map(l => l.key), m.options.notes, m.rules.bottleneck]).toEqual(['custom', ['R', 'A', 'K', 'I', 'O'], false, 95]);
+      expect(m.letters.find(l => l.key === 'O')).toMatchObject({ name: 'Out of the loop', meaning: 'bewusst nicht beteiligt', kind: 'inform', count: 'max1', color: 'violet' });
+    });
     const d = await page.evaluate(() => JSON.parse(localStorage.getItem('raci:defaults')));
     expect(d.rules.bottleneck).toBe(95);
   });

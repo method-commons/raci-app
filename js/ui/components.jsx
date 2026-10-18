@@ -94,7 +94,7 @@ export function Badge({ m, keys, size, old, question }) {
 export function Legend({ m, long }) {
   return (
     <div class="legend letters-legend">
-      {m.letters.map(l => <span key={l.key}><Badge m={m} keys={[l.key]} size="sm" /> {long ? `${l.name} – ` : ''}{l.meaning || l.name}</span>)}
+      {m.letters.map(l => <span key={l.key}><Badge m={m} keys={[l.key]} size="sm" /> {long ? `${l.name}${l.meaning ? ` – ${l.meaning}` : ''}` : l.meaning || l.name}</span>)}
     </div>
   );
 }
