@@ -57,7 +57,7 @@ export function cell(page, no, roleIndex) {
 export async function stored(page, check = () => {}) {
   let list = [];
   await expect.poll(async () => {
-    list = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('raci:matrix:')).map(k => JSON.parse(localStorage.getItem(k))));
+    list = await page.evaluate(() => Object.keys(localStorage).filter(k => k.startsWith('raci:matrix:')).map(k => JSON.parse(localStorage.getItem(k)).data));
     try { check(list); return ''; } catch (e) { return e.message; }
   }, { timeout: 5000 }).toBe('');
   return list;
