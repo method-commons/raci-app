@@ -45,7 +45,14 @@ export const TextsEn = {
     backup: 'Backup of all matrices (JSON)',
     example: 'Open example …',
     help: 'Method & usage',
+    storage: 'Storage …',
     language: 'Language',
+  },
+  // Storage (method-commons/sync); all other texts come from the shared core
+  sync: {
+    notSet: 'not set up',
+    storage: 'storage',
+    nouns: { one: 'matrix', many: 'matrices', list: 'My RACI matrices' },
   },
   home: {
     title: 'My RACI matrices',

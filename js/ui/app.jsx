@@ -16,6 +16,7 @@ import { PeopleView } from './people.jsx';
 import { ReportView } from './report.jsx';
 import { RolesView } from './roles.jsx';
 import { openCopyRoles, openSettings, openTaskList } from './settings.jsx';
+import { openStorage, SyncStatus, syncMenuHint } from './sync.jsx';
 
 /** @param {string} lang */
 function switchLanguage(lang) {
@@ -67,6 +68,8 @@ function Menu() {
             <button type="button" role="menuitem" data-action="example" onClick={run(() => openExamples())}>{M.example}</button>
             <hr />
           </>}
+          <button type="button" role="menuitem" data-action="storage" class="menu-split" onClick={run(openStorage)}>{M.storage}<span class="menu-hint" id="storageHint">{syncMenuHint()}</span></button>
+          <hr />
           <button type="button" role="menuitem" data-action="help" onClick={run(() => openHelp())}>{M.help}</button>
           <hr />
           <div class="menu-label">{M.language}</div>
@@ -112,6 +115,7 @@ function Header() {
         <button type="button" class="icon-btn" id="redoBtn" title={Texts.ui.redo} aria-label={Texts.ui.redo} disabled={!canRedo()} onClick={redo}>↷</button>
       </>}
       <button type="button" class="btn ghost" id="helpBtn" onClick={() => openHelp()}>? <span class="hide-narrow">{Texts.ui.method}</span></button>
+      <SyncStatus />
       <Menu />
     </header>
   );

@@ -46,7 +46,14 @@ export const TextsDe = {
     backup: 'Sicherung aller Matrizen (JSON)',
     example: 'Beispiel öffnen …',
     help: 'Methodik & Bedienung',
+    storage: 'Ablage …',
     language: 'Sprache',
+  },
+  // Ablage (method-commons/sync); die übrigen Texte liefert der gemeinsame Kern
+  sync: {
+    notSet: 'nicht eingerichtet',
+    storage: 'Ablage',
+    nouns: { one: 'Matrix', many: 'Matrizen', list: 'Meine RACI-Matrizen' },
   },
   home: {
     title: 'Meine RACI-Matrizen',

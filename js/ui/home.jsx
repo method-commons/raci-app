@@ -17,6 +17,7 @@ import { Badge, Dialog, fill, pickFile } from './components.jsx';
 import { closeDialog, openDialog, openMatrix, render, toast, useRevision } from './core.js';
 import { openHelp } from './help.jsx';
 import { deleteMatrix, duplicateMatrix } from './manage.js';
+import { SyncDocState, SyncRemoteOnly } from './sync.jsx';
 
 /** Datei importieren (JSON: Matrix, Sicherung oder Liste; CSV: eine Matrix). */
 export async function importFiles() {
@@ -130,6 +131,7 @@ function MatrixCard({ m }) {
         {done && <span class="good small">✓ {Texts.home.allOk}</span>}
         <span class="spacer" />
         <span class="sub small">{Util.formatDay(day, Texts.locale)}</span>
+        <SyncDocState id={m.id} />
         <button type="button" class="icon-btn sm" title={Texts.manage.duplicate} aria-label={Texts.manage.duplicate} data-action="duplicate" onClick={() => duplicateMatrix(m)}>⧉</button>
         <button type="button" class="icon-btn sm" title={Texts.ui.delete} aria-label={Texts.ui.delete} data-action="delete" onClick={() => deleteMatrix(m)}>✕</button>
       </div>
@@ -199,6 +201,7 @@ export function Home() {
           <span class="plus" aria-hidden="true">+</span>{H.new}<small>{H.newHelp}</small>
         </button>
       </div>
+      <SyncRemoteOnly />
       <LettersStrip />
     </div>
   );
