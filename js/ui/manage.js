@@ -17,7 +17,7 @@ export function deleteMatrix(m) {
     onOk: () => {
       const copy = JSON.parse(JSON.stringify(m));
       if (current && current.id === m.id) discardMatrix();
-      Store.removeMatrix(m.id);
+      Store.removeDoc(m.id);
       go({ view: 'home' });
       toast(Texts.manage.deleted, { label: Texts.ui.undone, run: () => { Store.save(copy); go({ view: 'home' }); render(); } });
       render();

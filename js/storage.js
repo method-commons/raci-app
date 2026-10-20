@@ -27,34 +27,61 @@ export const Store = (() => {
     try { return Object.keys(localStorage); } catch (e) { return []; }
   }
 
-  /** Matrix laden (normalisiert), `null` wenn nicht vorhanden oder beschädigt. @param {string} id @returns {Matrix | null} */
-  function load(id) {
+  /** @typedef {{ id: string, savedAt: number, data: Matrix }} StoredDoc */
+
+  /**
+   * Eintrag lesen (normalisiert), `null` wenn nicht vorhanden oder beschädigt. Gespeichert wird
+   * `{ savedAt, data }` wie in den anderen Methoden-Apps; ältere Einträge (Matrix direkt) werden
+   * ebenso gelesen und beim nächsten Speichern umgestellt.
+   * @param {string} id @returns {StoredDoc | null}
+   */
+  function readDoc(id) {
     const raw = get(PREFIX + id);
     if (!raw) return null;
-    try { return Model.normalize(JSON.parse(raw)); } catch (e) { return null; }
+    try {
+      const rec = JSON.parse(raw);
+      const wrapped = rec != null && typeof rec === 'object' && 'savedAt' in rec && 'data' in rec;
+      const data = Model.normalize(wrapped ? rec.data : rec);
+      return { id, savedAt: (wrapped ? Number(rec.savedAt) : Date.parse(data.updatedAt)) || 0, data };
+    } catch (e) { return null; }
+  }
+
+  /** @param {string} id @param {Matrix} data @param {number} [savedAt] z. B. beim Übernehmen aus einer Ablage @returns {boolean} */
+  function writeDoc(id, data, savedAt = Date.now()) {
+    return set(PREFIX + id, JSON.stringify({ savedAt, data }));
+  }
+
+  /** @param {string} id */
+  function removeDoc(id) {
+    remove(PREFIX + id);
+  }
+
+  /** ID einer Matrix zu einem Speicherschlüssel (z. B. aus einem `storage`-Ereignis), sonst `null`. @param {string | null} key */
+  function docIdFromKey(key) {
+    return key && key.startsWith(PREFIX) ? key.slice(PREFIX.length) : null;
+  }
+
+  /** Alle gespeicherten Einträge, zuletzt gespeicherte zuerst. @returns {StoredDoc[]} */
+  function listDocs() {
+    return keys().filter(k => k.startsWith(PREFIX))
+      .map(k => readDoc(k.slice(PREFIX.length)))
+      .filter(/** @returns {d is StoredDoc} */ d => d != null)
+      .sort((x, y) => y.savedAt - x.savedAt);
+  }
+
+  /** Matrix laden, `null` wenn nicht vorhanden oder beschädigt. @param {string} id @returns {Matrix | null} */
+  function load(id) {
+    return readDoc(id)?.data ?? null;
   }
 
   /** Matrix speichern. @param {Matrix} m @returns {boolean} */
   function save(m) {
-    return set(PREFIX + m.id, JSON.stringify(m));
-  }
-
-  /** @param {string} id */
-  function removeMatrix(id) {
-    remove(PREFIX + id);
+    return writeDoc(m.id, m);
   }
 
   /** Alle gespeicherten Matrizen, zuletzt bearbeitete zuerst. @returns {Matrix[]} */
   function all() {
-    return keys().filter(k => k.startsWith(PREFIX))
-      .map(k => load(k.slice(PREFIX.length)))
-      .filter(/** @returns {m is Matrix} */ m => m != null)
-      .sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
-  }
-
-  /** Ist der Speicherschlüssel der einer Matrix? Liefert die ID. @param {string | null} key */
-  function matrixIdOfKey(key) {
-    return key && key.startsWith(PREFIX) ? key.slice(PREFIX.length) : null;
+    return listDocs().map(d => d.data).sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
   }
 
   /** Standard für neue Matrizen (optionale Bereiche und Prüfregeln) oder `null`. @returns {{ options: MatrixOptions, rules: MatrixRules } | null} */
@@ -71,5 +98,5 @@ export const Store = (() => {
     return set(DEFAULTS_KEY, JSON.stringify({ options: d.options, rules: d.rules }));
   }
 
-  return { PREFIX, DEFAULTS_KEY, load, save, removeMatrix, all, matrixIdOfKey, defaults, saveDefaults };
+  return { PREFIX, DEFAULTS_KEY, readDoc, writeDoc, removeDoc, docIdFromKey, listDocs, load, save, all, defaults, saveDefaults };
 })();

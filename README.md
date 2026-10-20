@@ -43,7 +43,7 @@ Auf `main` veröffentlicht die CI die App auf GitHub Pages, sobald alle Prüfung
 | `js/variants.js` | Buchstabensätze RACI, RASCI, RACI-VS, DACI, eigene; Bedeutung (`kind`) und Regel (`count`) je Buchstabe |
 | `js/checks.js` | Prüfungen je Aufgabe und Rolle, Kennzahlen, Hinweise, Vorschläge zum Entlasten, Änderungen Ist → Soll |
 | `js/ops.js` | Änderungen (Phasen, Aufgaben, Rollen, Zellen, Variante, Buchstaben, Einstellungen, Vorlagen, Duplizieren) |
-| `js/storage.js` | Speicherung im localStorage, Standard für neue Matrizen |
+| `js/storage.js` | Speicherung im localStorage (`{ savedAt, data }` je Matrix, `readDoc`/`writeDoc`/`listDocs` wie in den anderen Methoden-Apps), Standard für neue Matrizen |
 | `js/io.js` | JSON-Export/-Import, Sicherung, CSV (Export und Import), Markdown-Bericht |
 | `js/examples.js`, `examples/` | Beispiel-Matrizen je Sprache |
 | `js/texts.js`, `js/i18n/` | Texte (Deutsch maßgeblich, Englisch gleiche Struktur) |

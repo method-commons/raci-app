@@ -34,7 +34,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 
 // Änderungen aus einem anderen Browser-Tab übernehmen
 window.addEventListener('storage', e => {
-  const id = Store.matrixIdOfKey(e.key);
+  const id = Store.docIdFromKey(e.key);
   if (!id) return;
   if (matrix && matrix.id === id) {
     if (!e.newValue) { applyRoute(); return; }
