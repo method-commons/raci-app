@@ -45,6 +45,15 @@ E2E-Tests laufen gegen `dist/` – nach Codeänderungen vorher bauen. Chromium i
 - Aktuell **Version 1** (`Model.SCHEMA_VERSION`). Bei inkompatiblen Erweiterungen Version erhöhen, in `MIGRATIONS[n]` umwandeln, `docs/DATENFORMAT.md` und alle `examples/*.json` anpassen.
 - Beispiele müssen exakt der Ausgabe von `normalize` entsprechen und in beiden Sprachen dieselben IDs und Zellen haben (Test `examples.test.js`).
 
+## Ablage (method-commons/sync)
+
+- Abhängigkeit `@method-commons/sync` über `git+https://github.com/method-commons/sync.git#<Tag oder Commit>` (nicht `github:` – npm schreibt sonst `git+ssh` ins Lockfile, das scheitert in der CI). Neue Version des Kerns: `package.json` und Lockfile anheben.
+- Fest eingebunden nur `@method-commons/sync/config`; Kern, Oberfläche und Stile lädt `loadSync()` in `js/ui/sync.jsx` erst bei Bedarf.
+- Änderungen meldet die Speicherschicht (`Store.observe`: Schreiben und Löschen) – auch Import, Duplizieren, Beispiele.
+- Übernahmen aus der Ablage: abgelehnt, solange die geöffnete Datei ungespeicherte Eingaben hat (`hasPendingSave`, dann meldet der Kern einen Konflikt), sonst sofort angezeigt (`adoptStored(id, true)`).
+- `resolve.dedupe: ['preact']` in `vite.config.js` – sonst zwei Preact-Instanzen (Hooks der Oberfläche brechen).
+- E2E: `tests/e2e/sync.spec.js` bildet die GitHub-API mit `page.route` nach (Dateien mit `sha`); `tests/e2e/tabs.spec.js` prüft die Übernahme aus einem anderen Browser-Tab.
+
 ## Bekannte Fallstricke
 
 - **Auswahlfelder und `mutate`:** Den Wert eines `<select>` bzw. einer Checkbox **vor** `mutate` lesen, sonst setzt das synchrone Neuzeichnen ihn zurück.
