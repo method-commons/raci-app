@@ -137,6 +137,23 @@ export function replaceMatrix(m) {
   render();
 }
 
+/**
+ * Gespeicherten Stand übernehmen, nachdem ein anderer Browser-Tab (oder die Ablage) die Matrix
+ * geändert hat: geöffnete Matrix neu laden – außer während einer Texteingabe –, sonst die Übersicht.
+ * @param {string} id
+ */
+export function adoptStored(id) {
+  if (matrix && matrix.id === id) {
+    const doc = Store.load(id);
+    if (!doc) { applyRoute(); return; }
+    const active = document.activeElement;
+    if (active && /^(INPUT|TEXTAREA)$/.test(active.tagName)) return;
+    replaceMatrix(doc);
+  } else if (route.value.view === 'home') {
+    render();
+  }
+}
+
 // ===== Änderungen und Verlauf =====
 /** Stand vor einer Texteingabe (Verlaufseintrag beim Verlassen des Felds). @type {string | null} */
 let editSnapshot = null;
