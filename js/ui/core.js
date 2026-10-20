@@ -64,6 +64,7 @@ const HISTORY_LIMIT = 200;
 /** Route aus dem Hash übernehmen und die passende Matrix laden. */
 export function applyRoute() {
   const r = parseHash(location.hash);
+  if (preview && !(r.view === 'matrix' && r.mid === matrix?.id)) endPreview(); // anderes Dokument: Ansehen beenden
   if (r.view === 'matrix') {
     if (!matrix || matrix.id !== r.mid) {
       flushSave();
@@ -107,6 +108,7 @@ let saveTimer = null;
 
 /** Gleich speichern (nach kurzer Pause gebündelt). */
 export function scheduleSave() {
+  if (preview) return; // früherer Stand: nur ansehen
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = setTimeout(flushSave, 300);
 }
@@ -150,12 +152,48 @@ export function adoptStored(id, force = false) {
   if (matrix && matrix.id === id) {
     const doc = Store.load(id);
     if (!doc) { applyRoute(); return; }
+    if (preview) { preview.saved = doc; return; } // gilt nach dem Ansehen
     const active = document.activeElement;
     if (!force && active && /^(INPUT|TEXTAREA)$/.test(active.tagName)) return;
     replaceMatrix(doc);
   } else if (route.value.view === 'home') {
     render();
   }
+}
+
+// ===== Früherer Stand (Versionen der Ablage) =====
+/** Wird ein früherer Stand angesehen? Dann ist der aktuelle in `saved` geparkt. @type {{ saved: any } | null} */
+let preview = null;
+/** Meldung bei gesperrtem Bearbeiten und Ende des Ansehens (aus sync.jsx). */
+let previewHooks = { locked: '', ended: () => {} };
+/** @param {{ locked: string, ended: () => void }} hooks */
+export function setPreviewHooks(hooks) { previewHooks = hooks; }
+export const isPreview = () => preview !== null;
+
+/** Bearbeiten ist gesperrt, solange ein früherer Stand gezeigt wird (mit Hinweis). */
+function blockedByPreview() {
+  if (!preview) return false;
+  toast(previewHooks.locked);
+  render();
+  return true;
+}
+
+/** Früheren Stand des geöffneten Dokuments nur lesend zeigen. @param {any} data */
+export function showPreview(data) {
+  if (!matrix) return;
+  commitEdit();
+  flushSave();
+  preview ??= { saved: matrix };
+  replaceMatrix(data);
+}
+
+/** Zurück zum aktuellen Stand (auch vor dem Wechsel zu einem anderen Dokument). */
+export function endPreview() {
+  if (!preview || !matrix) { preview = null; return; }
+  const saved = Store.load(matrix.id) ?? preview.saved;
+  preview = null;
+  replaceMatrix(saved);
+  previewHooks.ended();
 }
 
 // ===== Änderungen und Verlauf =====
@@ -177,6 +215,7 @@ function pushUndo(snap) {
  */
 export function mutate(fn) {
   if (!matrix) return undefined;
+  if (blockedByPreview()) return undefined;
   commitEdit();
   const before = JSON.stringify(matrix);
   const result = fn(matrix);
@@ -207,8 +246,12 @@ export function fieldProps(get, set) {
     value: get(),
     onFocus: () => { if (matrix && editSnapshot == null) editSnapshot = JSON.stringify(matrix); },
     /** @param {Event} e */
+    // früherer Stand: Tippen gar nicht erst zulassen
+    /** @param {Event} e */
+    onBeforeInput: e => { if (preview) { e.preventDefault(); blockedByPreview(); } },
+    /** @param {Event} e */
     onInput: e => {
-      if (!matrix) return;
+      if (!matrix || preview) return;
       if (editSnapshot == null) editSnapshot = JSON.stringify(matrix);
       set(/** @type {HTMLInputElement} */ (e.currentTarget).value);
       Ops.touch(matrix);
@@ -223,6 +266,7 @@ export const canUndo = () => undoStack.length > 0 || editSnapshot != null;
 export const canRedo = () => redoStack.length > 0;
 
 export function undo() {
+  if (blockedByPreview()) return;
   commitEdit();
   if (!matrix || !undoStack.length) return;
   redoStack.push(JSON.stringify(matrix));
@@ -231,6 +275,7 @@ export function undo() {
 }
 
 export function redo() {
+  if (blockedByPreview()) return;
   commitEdit();
   if (!matrix || !redoStack.length) return;
   undoStack.push(JSON.stringify(matrix));
