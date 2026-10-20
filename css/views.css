@@ -1,6 +1,10 @@
 /* Ansichten: Startseite, Matrix, Rollen, „Wer macht was?“, Bericht, Dialoge */
 @layer views {
   main { padding: 20px var(--gutter) 40px; max-width: 1600px; margin: 0 auto; }
+  /* Leiste „Früherer Stand“ (Versionen der Ablage): klebt unter der Kopfzeile */
+  .preview-slot { position: sticky; top: 64px; z-index: 15; max-width: 1600px; margin: 0 auto; padding: 12px var(--gutter) 0; }
+  .preview-slot:empty { display: none; }
+  @media (max-width: 760px) { .preview-slot { position: static; } }
   .page-head { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; }
   .crumb-row { display: flex; gap: 8px 12px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
   .crumb-row h1 { font-size: 20px; }

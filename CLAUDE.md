@@ -52,7 +52,8 @@ E2E-Tests laufen gegen `dist/` – nach Codeänderungen vorher bauen. Chromium i
 - Änderungen meldet die Speicherschicht (`Store.observe`: Schreiben und Löschen) – auch Import, Duplizieren, Beispiele.
 - Übernahmen aus der Ablage: abgelehnt, solange die geöffnete Datei ungespeicherte Eingaben hat (`hasPendingSave`, dann meldet der Kern einen Konflikt), sonst sofort angezeigt (`adoptStored(id, true)`).
 - `resolve.dedupe: ['preact']` in `vite.config.js` – sonst zwei Preact-Instanzen (Hooks der Oberfläche brechen).
-- E2E: `tests/e2e/sync.spec.js` bildet die GitHub-API mit `page.route` nach (Dateien mit `sha`); `tests/e2e/tabs.spec.js` prüft die Übernahme aus einem anderen Browser-Tab.
+- **Versionen:** früherer Stand nur lesend über `showPreview`/`endPreview` (`core.js`): Speichern, `mutate`, Rückgängig und Eingaben (`beforeinput` in `fieldProps`) sind gesperrt, Wechsel zu einem anderen Dokument beendet das Ansehen, Übernahmen aus der Ablage werden solange abgelehnt.
+- E2E: `tests/e2e/github.js` bildet die GitHub-API mit `page.route` nach (Dateien mit `sha`, Commits je Datei, Tags), genutzt von `sync.spec.js` und `versions.spec.js`; `tests/e2e/tabs.spec.js` prüft die Übernahme aus einem anderen Browser-Tab.
 
 ## Bekannte Fallstricke
 
