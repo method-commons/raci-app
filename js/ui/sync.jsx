@@ -9,7 +9,7 @@ import { Model } from '../model.js';
 import { Ops } from '../ops.js';
 import { Store } from '../storage.js';
 import { Languages, Texts } from '../texts.js';
-import { adoptStored, endPreview, hasPendingSave, isPreview, matrix, openMatrix, render, setPreviewHooks, showPreview, toast } from './core.js';
+import { adoptStored, endPreview, hasPendingSave, isPreview, matrix, openMatrix, render, setPreviewHooks, showPreview, showShared, toast } from './core.js';
 
 /** Kennung der App in der Ablage = Name des Repos (zugleich Ordner). */
 export const SYNC_APP = 'raci-app';
@@ -78,7 +78,8 @@ export function loadSync() {
       toast: (/** @type {string} */ text) => toast(text),
       // Nie bearbeitete Matrizen (frisch geöffnete Beispiele, leere neue) nicht vorauswählen
       preselect: (/** @type {{ data: any }} */ d) => d.data.createdAt !== d.data.updatedAt,
-      onPreview: (/** @type {any} */ p) => { if (p) showPreview(p.data); else endPreview(); },
+      // früherer Stand: über dem geöffneten Dokument; geteilter Link: eigene Ansicht – beides nur lesend, ohne zu speichern
+      onPreview: (/** @type {any} */ p) => { if (!p) endPreview(); else if (p.kind === 'shared') showShared(p.data); else showPreview(p.data); },
     });
     setPreviewHooks({ locked: Texts.sync.previewLocked, ended: () => syncUi.value?.endPreview() });
     controller.subscribe(() => render());
@@ -96,6 +97,23 @@ export function openStorage() {
 /** Menü „Versionen …“ des geöffneten Dokuments (ohne Ablage: Hinweis zum Einrichten). */
 export function openVersions() {
   loadSync().then(ui => ui.openVersions(matrix?.id ?? null));
+}
+
+/** Menü „Teilen …“ des geöffneten Dokuments: Link zum Ansehen (ohne Ablage: Hinweis zum Einrichten). */
+export function openShare() {
+  loadSync().then(ui => ui.openShare(matrix?.id ?? null));
+}
+
+/**
+ * Link `#g=…` eines geteilten Dokuments: nur lesend zeigen – es wird nichts gespeichert, weder im Browser noch in
+ * einer eingerichteten Ablage (erst „Als Kopie speichern“). Gibt `true` zurück, wenn die Adresse ein solcher Link war.
+ */
+export function openSharedFromHash() {
+  const gist = /^#g=([0-9a-f]{8,64})$/i.exec(location.hash)?.[1];
+  if (!gist) return false;
+  history.replaceState(null, '', `${location.pathname}${location.search}#/`);
+  loadSync().then(ui => ui.openShared(gist));
+  return true;
 }
 
 /** Leiste beim Ansehen eines früheren Stands (nur mit Ablage). */
@@ -132,5 +150,7 @@ export function initSync() {
     removed: id => controller?.removed(id),
   });
   if (hasConfig()) loadSync();
+  openSharedFromHash();
+  window.addEventListener('hashchange', openSharedFromHash);
   window.addEventListener('storage', e => { if (e.key === CONFIG_KEY && !loading && hasConfig()) loadSync(); });
 }
