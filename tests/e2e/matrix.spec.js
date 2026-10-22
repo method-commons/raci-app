@@ -87,6 +87,26 @@ test.describe('Matrix', () => {
     await expect(page.locator('th.role-th.hl')).toHaveCount(1);
   });
 
+  test('Klären nur mit „Klären & Notizen“: Hinweis an der Zelle schaltet es ein', async ({ page }) => {
+    await openExample(page, 'stadtfest');
+    await page.click('#settingsLink');
+    await page.uncheck('#opt-notes');
+    await page.click('#settingsDone');
+    await cell(page, '1.3', 3).click();
+    await expect(page.locator('#cellQuestion')).toHaveCount(0);
+    await expect(page.locator('#notesOff')).toBeVisible();
+    await expect(page.locator('#cellPopover .keys-help')).not.toContainText('?');
+    await page.click('#notesEnable');
+    await expect(page.locator('#cellPopover')).toHaveCount(0);
+    await page.check('#opt-notes');
+    await page.click('#settingsDone');
+    await cell(page, '1.3', 3).click();
+    await expect(page.locator('#notesOff')).toHaveCount(0);
+    await expect(page.locator('#cellPopover .keys-help')).toContainText('? klären');
+    await page.check('#cellQuestion');
+    await expect(page.locator('#openPoints')).toContainText('1.3');
+  });
+
   test('Aufgabe bearbeiten: Phase, Verweis, verschieben, entfernen', async ({ page }) => {
     await openExample(page, 'stadtfest');
     await row(page, '1.5').locator('[data-action="editTask"]').click();

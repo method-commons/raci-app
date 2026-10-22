@@ -11,6 +11,7 @@ import { Texts } from '../texts.js';
 import { Util } from '../util.js';
 import { Badge, fill } from './components.jsx';
 import { fieldProps, mutate, selectedCell, viewMode, viewPrefs } from './core.js';
+import { openSettings } from './settings.jsx';
 
 /** Auswahl-Feld an der gewählten Zelle offen? */
 export const popOpen = signal(false);
@@ -188,7 +189,12 @@ export function CellPopover({ m }) {
         <textarea class="input" id="cellNote" rows={2} placeholder={T.notePlaceholder}
           {...fieldProps(() => (c ? c.note : ''), v => { const x = /** @type {Matrix} */ (m); Ops.setNote(x, task.id, role.id, v); })} />
       </>}
-      <div class="sub small keys-help">{T.keysHelp}</div>
+      {!m.options.notes && (
+        <div class="sub small" id="notesOff">
+          {T.notesOff} <button type="button" class="link sm" id="notesEnable" onClick={() => { popOpen.value = false; openSettings(); }}>{T.notesEnable}</button>
+        </div>
+      )}
+      <div class="sub small keys-help">{T.keysHelp}{m.options.notes && T.keysHelpNotes}</div>
     </div>
   );
 }
