@@ -16,7 +16,7 @@ import { PeopleView } from './people.jsx';
 import { ReportView } from './report.jsx';
 import { RolesView } from './roles.jsx';
 import { openCopyRoles, openSettings, openTaskList } from './settings.jsx';
-import { openStorage, openVersions, SyncPreview, SyncStatus, syncMenuHint } from './sync.jsx';
+import { openShare, openStorage, openVersions, SyncPreview, SyncStatus, syncMenuHint } from './sync.jsx';
 
 /** @param {string} lang */
 function switchLanguage(lang) {
@@ -70,6 +70,7 @@ function Menu() {
           </>}
           <button type="button" role="menuitem" data-action="storage" class="menu-split" onClick={run(openStorage)}>{M.storage}<span class="menu-hint" id="storageHint">{syncMenuHint()}</span></button>
           {m && <button type="button" role="menuitem" data-action="versions" onClick={run(openVersions)}>{M.versions}</button>}
+          {m && <button type="button" role="menuitem" data-action="share" class="menu-split" onClick={run(openShare)}>{M.share}<span class="menu-hint">{M.shareHint}</span></button>}
           <hr />
           <button type="button" role="menuitem" data-action="help" onClick={run(() => openHelp())}>{M.help}</button>
           <hr />

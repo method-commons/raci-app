@@ -48,6 +48,8 @@ export const TextsDe = {
     help: 'Methodik & Bedienung',
     storage: 'Ablage …',
     versions: 'Versionen …',
+    share: 'Teilen …',
+    shareHint: 'Link zum Ansehen',
     language: 'Sprache',
   },
   // Ablage (method-commons/sync); die übrigen Texte liefert der gemeinsame Kern

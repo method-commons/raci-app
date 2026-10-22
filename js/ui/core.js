@@ -64,7 +64,7 @@ const HISTORY_LIMIT = 200;
 /** Route aus dem Hash übernehmen und die passende Matrix laden. */
 export function applyRoute() {
   const r = parseHash(location.hash);
-  if (preview && !(r.view === 'matrix' && r.mid === matrix?.id)) endPreview(); // anderes Dokument: Ansehen beenden
+  if (preview && !(r.view === 'matrix' && r.mid === matrix?.id)) endPreview(false); // anderes Dokument: Ansehen beenden
   if (r.view === 'matrix') {
     if (!matrix || matrix.id !== r.mid) {
       flushSave();
@@ -161,8 +161,11 @@ export function adoptStored(id, force = false) {
   }
 }
 
-// ===== Früherer Stand (Versionen der Ablage) =====
-/** Wird ein früherer Stand angesehen? Dann ist der aktuelle in `saved` geparkt. @type {{ saved: any } | null} */
+// ===== Früherer bzw. geteilter Stand (Versionen und Teilen der Ablage) =====
+/**
+ * Wird ein früherer oder geteilter Stand angesehen? Dann ist das vorher geöffnete Dokument in `saved` geparkt
+ * (bei einem geteilten Link ggf. `null`, z. B. von der Übersicht aus). @type {{ saved: any, shared?: boolean } | null}
+ */
 let preview = null;
 /** Meldung bei gesperrtem Bearbeiten und Ende des Ansehens (aus sync.jsx). */
 let previewHooks = { locked: '', ended: () => {} };
@@ -187,12 +190,41 @@ export function showPreview(data) {
   replaceMatrix(data);
 }
 
-/** Zurück zum aktuellen Stand (auch vor dem Wechsel zu einem anderen Dokument). */
-export function endPreview() {
-  if (!preview || !matrix) { preview = null; return; }
-  const saved = Store.load(matrix.id) ?? preview.saved;
+/**
+ * Geteiltes Dokument (Link `#g=…`) nur lesend zeigen – **ohne es zu speichern**, weder im Browser noch in der Ablage.
+ * Erst „Als Kopie speichern“ (Kern) legt bewusst ein eigenes Dokument an.
+ * @param {any} data
+ */
+export function showShared(data) {
+  // „Aktualisieren“ desselben Dokuments: Ansicht bleibt
+  if (preview?.shared && matrix?.id === data.id) { matrix = data; render(); return; }
+  if (matrix && !preview) { commitEdit(); flushSave(); }
+  if (!preview) preview = { saved: matrix, shared: true };
+  else preview.shared = true;
+  matrix = data;
+  const id = data.id;
+  go({ view: 'matrix', mid: id, tab: 'matrix' });
+  render();
+}
+
+/**
+ * Zurück zum aktuellen Stand. Eine geteilte Ansicht wird verworfen; `navigate`: zum vorher geöffneten Dokument
+ * bzw. zur Übersicht wechseln (nicht, wenn ohnehin gerade die Route wechselt).
+ * @param {boolean} [navigate]
+ */
+export function endPreview(navigate = true) {
+  if (!preview) return;
+  const { saved, shared } = preview;
   preview = null;
-  replaceMatrix(saved);
+  if (shared) {
+    matrix = null;
+    if (navigate) {
+      const id = saved?.id;
+      go(id ? { view: 'matrix', mid: id, tab: 'matrix' } : { view: 'home' });
+    }
+  } else if (matrix) {
+    replaceMatrix(Store.load(matrix.id) ?? saved);
+  }
   previewHooks.ended();
 }
 
