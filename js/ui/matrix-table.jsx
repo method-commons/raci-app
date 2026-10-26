@@ -8,13 +8,30 @@ import { Ops } from '../ops.js';
 import { Texts } from '../texts.js';
 import { CellContent, onCellKey, popOpen, PREFIX, selectCell } from './cell.jsx';
 import { Avatar, Badge, confirmDialog, fill } from './components.jsx';
-import { fieldProps, go, highlighted, mutate, selectedCell, selectedRole, viewMode } from './core.js';
+import { useState } from 'preact/hooks';
+import { fieldProps, go, highlighted, isPreview, mutate, selectedCell, selectedRole, viewMode } from './core.js';
+import { canMoveTask, moveTaskByKey, startTaskDrag } from './reorder.js';
 import { openAddRole } from './roles.jsx';
 import { openPhaseDialog, openTaskDialog } from './task-dialogs.jsx';
 
 /** Eingabefeld einer Aufgabe fokussieren. @param {string} id */
 function focusTask(id) {
   const el = /** @type {HTMLInputElement | null} */ (document.querySelector(`#matrixTable tr[data-task-row="${id}"] .task-input`));
+  if (el) el.focus();
+}
+
+/** Griff zum Ziehen einer Aufgabe (auf dem Griff verschieben auch ↑/↓). @param {{ id: string, refocus: () => void }} props */
+function Grip({ id, refocus }) {
+  if (isPreview()) return null;
+  return (
+    <button type="button" class="grip" title={Texts.matrix.dragTask} aria-label={Texts.matrix.dragTask} data-action="dragTask"
+      onPointerDown={e => startTaskDrag(e, id)} onKeyDown={e => moveTaskByKey(e, id, refocus, true)}>⠿</button>
+  );
+}
+
+/** Griff einer Aufgabe fokussieren. @param {string} id */
+function focusGrip(id) {
+  const el = /** @type {HTMLElement | null} */ (document.querySelector(`[data-dnd-task="${id}"] .grip`));
   if (el) el.focus();
 }
 
@@ -35,7 +52,7 @@ function PhaseRow({ phase, cols }) {
   const T = Texts.matrix;
   const remove = () => confirmDialog({ title: T.removePhase, text: fill(T.removePhaseText, { name: phase.name || Texts.ui.untitledPhase }), ok: Texts.ui.delete, danger: true, onOk: () => mutate(x => Ops.removePhase(x, phase.id)) });
   return (
-    <tr class="phase-row" data-phase={phase.id}>
+    <tr class="phase-row" data-phase={phase.id} data-dnd-head={phase.id}>
       <td colSpan={cols}>
         <div class="phase-line">
           <input class="input bare phase-input" aria-label={T.phase} placeholder={T.phasePlaceholder} {...fieldProps(() => phase.name, v => { phase.name = v; })} />
@@ -77,7 +94,7 @@ export function MatrixTable({ m }) {
   const cols = m.roles.length + 3;
   return (
     <div class="mx-wrap">
-      <table class="mx" id="matrixTable">
+      <table class="mx" id="matrixTable" data-dnd-root>
         <thead>
           <tr>
             <th class="task-th" scope="col">{T.task}</th>
@@ -91,18 +108,19 @@ export function MatrixTable({ m }) {
             <>
               {g.phase && <PhaseRow key={`p-${g.phase.id}`} phase={g.phase} cols={cols} />}
               {!g.phase && m.options.phases && m.phases.length > 0 && g.tasks.length > 0 && (
-                <tr class="phase-row" key="p-none"><td colSpan={cols}><span class="phase-none">{T.noPhase}</span></td></tr>
+                <tr class="phase-row" key="p-none" data-dnd-head=""><td colSpan={cols}><span class="phase-none">{T.noPhase}</span></td></tr>
               )}
               {g.tasks.map(t => {
                 const st = Checks.status(m, t, md);
                 const rowCls = [st.level === 'bad' ? 'err' : st.level === 'warn' ? 'warn' : '', hl.tasks.includes(t.id) ? 'hl' : '', sel && sel.task === t.id ? 'sel' : ''].filter(Boolean).join(' ');
                 return (
-                  <tr key={t.id} class={rowCls} data-task-row={t.id}>
+                  <tr key={t.id} class={rowCls} data-task-row={t.id} data-dnd-task={t.id} data-dnd-phase={t.phase}>
                     <th class="task" scope="row">
                       <div class="task-line">
+                        <Grip id={t.id} refocus={() => focusGrip(t.id)} />
                         <span class="id">{no[t.id]}</span>
                         <input class="input bare task-input" aria-label={T.taskName} placeholder={T.newTaskPlaceholder} {...fieldProps(() => t.name, v => { t.name = v; })}
-                          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTask(t.phase); } }} />
+                          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTask(t.phase); } else moveTaskByKey(e, t.id, () => focusTask(t.id)); }} />
                         <button type="button" class="icon-btn sm task-more" title={T.editTask} aria-label={T.editTask} data-action="editTask" onClick={() => openTaskDialog(t.id)}>⋯</button>
                       </div>
                       {t.ref.trim() && <small class="ref">↗ {t.ref}</small>}
@@ -161,22 +179,47 @@ export function MatrixTable({ m }) {
   );
 }
 
-/** Schmale Bildschirme: Aufgaben als Liste mit ihren Rollen. @param {{ m: Matrix }} props */
+/**
+ * Schmale Bildschirme: Aufgaben als Liste mit ihren Rollen; im Modus „Reihenfolge“ kompakte
+ * Karten mit Griff und ↑ ↓.
+ * @param {{ m: Matrix }} props
+ */
 export function MobileList({ m }) {
   const T = Texts.matrix;
   const md = viewMode(m);
   const no = Model.numbers(m);
+  const [reorder, setReorder] = useState(false);
+  const sorting = reorder && !isPreview();
   return (
-    <div class="m-list" id="mobileList">
+    <div class="m-list" id="mobileList" data-dnd-root>
+      {m.tasks.length > 1 && !isPreview() && (
+        <div class={`m-reorder-bar${sorting ? ' on' : ''}`}>
+          {sorting && <span class="sub small">{T.reorderHint}</span>}
+          <button type="button" class={`btn sm${sorting ? ' primary' : ''}`} id="mReorder" onClick={() => setReorder(!sorting)}>{sorting ? Texts.ui.done : `⇅ ${T.reorder}`}</button>
+        </div>
+      )}
       {Model.groups(m).map(g => (
         <section key={g.phase ? g.phase.id : 'none'} class="m-group">
-          {g.phase && (
-            <button type="button" class="m-phase" data-m-phase={g.phase.id} aria-label={`${T.editPhase}: ${g.phase.name || Texts.ui.untitledPhase}`} onClick={() => openPhaseDialog(/** @type {Phase} */ (g.phase).id)}>
-              <span>{g.phase.name || Texts.ui.untitledPhase}</span><span class="m-phase-edit" aria-hidden="true">✎</span>
-            </button>
-          )}
-          {!g.phase && m.options.phases && m.phases.length > 0 && g.tasks.length > 0 && <h3>{T.noPhase}</h3>}
+          {g.phase && (sorting
+            ? <h3 class="m-phase" data-dnd-head={g.phase.id}>{g.phase.name || Texts.ui.untitledPhase}</h3>
+            : (
+              <button type="button" class="m-phase" data-m-phase={g.phase.id} aria-label={`${T.editPhase}: ${g.phase.name || Texts.ui.untitledPhase}`} onClick={() => openPhaseDialog(/** @type {Phase} */ (g.phase).id)}>
+                <span>{g.phase.name || Texts.ui.untitledPhase}</span><span class="m-phase-edit" aria-hidden="true">✎</span>
+              </button>
+            ))}
+          {!g.phase && m.options.phases && m.phases.length > 0 && g.tasks.length > 0 && <h3 data-dnd-head="">{T.noPhase}</h3>}
           {g.tasks.map(t => {
+            if (sorting) {
+              return (
+                <div key={t.id} class="m-task m-sort card" data-m-task={t.id} data-dnd-task={t.id} data-dnd-phase={t.phase}>
+                  <Grip id={t.id} refocus={() => focusGrip(t.id)} />
+                  <span class="id">{no[t.id]}</span>
+                  <span class="nm">{t.name || Texts.ui.untitledTask}</span>
+                  <button type="button" class="icon-btn" title={Texts.ui.moveUp} aria-label={Texts.ui.moveUp} data-action="mUp" disabled={!canMoveTask(m, t.id, -1)} onClick={() => mutate(x => Ops.moveTask(x, t.id, -1))}>↑</button>
+                  <button type="button" class="icon-btn" title={Texts.ui.moveDown} aria-label={Texts.ui.moveDown} data-action="mDown" disabled={!canMoveTask(m, t.id, 1)} onClick={() => mutate(x => Ops.moveTask(x, t.id, 1))}>↓</button>
+                </div>
+              );
+            }
             const st = Checks.status(m, t, md);
             return (
               <button type="button" key={t.id} class={`m-task card${st.level === 'bad' ? ' err' : ''}`} data-m-task={t.id} onClick={() => openTaskDialog(t.id)}>
@@ -192,10 +235,10 @@ export function MobileList({ m }) {
               </button>
             );
           })}
-          <button type="button" class="link sm" onClick={() => { const nt = mutate(x => Ops.addTask(x, { phase: g.phase ? g.phase.id : '' })); if (nt) openTaskDialog(nt.id); }}>{T.addTask}</button>
+          {!sorting && <button type="button" class="link sm" onClick={() => { const nt = mutate(x => Ops.addTask(x, { phase: g.phase ? g.phase.id : '' })); if (nt) openTaskDialog(nt.id); }}>{T.addTask}</button>}
         </section>
       ))}
-      {m.options.phases && (
+      {m.options.phases && !sorting && (
         <button type="button" class="link sm m-add-phase" id="mAddPhase" onClick={() => { const p = mutate(x => Ops.addPhase(x)); if (p) openPhaseDialog(p.id); }}>{T.addPhase}</button>
       )}
     </div>

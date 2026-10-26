@@ -67,3 +67,7 @@ In den Einstellungen standen je Buchstabe sechs Felder in einer Zeile – Name u
 „RACI“ als Text ist im Quadrat der Schwester-Apps zu klein (im Browser-Tab bei 16 px unlesbar). Vorschläge A–H für ein Symbol in derselben Form (Indigo-Quadrat, Weiß darauf), jeweils groß, in der Kopfzeile hell/dunkel und als Browser-Symbol: [`logo.html`](logo.html), Bild `logo.png`.
 
 Gewählt und umgesetzt (Kopfzeile und Browser-Symbol): **G – Aufgabenzeilen** – drei Aufgaben als Balken, rechts je drei Rollen-Zellen, in jeder Zeile genau eine kräftige (das A). Zeigt die Kernregel der Methode und hebt sich anders als das reine Zellraster (A) klar vom Logo der Morphologischen Matrix ab.
+
+## Reihenfolge der Aufgaben (umgesetzt)
+
+Bisher lässt sich die Reihenfolge nur im Aufgaben-Dialog Schritt für Schritt und nur innerhalb einer Phase ändern. Vorschlag: Griff ⠿ vor jeder Nummer zum Ziehen (auch in eine andere Phase), `Alt`+`↑`/`↓` im Aufgabennamen oder auf dem Griff, mobil ein Modus „Reihenfolge“ mit Griff und ↑ ↓ je Karte: [`reihenfolge.html`](reihenfolge.html), Bild `reihenfolge.png`. Umgesetzt wie vorgeschlagen; ↑ ↓ im Aufgaben-Dialog verschieben jetzt ebenfalls über Phasengrenzen.
