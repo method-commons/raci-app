@@ -81,19 +81,48 @@ export const Ops = (() => {
   }
 
   /**
-   * Aufgabe innerhalb ihrer Gruppe (Phase) nach oben bzw. unten verschieben.
+   * Aufgabe einen Schritt nach oben bzw. unten verschieben; am Anfang bzw. Ende ihrer Phase rückt
+   * sie ans Ende der vorigen bzw. an den Anfang der nächsten Phase.
    * @param {Matrix} m @param {string} id @param {-1 | 1} dir
    */
   function moveTask(m, id, dir) {
     const t = task(m, id);
     if (!t) return false;
-    const group = m.options.phases ? m.tasks.filter(x => x.phase === t.phase) : m.tasks;
+    const groups = Model.groups(m);
+    const gi = groups.findIndex(g => g.tasks.includes(t));
+    const group = groups[gi].tasks;
     const other = group[group.indexOf(t) + dir];
-    if (!other) return false;
-    const i = m.tasks.indexOf(t);
-    const j = m.tasks.indexOf(other);
-    [m.tasks[i], m.tasks[j]] = [m.tasks[j], m.tasks[i]];
-    return true;
+    if (other) {
+      const i = m.tasks.indexOf(t);
+      const j = m.tasks.indexOf(other);
+      [m.tasks[i], m.tasks[j]] = [m.tasks[j], m.tasks[i]];
+      return true;
+    }
+    const next = groups[gi + dir];
+    if (!next) return false;
+    const before = dir > 0 && next.tasks.length ? next.tasks[0].id : null;
+    return moveTaskTo(m, id, next.phase ? next.phase.id : '', before);
+  }
+
+  /**
+   * Aufgabe an eine Stelle setzen: in Phase `phase` vor die Aufgabe `before`, ohne `before` ans
+   * Ende der Phase (ohne Phasen: der Liste). Gibt zurück, ob sich etwas geändert hat.
+   * @param {Matrix} m @param {string} id @param {string} phase @param {string | null} before
+   */
+  function moveTaskTo(m, id, phase, before) {
+    const t = task(m, id);
+    if (!t || before === id) return false;
+    if (!m.options.phases) phase = t.phase;
+    else if (phase !== '' && !m.phases.some(p => p.id === phase)) return false;
+    const old = m.tasks;
+    const rest = old.filter(x => x !== t);
+    let i = before ? rest.findIndex(x => x.id === before) : -1;
+    if (i < 0) i = m.options.phases ? rest.map(x => x.phase).lastIndexOf(phase) + 1 || rest.length : rest.length;
+    rest.splice(i, 0, t);
+    const changed = t.phase !== phase || rest.some((x, k) => x !== old[k]);
+    t.phase = phase;
+    m.tasks = rest;
+    return changed;
   }
 
   // ===== Rollen =====
@@ -372,7 +401,7 @@ export const Ops = (() => {
   }
 
   return {
-    touch, addPhase, removePhase, movePhase, addTask, task, updateTask, removeTask, moveTask,
+    touch, addPhase, removePhase, movePhase, addTask, task, updateTask, removeTask, moveTask, moveTaskTo,
     addRole, removeRole, moveRole, copyRoles, setKeys, canCombine, press, setQuestion, setNote,
     applyPlan, applySuggestion, renameKey, resortCells, setVariant, addLetter, updateLetter, removeLetter,
     setOption, setRule, addTaskList, applyTemplate, duplicate,

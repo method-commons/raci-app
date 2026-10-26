@@ -56,6 +56,14 @@
     .m-task .t { display: flex; gap: 6px; align-items: center; font-weight: 650; }
     .m-task .rl { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11.5px; color: var(--text-2); }
     .m-task .rl span { display: inline-flex; gap: 4px; align-items: center; }
+    .m-reorder-bar { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+    .m-reorder-bar.on { position: sticky; top: 8px; z-index: 5; justify-content: space-between; padding: 8px 10px; border-radius: 10px; background: var(--surface); box-shadow: var(--shadow-lg); }
+    .m-sort { display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 4px; cursor: default; }
+    .m-sort .grip { width: 30px; height: 36px; font-size: 17px; opacity: 1; }
+    .m-sort .nm { flex: 1; min-width: 0; font-weight: 650; }
+    .m-sort .icon-btn { width: 36px; height: 36px; }
+    .m-sort.drop-before { box-shadow: 0 -3px 0 var(--accent); }
+    .m-sort.drop-after, .m-group h3.drop-after { box-shadow: 0 3px 0 var(--accent); }
     .overlay { place-items: end center; padding: 0; }
     .overlay .dialog { width: 100%; border-radius: 16px 16px 0 0; max-height: 92vh; overflow: auto; }
     .kpis { grid-template-columns: 1fr 1fr; }

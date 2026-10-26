@@ -11,6 +11,7 @@ import { Texts } from '../texts.js';
 import { Util } from '../util.js';
 import { Badge, fill } from './components.jsx';
 import { fieldProps, mutate, selectedCell, viewMode, viewPrefs } from './core.js';
+import { moveTaskByKey } from './reorder.js';
 import { openSettings } from './settings.jsx';
 
 /** Auswahl-Feld an der gewählten Zelle offen? */
@@ -58,6 +59,7 @@ export function CellContent({ m, task, role }) {
 
 /** Tastatur in einer Zelle. @param {KeyboardEvent} e @param {Matrix} m @param {string[]} order @param {string} task @param {string} role */
 export function onCellKey(e, m, order, task, role) {
+  if (moveTaskByKey(e, task, () => focusCell(task, role))) return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const md = viewMode(m);
   const ri = m.roles.findIndex(r => r.id === role);

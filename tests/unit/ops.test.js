@@ -17,7 +17,7 @@ describe('Ops', () => {
     expect(c.ref).toBe('R7');
     expect(Ops.moveTask(m, c.id, -1)).toBe(true);
     expect(m.tasks.map(t => t.name)).toEqual(['c', 'b', 'a', 'd']);
-    expect(Ops.moveTask(m, c.id, -1)).toBe(false);
+    expect(Ops.moveTask(m, d.id, -1)).toBe(false);
     expect(Ops.moveTask(m, 'x', 1)).toBe(false);
     Ops.updateTask(m, a.id, { name: 'A', ref: 'x', phase: p2.id });
     expect(m.tasks.map(t => t.name)).toEqual(['c', 'b', 'd', 'A']);
@@ -35,6 +35,43 @@ describe('Ops', () => {
     expect(Ops.moveTask(m, a.id, -1)).toBe(true);
     Ops.removeTask(m, a.id);
     expect(m.tasks.map(t => t.name)).toEqual(['c', 'b', 'd']);
+  });
+
+  it('verschiebt Aufgaben über Phasengrenzen und an eine beliebige Stelle', () => {
+    const m = Model.create();
+    const p1 = Ops.addPhase(m, 'Eins');
+    const p2 = Ops.addPhase(m, 'Zwei');
+    const a = Ops.addTask(m, { name: 'a', phase: p1.id });
+    const b = Ops.addTask(m, { name: 'b', phase: p1.id });
+    const c = Ops.addTask(m, { name: 'c', phase: p2.id });
+    const order = () => Model.ordered(m).map(t => `${t.name}${t.phase === p1.id ? 1 : t.phase === p2.id ? 2 : 0}`);
+    // Ende der Phase: in die nächste, an den Anfang
+    expect(Ops.moveTask(m, b.id, 1)).toBe(true);
+    expect(order()).toEqual(['a1', 'b2', 'c2']);
+    // Anfang der Phase: in die vorige, ans Ende
+    expect(Ops.moveTask(m, b.id, -1)).toBe(true);
+    expect(order()).toEqual(['a1', 'b1', 'c2']);
+    expect(Ops.moveTask(m, c.id, 1)).toBe(false);
+    // an eine Stelle: vor eine Aufgabe, ans Ende einer Phase, in eine leere Phase
+    expect(Ops.moveTaskTo(m, c.id, p1.id, a.id)).toBe(true);
+    expect(order()).toEqual(['c1', 'a1', 'b1']);
+    expect(Ops.moveTaskTo(m, c.id, p1.id, a.id)).toBe(false);
+    expect(Ops.moveTaskTo(m, c.id, p2.id, null)).toBe(true);
+    expect(order()).toEqual(['a1', 'b1', 'c2']);
+    expect(Ops.moveTaskTo(m, a.id, p1.id, null)).toBe(true);
+    expect(order()).toEqual(['b1', 'a1', 'c2']);
+    expect(Ops.moveTaskTo(m, a.id, '', null)).toBe(true);
+    expect(order()).toEqual(['a0', 'b1', 'c2']);
+    expect(Ops.moveTaskTo(m, a.id, 'falsch', null)).toBe(false);
+    expect(Ops.moveTaskTo(m, a.id, p1.id, a.id)).toBe(false);
+    expect(Ops.moveTaskTo(m, 'x', p1.id, null)).toBe(false);
+    // ohne Phasen: Phase bleibt, ohne Ziel ans Ende der Liste
+    m.options.phases = false;
+    expect(m.tasks.map(t => t.name)).toEqual(['b', 'c', 'a']);
+    expect(Ops.moveTaskTo(m, b.id, p2.id, null)).toBe(true);
+    expect(m.tasks.map(t => t.name)).toEqual(['c', 'a', 'b']);
+    expect(b.phase).toBe(p1.id);
+    expect(Ops.moveTask(m, b.id, 1)).toBe(false);
   });
 
   it('legt Rollen an, verschiebt, entfernt und übernimmt sie', () => {

@@ -31,7 +31,7 @@ E2E-Tests laufen gegen `dist/` – nach Codeänderungen vorher bauen. Chromium i
 
 ## Architektur
 
-- **Logik ohne DOM** in `js/*.js` (`Model`, `Variants`, `Checks`, `Ops`, `Store`, `IO`, `Examples`), Oberfläche in `js/ui/*.jsx`; die Matrix-Ansicht ist aufgeteilt in `matrix.jsx` (Ansicht, Seitenleiste), `matrix-table.jsx` (Tabelle, mobile Liste), `cell.jsx` (Zellen, Auswahl-Feld) und `task-dialogs.jsx`.
+- **Logik ohne DOM** in `js/*.js` (`Model`, `Variants`, `Checks`, `Ops`, `Store`, `IO`, `Examples`), Oberfläche in `js/ui/*.jsx`; die Matrix-Ansicht ist aufgeteilt in `matrix.jsx` (Ansicht, Seitenleiste), `matrix-table.jsx` (Tabelle, mobile Liste), `cell.jsx` (Zellen, Auswahl-Feld), `task-dialogs.jsx` und `reorder.js` (Aufgaben ziehen und mit `Alt`+`↑`/`↓` verschieben; Ziele über `data-dnd-root`, `data-dnd-task`/`data-dnd-phase`, `data-dnd-head`, abgelegt mit `Ops.moveTaskTo`).
 - **Kürzel in allen Zellen ändern** nur über `Ops.renameKey` bzw. `Ops.resortCells` – beide ordnen die Kürzel und räumen leere Zellen auf.
 - **Eine Matrix trägt ihre Buchstaben selbst** (`letters`); die Variante liefert nur die Vorlage.
 - **Zellen:** `cells[taskId][roleId] = { v, s, q, note }` – `v` Ist, `s` Soll (`null` = wie Ist). Gelesen wird immer über `Model.keys(m, task, role, mode)`; der Stand der Ansicht kommt aus `viewMode(m)` (`js/ui/core.js`).
