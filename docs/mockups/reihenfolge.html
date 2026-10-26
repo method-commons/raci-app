@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RACI – Mockup Reihenfolge der Aufgaben</title>
+<style>
+  /* Tokens wie in docs/mockups/mockups.html bzw. css/tokens.css */
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --surface-2: #f2f4f7; --surface-3: #eaedf2;
+    --text: #101828; --text-2: #344054; --muted: #667085;
+    --border: #e4e7ec; --border-strong: #d0d5dd;
+    --accent: #4f46e5; --accent-soft: #eef2ff;
+    --bad: #c92a2a; --warn: #a35200; --good: #2b8a3e;
+    --info: #1864ab; --info-bg: #dbeafe;
+    --shadow-xs: 0 1px 2px rgba(16,24,40,.05);
+    --shadow-lg: 0 12px 32px -8px rgba(16,24,40,.18), 0 4px 8px -4px rgba(16,24,40,.06);
+    --lc-indigo: #4f46e5; --lc-teal: #0e7490; --lc-orange: #ffd8a8; --lc-gray: #e4e7ec;
+    --lt-orange: #a35200; --lt-gray: #667085;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde4; color: var(--text); font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; padding: 0 16px 48px; }
+  .page { max-width: 1280px; margin: 0 auto; }
+  .caption { margin: 40px 0 12px; font-weight: 700; color: #344054; font-size: 15px; }
+  .note { background: var(--surface); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow-xs); color: var(--text-2); }
+  .note h1 { font-size: 20px; margin: 0 0 6px; }
+  .note ul, .note ol { margin: 6px 0 0; padding-left: 20px; }
+  .note li { margin: 4px 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 390px; gap: 32px; align-items: start; }
+  @media (max-width: 1100px) { .grid2 { grid-template-columns: 1fr; } }
+  .new { display: inline-block; font-size: 10px; font-weight: 800; color: var(--info); background: var(--info-bg); border-radius: 99px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; text-transform: uppercase; letter-spacing: .04em; }
+  kbd { font: 600 11px ui-monospace, monospace; background: var(--surface-2); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; }
+
+  .b { font-style: normal; display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 7px; font: 800 12px/1 Inter, ui-sans-serif, system-ui, sans-serif; background: var(--lc); color: var(--lt); }
+  .A { --lc: var(--lc-indigo); --lt: #fff; } .R { --lc: var(--lc-teal); --lt: #fff; }
+  .C { --lc: var(--lc-orange); --lt: var(--lt-orange); } .I { --lc: var(--lc-gray); --lt: var(--lt-gray); }
+
+  /* Tabelle */
+  .card { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 0; }
+  thead th { font-size: 12px; color: var(--muted); font-weight: 600; text-align: center; padding: 10px 6px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+  thead th:first-child { text-align: left; padding-left: 14px; }
+  .phase td { padding: 14px 14px 6px; font: 700 11.5px Inter, sans-serif; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  tr.task td { height: 44px; border-bottom: 1px solid var(--border); text-align: center; }
+  tr.task td.name { text-align: left; }
+  .line { display: flex; align-items: center; gap: 6px; padding: 0 10px 0 4px; }
+  .grip { width: 18px; height: 26px; display: grid; place-items: center; color: #98a2b3; border-radius: 5px; font-size: 14px; letter-spacing: -2px; cursor: grab; opacity: .35; }
+  tr.task:hover .grip, .grip.show { opacity: 1; }
+  .grip.focus { box-shadow: 0 0 0 2px var(--accent); color: var(--accent); opacity: 1; }
+  .id { font: 600 12px ui-monospace, monospace; color: var(--muted); width: 28px; }
+  .nm { font-weight: 600; font-size: 13.5px; flex: 1; }
+  .more { color: var(--muted); }
+  .st { color: var(--good); font-weight: 700; font-size: 12px; }
+  tr.add td { padding: 6px 14px; border-bottom: 1px solid var(--border); }
+  .link { color: var(--accent); font-size: 12.5px; text-decoration: underline; }
+  /* Ziehen */
+  tr.dragging td { opacity: .35; background: var(--surface-2); }
+  tr.drop td { position: relative; }
+  tr.drop td::before { content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 3px; background: var(--accent); }
+  tr.drop td:first-child::after { content: ""; position: absolute; left: -1px; top: -6px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+  .ghost { position: absolute; left: 40px; width: 360px; display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: var(--surface); border: 1px solid var(--accent); border-radius: 9px; box-shadow: var(--shadow-lg); transform: rotate(-1deg); font-weight: 600; font-size: 13.5px; }
+  .tbl-wrap { position: relative; }
+  .tip { position: absolute; font-size: 11.5px; background: #101828; color: #fff; border-radius: 7px; padding: 5px 8px; box-shadow: var(--shadow-lg); white-space: nowrap; }
+  .input-focus { box-shadow: 0 0 0 2px var(--accent); border-radius: 6px; padding: 2px 6px; margin-left: -6px; }
+
+  /* Mobil */
+  .phone { width: 390px; background: var(--bg); border-radius: 18px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .m-top { background: var(--surface); padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .m-top b { flex: 1; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; font-size: 12.5px; box-shadow: var(--shadow-xs); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .m-body { padding: 10px 12px 16px; }
+  .m-phase { font: 700 11.5px Inter, sans-serif; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin: 12px 4px 6px; }
+  .m-card { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 8px 8px 8px 6px; margin-bottom: 6px; }
+  .m-card .grip { opacity: 1; width: 28px; height: 34px; font-size: 16px; }
+  .m-card .nm { font-size: 13px; }
+  .arrows { display: flex; gap: 4px; }
+  .arrows span { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); display: grid; place-items: center; color: var(--text-2); }
+  .arrows span.off { color: #d0d5dd; }
+  .m-card.lift { border-color: var(--accent); box-shadow: var(--shadow-lg); transform: scale(1.02); }
+  .m-gap { height: 44px; border: 2px dashed color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 10px; margin-bottom: 6px; background: var(--accent-soft); }
+  .m-hint { font-size: 12px; color: var(--muted); margin: 2px 4px 8px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="caption">Mockup · Reihenfolge der Aufgaben direkt in der Matrix ändern</div>
+<div class="note">
+  <h1>Aufgaben verschieben, ohne den Dialog zu öffnen</h1>
+  Bisher ändert man die Reihenfolge nur im Aufgaben-Dialog (⋯ → ↑ ↓), Schritt für Schritt und nur innerhalb der Phase. In eine andere Phase kommt eine Aufgabe nur über das Feld „Phase“, und dann landet sie am Ende.
+  <ul>
+    <li><b>Ziehen</b> am Griff <b>⠿</b> vor der Nummer, auch <b>über Phasengrenzen</b> hinweg. Wer eine Aufgabe in eine andere Phase zieht, ändert damit ihre Phase.</li>
+    <li><b>Tastatur:</b> <kbd>Alt</kbd>+<kbd>↑</kbd> / <kbd>Alt</kbd>+<kbd>↓</kbd> im Aufgabennamen oder auf dem Griff. Am Anfang bzw. Ende einer Phase rückt die Aufgabe in die benachbarte Phase.</li>
+    <li><b>Mobil:</b> Knopf „Reihenfolge“ über der Liste. Die Karten werden kompakt und zeigen Griff (zum Ziehen) und ↑ ↓ (zum Tippen); „Fertig“ beendet den Modus.</li>
+    <li>Die Nummern (1.1, 1.2 …) zählen sofort neu. Jede Verschiebung ist ein Schritt für <b>Rückgängig</b>. Phasen bleiben wie bisher mit ↑ ↓ an der Phasenzeile verschiebbar.</li>
+  </ul>
+</div>
+
+<div class="caption">1 · Desktop: Aufgabe „Schichtplan erstellen“ wird in die Phase „Aufbau“ gezogen</div>
+<div class="tbl-wrap card">
+  <table>
+    <thead><tr><th style="width:40%">Aufgabe</th><th>Inhaberin</th><th>Schichtleitung</th><th>Technik</th><th>Einkauf</th><th>Team</th><th>Prüfung</th></tr></thead>
+    <tbody>
+      <tr class="phase"><td colspan="7">Vorbereitung</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">1.1</span><span class="nm">Standplatz beantragen</span><span class="more">⋯</span></div></td><td><i class="b A">A/R</i></td><td><i class="b I">I</i></td><td></td><td><i class="b C">C</i></td><td></td><td class="st">✓</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise festlegen</span><span class="more">⋯</span></div></td><td><i class="b A">A</i></td><td><i class="b R">R</i></td><td></td><td><i class="b C">C</i></td><td><i class="b I">I</i></td><td class="st">✓</td></tr>
+      <tr class="task dragging"><td class="name"><div class="line"><span class="grip show">⠿</span><span class="id">1.3</span><span class="nm">Schichtplan erstellen</span><span class="more">⋯</span></div></td><td><i class="b C">C</i></td><td><i class="b A">A/R</i></td><td></td><td></td><td><i class="b I">I</i></td><td class="st">✓</td></tr>
+      <tr class="add"><td colspan="7"><span class="link">+ Aufgabe</span></td></tr>
+      <tr class="phase"><td colspan="7">Aufbau</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">2.1</span><span class="nm">Strom- und Gasanschluss prüfen</span><span class="more">⋯</span></div></td><td></td><td><i class="b I">I</i></td><td><i class="b A">A/R</i></td><td></td><td></td><td class="st">✓</td></tr>
+      <tr class="task drop"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">2.2</span><span class="nm">Aushilfen zur Hygiene einweisen</span><span class="more">⋯</span></div></td><td><i class="b A">A</i></td><td><i class="b R">R</i></td><td></td><td></td><td><i class="b I">I</i></td><td class="st">✓</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">2.3</span><span class="nm">Stand aufbauen &amp; dekorieren</span><span class="more">⋯</span></div></td><td></td><td><i class="b A">A</i></td><td><i class="b C">C</i></td><td></td><td><i class="b R">R</i></td><td class="st">✓</td></tr>
+      <tr class="add"><td colspan="7"><span class="link">+ Aufgabe</span></td></tr>
+    </tbody>
+  </table>
+  <div class="ghost" style="top:290px"><span class="grip show">⠿</span><span class="id">1.3</span>Schichtplan erstellen</div>
+  <div class="tip" style="top:252px; left:420px">Nach „Aufbau“ verschieben, wird 2.2</div>
+</div>
+
+<div class="caption">2 · Desktop mit Tastatur: <kbd>Alt</kbd>+<kbd>↑</kbd> im Aufgabennamen</div>
+<div class="card">
+  <table>
+    <thead><tr><th style="width:40%">Aufgabe</th><th>Inhaberin</th><th>Schichtleitung</th><th>Technik</th><th>Einkauf</th><th>Team</th><th>Prüfung</th></tr></thead>
+    <tbody>
+      <tr class="phase"><td colspan="7">Betrieb</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">3.1</span><span class="nm">Kasse &amp; Kartenzahlung betreiben</span><span class="more">⋯</span></div></td><td></td><td><i class="b A">A</i></td><td><i class="b C">C</i></td><td><i class="b C">C</i></td><td><i class="b R">R</i></td><td class="st">✓</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip show">⠿</span><span class="id">3.2</span><span class="nm"><span class="input-focus">Beschwerden aufnehmen|</span></span><span class="more">⋯</span></div></td><td><i class="b C">C</i></td><td><i class="b A">A</i></td><td></td><td></td><td><i class="b I">I</i></td><td class="st">✓</td></tr>
+      <tr class="task"><td class="name"><div class="line"><span class="grip">⠿</span><span class="id">3.3</span><span class="nm">Fritteuse &amp; Kühlung überwachen</span><span class="more">⋯</span></div></td><td></td><td><i class="b R">R</i></td><td><i class="b A">A</i></td><td></td><td><i class="b R">R</i></td><td class="st">✓</td></tr>
+    </tbody>
+  </table>
+  <div class="note" style="box-shadow:none; border-top:1px solid var(--border); border-radius:0; font-size:12.5px">„Beschwerden aufnehmen“ war 3.3 und steht nach <kbd>Alt</kbd>+<kbd>↑</kbd> auf 3.2. Der Cursor bleibt im Namen, so lässt sich mehrmals hintereinander verschieben. Der Tastenhinweis an der Zelle nennt <kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> zusätzlich.</div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="caption">Was sich ändert</div>
+    <div class="note">
+      <ol>
+        <li><b>Griff ⠿</b> vor jeder Nummer: blass, bei Zeigen oder Fokus kräftig. Ziehen mit Maus, Stift oder Finger. Eine Linie zeigt die Einfügestelle, ein Hinweis die neue Nummer bzw. Phase.</li>
+        <li>Ablegen in einer anderen Phase <b>setzt die Phase</b>; unter „Ohne Phase“ entfernt sie. Ziehen über den Rand der Tabelle hinaus scrollt mit.</li>
+        <li><kbd>Alt</kbd>+<kbd>↑</kbd>/<kbd>↓</kbd> im Aufgabennamen oder auf dem Griff (der Griff ist ein Knopf und damit per Tab erreichbar). <kbd>Esc</kbd> bricht ein Ziehen ab.</li>
+        <li>Im Aufgaben-Dialog verschieben ↑ ↓ künftig ebenfalls über Phasengrenzen hinweg, wie die Tastatur.</li>
+        <li>Mobil: Modus „Reihenfolge“ mit kompakten Karten; Ziehen startet nur am Griff, damit das Scrollen der Liste weiter funktioniert.</li>
+        <li>In den Ansichten Ist, Soll und Ist → Soll gleich, denn die Reihenfolge gehört der Matrix. Beim Ansehen eines früheren Stands (nur lesend) ist kein Griff zu sehen.</li>
+      </ol>
+      <p class="sub" style="margin:10px 0 0; font-size:12.5px">Datenformat unverändert: Die Reihenfolge steht wie bisher in <code>tasks</code>, die Phase in <code>task.phase</code>.</p>
+    </div>
+  </div>
+  <div>
+    <div class="caption">3 · Mobil (390 px): Modus „Reihenfolge“</div>
+    <div class="phone">
+      <div class="m-top"><b>Stadtfest 2026 – Ablauf</b><span class="btn primary">Fertig</span></div>
+      <div class="m-body">
+        <div class="m-hint">Am Griff ⠿ ziehen oder mit ↑ ↓ verschieben.</div>
+        <div class="m-phase">Vorbereitung</div>
+        <div class="m-card"><span class="grip">⠿</span><span class="id">1.1</span><span class="nm">Standplatz beantragen</span><span class="arrows"><span class="off">↑</span><span>↓</span></span></div>
+        <div class="m-card"><span class="grip">⠿</span><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise festlegen</span><span class="arrows"><span>↑</span><span>↓</span></span></div>
+        <div class="m-card lift"><span class="grip" style="color:var(--accent)">⠿</span><span class="id">1.4</span><span class="nm">Schichtplan erstellen</span><span class="arrows"><span>↑</span><span>↓</span></span></div>
+        <div class="m-card"><span class="grip">⠿</span><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span><span class="arrows"><span>↑</span><span>↓</span></span></div>
+        <div class="m-phase">Aufbau</div>
+        <div class="m-card"><span class="grip">⠿</span><span class="id">2.1</span><span class="nm">Strom- und Gasanschluss prüfen</span><span class="arrows"><span>↑</span><span>↓</span></span></div>
+        <div class="m-card"><span class="grip">⠿</span><span class="id">2.2</span><span class="nm">Aushilfen zur Hygiene einweisen</span><span class="arrows"><span>↑</span><span>↓</span></span></div>
+      </div>
+    </div>
+    <p class="sub" style="font-size:12px; margin:8px 4px">Außerhalb des Modus bleibt die Liste wie bisher: Ein Tipp auf eine Aufgabe öffnet den Aufgaben-Dialog.</p>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
