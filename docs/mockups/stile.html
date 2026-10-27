@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RACI – Mockup neue Stile</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde4; color: #101828; font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; padding: 0 16px 48px; }
+  .page { max-width: 1320px; margin: 0 auto; }
+  .caption { margin: 40px 0 12px; font-weight: 700; color: #344054; font-size: 15px; }
+  .note { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 2px rgba(16,24,40,.05); color: #344054; }
+  .note h1 { font-size: 20px; margin: 0 0 6px; color: #101828; }
+  .note h2 { font-size: 16px; margin: 0 0 6px; color: #101828; }
+  .note ul, .note ol { margin: 6px 0 0; padding-left: 20px; }
+  .note li { margin: 4px 0; }
+  .section { border-top: 3px solid #4f46e5; margin-top: 56px; padding-top: 4px; }
+  .tag { display: inline-block; font: 800 12px Inter, sans-serif; color: #fff; background: #4f46e5; border-radius: 7px; padding: 2px 8px; margin-right: 8px; vertical-align: 2px; }
+  .below { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; align-items: start; }
+  @media (max-width: 1100px) { .below { grid-template-columns: 1fr; } }
+  .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+  .plus { color: #2b8a3e; } .minus { color: #c92a2a; }
+  .sw { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .sw span { display: inline-flex; align-items: center; gap: 6px; font: 600 11.5px ui-monospace, monospace; color: #475467; background: #f2f4f7; border-radius: 6px; padding: 3px 8px 3px 4px; }
+  .sw i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  table.cmp { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; font-size: 13px; }
+  .cmp th, .cmp td { padding: 9px 12px; border-bottom: 1px solid #e4e7ec; text-align: left; vertical-align: top; }
+  .cmp thead th { background: #f2f4f7; font-size: 12px; color: #667085; }
+  .cmp td:first-child { font-weight: 650; color: #344054; width: 20%; }
+
+  /* ===================================================================
+     Gemeinsames Gerüst. Jeder Stil setzt nur Variablen und wenige Regeln.
+     Buchstaben-Farben über Farbnamen (--lc-indigo …), nie über das Kürzel.
+     =================================================================== */
+  .app { background: var(--bg); color: var(--text); font-family: var(--font); border-radius: var(--frame-r); overflow: hidden; box-shadow: 0 12px 32px -8px rgba(16,24,40,.25); }
+  .hdr { display: flex; align-items: center; gap: 14px; height: 58px; padding: 0 18px; background: var(--hdr-bg); color: var(--hdr-text); border-bottom: var(--hdr-border); }
+  .logo { width: 28px; height: 28px; border-radius: var(--logo-r); background: var(--accent); display: grid; place-items: center; flex: none; }
+  .logo i { display: block; width: 14px; height: 2.5px; background: var(--accent-contrast); border-radius: 2px; margin: 1.5px 0; }
+  .brand { font-family: var(--font-head); font-weight: var(--head-w); font-size: 16px; }
+  .docn { font-weight: 600; opacity: .85; padding-left: 14px; border-left: 1px solid var(--hdr-sep); }
+  .nav { display: flex; gap: 2px; background: var(--nav-bg); border-radius: var(--ctl-r); padding: 3px; }
+  .nav span { padding: 5px 11px; border-radius: calc(var(--ctl-r) - 2px); color: var(--nav-text); font-weight: 550; font-size: 13px; }
+  .nav span.on { background: var(--nav-on-bg); color: var(--nav-on-text); font-weight: 700; box-shadow: var(--nav-on-shadow); }
+  .sp { flex: 1; }
+  .btn { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: var(--ctl-r); border: var(--btn-border); background: var(--btn-bg); color: var(--btn-text); font-weight: 600; font-size: 12.5px; }
+  .btn.primary { background: var(--accent); color: var(--accent-contrast); border-color: var(--accent); }
+  .ic { opacity: .7; font-size: 16px; }
+
+  .body { display: grid; grid-template-columns: 1fr 300px; gap: 18px; padding: 18px; }
+  .title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 12px; }
+  .title h3 { margin: 0; font-family: var(--font-head); font-weight: var(--head-w); font-size: var(--title-size); letter-spacing: var(--head-ls); }
+  .title .vt { font-size: 11.5px; font-weight: 700; color: var(--accent-text); background: var(--accent-soft); border-radius: var(--pill-r); padding: 2px 8px; }
+  .title .ds { color: var(--muted); font-size: 13px; }
+
+  .card { background: var(--surface); border: var(--card-border); border-radius: var(--card-r); box-shadow: var(--card-shadow); overflow: hidden; }
+  table.mx { border-collapse: collapse; width: 100%; }
+  .mx th, .mx td { padding: 0; }
+  .mx thead th { font-size: 11.5px; color: var(--muted); font-weight: 600; text-align: center; padding: 10px 4px 9px; background: var(--thead-bg); border-bottom: var(--grid-strong); line-height: 1.25; vertical-align: bottom; }
+  .mx thead th b { display: block; color: var(--text-2); font-size: 12px; font-weight: 700; }
+  .mx thead th:first-child { text-align: left; padding-left: 14px; }
+  .mx thead th.hot { color: var(--warn); box-shadow: inset 0 -3px 0 var(--warn-line); }
+  .mx thead th.hot b { color: var(--warn); }
+  .av { width: 22px; height: 22px; border-radius: 50%; display: none; place-items: center; margin: 0 auto 4px; font: 800 9.5px Inter, sans-serif; color: #fff; }
+  .mx .ph td { padding: 12px 14px 5px; font-family: var(--ph-font); font-size: var(--ph-size); font-weight: var(--ph-w); font-style: var(--ph-style); letter-spacing: var(--ph-ls); text-transform: var(--ph-tt); color: var(--ph-color); border-bottom: var(--grid); }
+  .mx tr.t td { height: var(--row-h); border-bottom: var(--grid); text-align: center; }
+  .mx tr.t td + td { border-left: var(--grid-v); }
+  .mx tr.t td:first-child { text-align: left; padding: 0 10px 0 14px; white-space: nowrap; }
+  .mx tr.t.err td:first-child { box-shadow: inset var(--mark-w) 0 0 var(--bad); }
+  .mx tr.t.wrn td:first-child { box-shadow: inset var(--mark-w) 0 0 var(--warn-line); }
+  .mx tr.t.sel td { background: var(--row-sel); }
+  .id { font-family: var(--num-font); font-weight: 600; font-size: 11.5px; color: var(--muted); margin-right: 8px; }
+  .nm { font-weight: var(--task-w); font-size: 13px; }
+  .st { font-weight: 700; font-size: 11.5px; font-family: var(--num-font); }
+  .st.ok { color: var(--good); } .st.bad { color: var(--bad); } .st.warn { color: var(--warn); }
+  .sum td { background: var(--thead-bg); font: 600 11px var(--num-font); color: var(--muted); padding: 8px 4px; text-align: center; letter-spacing: .08em; }
+  .sum td:first-child { text-align: left; padding-left: 14px; letter-spacing: .04em; }
+
+  /* Buchstabe */
+  .b { font-style: normal; display: inline-grid; place-items: center; min-width: var(--b-w); height: var(--b-h); padding: 0 5px; border-radius: var(--b-r); font: var(--b-weight) var(--b-size)/1 var(--b-font); background: var(--lc); color: var(--lt); border: var(--b-border) solid var(--lb, transparent); }
+  .lc-indigo { --lc: var(--lc-indigo); --lt: var(--lt-on-strong); }
+  .lc-teal   { --lc: var(--lc-teal);   --lt: var(--lt-on-strong); }
+  .lc-orange { --lc: var(--lc-orange); --lt: var(--lt-orange); --lb: var(--lb-orange); }
+  .lc-gray   { --lc: var(--lc-gray);   --lt: var(--lt-gray);   --lb: var(--lb-gray); }
+  .lc-ar     { --lt: var(--lt-on-strong); background: linear-gradient(135deg, var(--lc-indigo) 50%, var(--lc-teal) 50%); }
+  .b.cur { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+
+  /* Seitenleiste */
+  .side { display: flex; flex-direction: column; gap: 14px; }
+  .side .card { padding: 14px 16px; }
+  .k { font-family: var(--ph-font); font-size: var(--ph-size); font-weight: var(--ph-w); font-style: var(--ph-style); letter-spacing: var(--ph-ls); text-transform: var(--ph-tt); color: var(--ph-color); margin-bottom: 8px; }
+  .score { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; border-bottom: var(--grid); }
+  .ring { flex: none; width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; font: 800 13px var(--num-font); background: radial-gradient(closest-side, var(--surface) 76%, transparent 78% 100%), conic-gradient(var(--warn) 0 79%, var(--track) 79% 100%); }
+  .score b { display: block; font-family: var(--font-head); font-weight: var(--head-w); font-size: 15px; }
+  .score small { color: var(--muted); font-size: 12px; }
+  .f { display: flex; gap: 10px; padding: 9px 0; border-bottom: var(--grid); font-size: 12.5px; color: var(--text-2); }
+  .f:last-child { border-bottom: 0; padding-bottom: 0; }
+  .f .fi { flex: none; width: 22px; height: 22px; border-radius: var(--fi-r); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+  .fi.bad { background: var(--bad-bg); color: var(--bad); } .fi.warn { background: var(--warn-bg); color: var(--warn); } .fi.good { background: var(--good-bg); color: var(--good); }
+  .f b { display: block; color: var(--text); font-size: 13px; }
+  .f a { color: var(--accent-text); font-weight: 700; }
+
+  /* Auswahl an der Zelle (klein) */
+  .pop { color: var(--text); font-family: var(--font); background: var(--surface); border: var(--card-border); border-radius: var(--card-r); box-shadow: 0 16px 36px -10px rgba(0,0,0,.35); padding: 14px; width: 330px; }
+  .pop .h { font-family: var(--font-head); font-weight: var(--head-w); font-size: 14px; }
+  .pop .s { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+  .pick { display: flex; gap: 6px; }
+  .pick .b { --b-w: 42px; --b-h: 38px; --b-size: 14px; }
+  .pick .none { --lc: transparent; --lt: var(--muted); --lb: var(--border-strong); border-style: dashed; border-width: 1.5px; }
+  .warnbox { margin-top: 10px; background: var(--bad-bg); color: var(--bad); border-radius: var(--box-r, var(--ctl-r)); padding: 9px 11px; font-size: 12.5px; }
+  .warnbox .btn { margin: 7px 4px 0 0; height: 26px; }
+
+  /* Dunkel-Streifen */
+  .duo { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 20px; }
+  .hdr > * { white-space: nowrap; }
+  .mini .body { grid-template-columns: 1fr; padding: 14px; }
+  .mini .title { display: none; }
+  .lbl { font-size: 12px; font-weight: 700; color: #475467; margin: 0 0 6px 2px; }
+
+  /* =================================================================== 1 Werkstatt */
+  .s-werk {
+    --font: Inter, sans-serif; --font-head: Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif; --head-w: 700; --head-ls: -.005em;
+    --num-font: "JetBrains Mono", ui-monospace, monospace; --title-size: 24px;
+    --bg: #f3eee4; --surface: #fffcf5; --text: #2a251f; --text-2: #4a4238; --muted: #857a6b; --border-strong: #c9bfae;
+    --hdr-bg: #fffcf5; --hdr-text: #2a251f; --hdr-border: 1px solid #e3dccd; --hdr-sep: #e3dccd;
+    --accent: #1f5f5b; --accent-contrast: #fffcf5; --accent-text: #1f5f5b; --accent-soft: #dde9e4;
+    --nav-bg: transparent; --nav-text: #857a6b; --nav-on-bg: transparent; --nav-on-text: #2a251f; --nav-on-shadow: inset 0 -2px 0 #c2552d;
+    --btn-bg: transparent; --btn-text: #2a251f; --btn-border: 1.5px solid #2a251f;
+    --frame-r: 6px; --logo-r: 50%; --ctl-r: 4px; --pill-r: 3px; --card-r: 4px; --fi-r: 50%;
+    --card-border: 1px solid #e3dccd; --card-shadow: 2px 3px 0 #e3dccd;
+    --thead-bg: #fbf6ec; --grid: 1px dashed #e3dccd; --grid-v: 0; --grid-strong: 1.5px solid #2a251f;
+    --row-h: 44px; --row-sel: #f6efdf; --mark-w: 4px; --task-w: 500;
+    --ph-font: Charter, "Bitstream Charter", Georgia, serif; --ph-size: 14px; --ph-w: 700; --ph-style: italic; --ph-ls: 0; --ph-tt: none; --ph-color: #c2552d;
+    --bad: #b42318; --bad-bg: #fbe5df; --warn: #9a5b00; --warn-bg: #fbedd0; --warn-line: #e0a24a; --good: #3f7d3a; --good-bg: #e3efd9; --track: #ece4d4;
+    --b-w: 28px; --b-h: 28px; --b-r: 50%; --b-font: Charter, "Bitstream Charter", Georgia, serif; --b-size: 13.5px; --b-weight: 700; --b-border: 1.5px;
+    --lc-indigo: #2d3a8c; --lc-teal: #1f5f5b; --lc-orange: transparent; --lc-gray: transparent;
+    --lt-on-strong: #fffcf5; --lt-orange: #c2552d; --lb-orange: #c2552d; --lt-gray: #857a6b; --lb-gray: #b8ad9b;
+  }
+  .s-werk .b.lc-gray { border-style: dashed; }
+  .s-werk .b.lc-ar { --b-r: 14px; min-width: 38px; }
+  .s-werk .title h3::after { content: ""; display: block; height: 3px; width: 56px; background: #c2552d; margin-top: 4px; border-radius: 2px; }
+  .s-werk.dark {
+    --bg: #1d1a16; --surface: #26221d; --text: #f1eadf; --text-2: #d9cfbf; --muted: #a39682; --border-strong: #5a5044;
+    --hdr-bg: #26221d; --hdr-text: #f1eadf; --hdr-border: 1px solid #3a342c; --hdr-sep: #3a342c;
+    --accent: #6fb5ad; --accent-contrast: #1d1a16; --accent-text: #8fcbc3; --accent-soft: #24403d;
+    --nav-text: #a39682; --nav-on-text: #f1eadf; --nav-on-shadow: inset 0 -2px 0 #e58a62;
+    --btn-text: #f1eadf; --btn-border: 1.5px solid #d9cfbf;
+    --card-border: 1px solid #3a342c; --card-shadow: 2px 3px 0 #14120f; --thead-bg: #2b2620; --grid: 1px dashed #3a342c; --grid-strong: 1.5px solid #d9cfbf;
+    --row-sel: #312b23; --ph-color: #e58a62;
+    --bad: #f28b74; --bad-bg: #43231c; --warn: #f0b860; --warn-bg: #3d2e14; --warn-line: #b8823a; --good: #9ccc8a; --good-bg: #24331f; --track: #3a342c;
+    --lc-indigo: #7d8be0; --lc-teal: #4f9e96; --lt-on-strong: #1d1a16; --lt-orange: #e58a62; --lb-orange: #e58a62; --lt-gray: #a39682; --lb-gray: #6b6052;
+  }
+  .s-werk.dark .title h3::after { background: #e58a62; }
+
+  /* =================================================================== 2 Präzise */
+  .s-prae {
+    --font: Inter, sans-serif; --font-head: Inter, sans-serif; --head-w: 700; --head-ls: -.02em;
+    --num-font: "JetBrains Mono", ui-monospace, monospace; --title-size: 18px;
+    --bg: #ffffff; --surface: #ffffff; --text: #0b0d12; --text-2: #2a2f3a; --muted: #6b7280; --border-strong: #c7ccd4;
+    --hdr-bg: #0b0d12; --hdr-text: #e5e7eb; --hdr-border: 0; --hdr-sep: #2a2f3a;
+    --accent: #2563eb; --accent-contrast: #fff; --accent-text: #2563eb; --accent-soft: #e0e9ff;
+    --nav-bg: #1a1d24; --nav-text: #9ca3af; --nav-on-bg: #2a2f3a; --nav-on-text: #fff; --nav-on-shadow: none;
+    --btn-bg: #1a1d24; --btn-text: #e5e7eb; --btn-border: 1px solid #2a2f3a;
+    --frame-r: 4px; --logo-r: 3px; --ctl-r: 3px; --pill-r: 2px; --card-r: 0; --fi-r: 2px;
+    --card-border: 1px solid #d5d9e0; --card-shadow: none;
+    --thead-bg: #f6f7f9; --grid: 1px solid #e5e8ec; --grid-v: 1px solid #eef0f3; --grid-strong: 1px solid #c7ccd4;
+    --row-h: 32px; --row-sel: #eef3ff; --mark-w: 2px; --task-w: 500;
+    --ph-font: "JetBrains Mono", monospace; --ph-size: 10.5px; --ph-w: 700; --ph-style: normal; --ph-ls: .12em; --ph-tt: uppercase; --ph-color: #6b7280;
+    --bad: #dc2626; --bad-bg: #fee2e2; --warn: #b45309; --warn-bg: #fef3c7; --warn-line: #f59e0b; --good: #059669; --good-bg: #d1fae5; --track: #e5e8ec;
+    --b-w: 100%; --b-h: 100%; --b-r: 0; --b-font: "JetBrains Mono", monospace; --b-size: 12px; --b-weight: 700; --b-border: 0;
+    --lc-indigo: #3730a3; --lc-teal: #0f766e; --lc-orange: #fff1dc; --lc-gray: #f1f3f6;
+    --lt-on-strong: #fff; --lt-orange: #b45309; --lt-gray: #6b7280;
+  }
+  /* Zelle ganz gefüllt (Heatmap) */
+  .s-prae .mx tr.t td:not(:first-child):not(:last-child) { padding: 0; width: 76px; }
+  .s-prae .mx tr.t td .b { display: grid; width: 100%; height: var(--row-h); }
+  .s-prae .b.cur { box-shadow: inset 0 0 0 2px var(--accent); }
+  .s-prae .pop .b, .s-prae .pick .b { --b-r: 2px; }
+  .s-prae .ring { border-radius: 2px; background: none; border: 0; width: auto; height: auto; font-size: 26px; color: var(--warn); }
+  .s-prae .side .card { border-left: 3px solid var(--text); }
+  .s-prae .title { border-bottom: 1px solid #d5d9e0; padding-bottom: 10px; }
+  .s-prae .title .vt { font-family: var(--num-font); }
+  .s-prae.dark {
+    --bg: #0b0d12; --surface: #11141a; --text: #e5e7eb; --text-2: #c9cdd4; --muted: #8b93a1; --border-strong: #353b47;
+    --hdr-bg: #05070a; --accent: #60a5fa; --accent-contrast: #05070a; --accent-text: #93c5fd; --accent-soft: #172554;
+    --card-border: 1px solid #252a33; --thead-bg: #161a21; --grid: 1px solid #1f242c; --grid-v: 1px solid #1a1e25; --grid-strong: 1px solid #353b47;
+    --row-sel: #142041; --ph-color: #8b93a1;
+    --bad: #f87171; --bad-bg: #3b1515; --warn: #fbbf24; --warn-bg: #3a2a0a; --warn-line: #d97706; --good: #34d399; --good-bg: #0b3324; --track: #252a33;
+    --lc-indigo: #4f46e5; --lc-teal: #0e8a80; --lc-orange: #3a2a12; --lc-gray: #1a1e25; --lt-orange: #fbbf24; --lt-gray: #8b93a1;
+  }
+  .s-prae.dark .side .card { border-left-color: var(--accent); }
+  .s-prae.dark .title { border-bottom-color: #252a33; }
+
+  /* =================================================================== 3 Freundlich */
+  .s-freu {
+    --font: Inter, sans-serif; --font-head: "Inter Display", Inter, sans-serif; --head-w: 800; --head-ls: -.025em;
+    --num-font: Inter, sans-serif; --title-size: 26px;
+    --bg: linear-gradient(160deg, #f4f1ff 0%, #fdf2f8 55%, #f0f9ff 100%); --surface: #ffffff; --text: #1e1b3a; --text-2: #3f3a63; --muted: #7c77a0; --border-strong: #d9d4f2;
+    --hdr-bg: transparent; --hdr-text: #1e1b3a; --hdr-border: 0; --hdr-sep: #e2ddfa;
+    --accent: #7c3aed; --accent-contrast: #fff; --accent-text: #6d28d9; --accent-soft: #ede7ff;
+    --nav-bg: rgba(255,255,255,.7); --nav-text: #7c77a0; --nav-on-bg: #1e1b3a; --nav-on-text: #fff; --nav-on-shadow: 0 4px 10px -2px rgba(30,27,58,.35);
+    --btn-bg: #fff; --btn-text: #1e1b3a; --btn-border: 0;
+    --box-r: 14px; --frame-r: 22px; --logo-r: 10px; --ctl-r: 99px; --pill-r: 99px; --card-r: 20px; --fi-r: 99px;
+    --card-border: 0; --card-shadow: 0 10px 30px -12px rgba(76,52,170,.22), 0 2px 6px -2px rgba(76,52,170,.08);
+    --thead-bg: #ffffff; --grid: 1px solid #f1eefb; --grid-v: 0; --grid-strong: 1px solid #ece8fb;
+    --row-h: 48px; --row-sel: #f7f4ff; --mark-w: 0; --task-w: 600;
+    --ph-font: "Inter Display", Inter, sans-serif; --ph-size: 13px; --ph-w: 800; --ph-style: normal; --ph-ls: -.01em; --ph-tt: none; --ph-color: #1e1b3a;
+    --bad: #e11d48; --bad-bg: #ffe4ea; --warn: #c2410c; --warn-bg: #ffedd5; --warn-line: #fb923c; --good: #059669; --good-bg: #dcfce7; --track: #f1eefb;
+    --b-w: 34px; --b-h: 28px; --b-r: 99px; --b-font: Inter, sans-serif; --b-size: 12px; --b-weight: 800; --b-border: 0;
+    --lc-indigo: #7c3aed; --lc-teal: #0891b2; --lc-orange: #ffedd5; --lc-gray: #f1eefb;
+    --lt-on-strong: #fff; --lt-orange: #c2410c; --lt-gray: #7c77a0;
+  }
+  .s-freu .av { display: grid; }
+  .s-freu .hdr .btn { box-shadow: 0 2px 8px -2px rgba(76,52,170,.2); }
+  .s-freu .b.lc-indigo, .s-freu .b.lc-ar { box-shadow: 0 3px 8px -2px rgba(124,58,237,.45); }
+  .s-freu .b.lc-teal { box-shadow: 0 3px 8px -2px rgba(8,145,178,.45); }
+  .s-freu .b.cur { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--accent); }
+  .s-freu .mx tr.t.err td:first-child .nm::before, .s-freu .mx tr.t.wrn td:first-child .nm::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; background: var(--bad); }
+  .s-freu .mx tr.t.wrn td:first-child .nm::before { background: var(--warn-line); }
+  .s-freu .mx .ph td::before { content: "● "; color: var(--accent); }
+  .s-freu .st { font-size: 11px; padding: 3px 8px; border-radius: 99px; }
+  .s-freu .st.bad { background: var(--bad-bg); } .s-freu .st.warn { background: var(--warn-bg); } .s-freu .st.ok { background: var(--good-bg); }
+  .s-freu .mx thead th.hot { box-shadow: none; }
+  .s-freu .mx thead th.hot .av { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--warn-line); }
+  .s-freu .sum td { background: #faf8ff; }
+  .s-freu.dark {
+    --bg: linear-gradient(160deg, #15122a 0%, #1f1226 55%, #0f1a26 100%); --surface: #1f1b36; --text: #f3f0ff; --text-2: #d6d0f5; --muted: #9e97c7; --border-strong: #3d3766;
+    --hdr-text: #f3f0ff; --hdr-sep: #3d3766;
+    --accent: #a78bfa; --accent-contrast: #15122a; --accent-text: #c4b5fd; --accent-soft: #2e2557;
+    --nav-bg: rgba(255,255,255,.06); --nav-text: #9e97c7; --nav-on-bg: #f3f0ff; --nav-on-text: #15122a;
+    --btn-bg: #2a2547; --btn-text: #f3f0ff;
+    --card-shadow: 0 10px 30px -12px rgba(0,0,0,.6);
+    --thead-bg: #1f1b36; --grid: 1px solid #2a2547; --grid-strong: 1px solid #2f2a52; --row-sel: #262145; --ph-color: #f3f0ff;
+    --bad: #fb7185; --bad-bg: #3f1424; --warn: #fdba74; --warn-bg: #3d2410; --warn-line: #ea7a2c; --good: #6ee7b7; --good-bg: #0f3327; --track: #2a2547;
+    --lc-indigo: #8b5cf6; --lc-teal: #0ea5c6; --lc-orange: #4a2a12; --lc-gray: #2a2547; --lt-orange: #fdba74; --lt-gray: #a8a2cf;
+  }
+  .s-freu.dark .sum td { background: #1b1830; }
+  .s-freu.dark .mx thead th.hot .av { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--warn-line); }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="caption">Mockup · Neue Stile für die RACI-Matrix</div>
+<div class="note">
+  <h1>Drei Stile, gleicher Aufbau</h1>
+  Heute nutzt die App den gemeinsamen Stil der Schwester-Apps: Inter, Indigo als Akzent, kühles Grau, abgerundete Kennzeichen. Hier sind drei eigenständige Stile für dieselbe Ansicht (Kopfzeile, Matrix, Prüfung, Auswahl an der Zelle), jeweils <b>hell und dunkel</b>. Inhalt und Aufbau bleiben gleich.
+  <ul>
+    <li><b>1 · Werkstatt:</b> Papier und Moderationskarten. Warme Töne, Überschriften mit Serifen, Buchstaben als Stempel (A und R gefüllt, C umrandet, I gestrichelt).</li>
+    <li><b>2 · Präzise:</b> technisch und dicht. Dunkle Kopfzeile, feine Gitterlinien, Monospace, jede Zelle ganz eingefärbt (Heatmap). Viele Aufgaben passen auf eine Seite.</li>
+    <li><b>3 · Freundlich:</b> weich und farbig. Großzügige Rundungen, schwebende Karten, Farbverlauf im Hintergrund, Buchstaben als Pillen, Rollen mit Farbkreis.</li>
+  </ul>
+  <p style="margin:8px 0 0; font-size:12.5px; color:#667085">Technisch ist jeder Stil ein Satz Design-Tokens (<code>css/tokens.css</code>) plus wenige Regeln. Die Buchstaben-Farben hängen weiter an den Farbnamen (<code>lc-indigo</code>, <code>lc-orange</code> …), nicht an den Kürzeln. Eigene Buchstaben bekommen also automatisch den Stil.</p>
+</div>
+
+<div class="section" id="werk">
+  <div class="caption"><span class="tag">1</span>Werkstatt – hell</div>
+  <div class="app s-werk" data-frame></div>
+  <div class="duo">
+    <div><div class="lbl">Dunkel</div><div class="app s-werk dark mini" data-frame="mini"></div></div>
+    <div><div class="lbl">Auswahl an der Zelle (hell / dunkel)</div><div style="display:flex; gap:14px; flex-wrap:wrap"><div class="s-werk" data-pop></div><div class="s-werk dark" data-pop style="background:#1d1a16; padding:10px; border-radius:6px"></div></div></div>
+  </div>
+  <div class="below">
+    <div class="note"><h2>Merkmale</h2>
+      <ul>
+        <li>Überschriften, Phasen (kursiv, Terrakotta) und Buchstaben in <b>Charter</b>, Fließtext in Inter.</li>
+        <li><b>Kennzeichen als Stempel:</b> Die Form zeigt das Gewicht. Gefüllt für die Rollen, die handeln (entscheidet, führt aus), umrandet für <i>wird gefragt</i>, gestrichelt für <i>wird informiert</i>. Das bleibt auch im Schwarzweiß-Druck lesbar.</li>
+        <li>Gestrichelte Zeilenlinien und versetzte Schatten wie bei Karten auf einer Pinnwand. Akzent Petrol, zweite Farbe Terrakotta.</li>
+      </ul>
+      <div class="sw"><span><i style="background:#f3eee4"></i>#f3eee4</span><span><i style="background:#1f5f5b"></i>#1f5f5b</span><span><i style="background:#2d3a8c"></i>#2d3a8c</span><span><i style="background:#c2552d"></i>#c2552d</span><span><i style="background:#2a251f"></i>#2a251f</span></div>
+    </div>
+    <div class="note"><div class="pc" style="margin:0">
+      <div><b class="plus">Dafür</b><ul><li>passt zu Workshops und zum Ausdruck an der Wand</li><li>Form statt nur Farbe: barrierearm, druckfest</li><li>eigenes Gesicht, deutlich wärmer</li></ul></div>
+      <div><b class="minus">Dagegen</b><ul><li>entfernt sich am weitesten von den Schwester-Apps</li><li>Serifen-Kennzeichen bei 2–3 Buchstaben (RACI-VS) eng</li></ul></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="section" id="prae">
+  <div class="caption"><span class="tag">2</span>Präzise – hell</div>
+  <div class="app s-prae" data-frame></div>
+  <div class="duo">
+    <div><div class="lbl">Dunkel</div><div class="app s-prae dark mini" data-frame="mini"></div></div>
+    <div><div class="lbl">Auswahl an der Zelle (hell / dunkel)</div><div style="display:flex; gap:14px; flex-wrap:wrap"><div class="s-prae" data-pop></div><div class="s-prae dark" data-pop style="background:#0b0d12; padding:10px; border-radius:4px"></div></div></div>
+  </div>
+  <div class="below">
+    <div class="note"><h2>Merkmale</h2>
+      <ul>
+        <li><b>Zelle = Farbe:</b> Die ganze Zelle ist eingefärbt, das Kürzel steht in JetBrains Mono. Senkrecht ergibt sich ein Bild der Last je Rolle: Engpässe sieht man, bevor man liest.</li>
+        <li>Zeilen 32 px statt 44 px, durchgehendes Gitter, keine Rundungen. Rund 40 % mehr Aufgaben im Blick.</li>
+        <li>Kopfzeile immer dunkel, Akzent kräftiges Blau, Nummern und Summen in Monospace (Spalten stehen bündig).</li>
+      </ul>
+      <div class="sw"><span><i style="background:#0b0d12"></i>#0b0d12</span><span><i style="background:#2563eb"></i>#2563eb</span><span><i style="background:#3730a3"></i>#3730a3</span><span><i style="background:#0f766e"></i>#0f766e</span><span><i style="background:#fff1dc"></i>#fff1dc</span></div>
+    </div>
+    <div class="note"><div class="pc" style="margin:0">
+      <div><b class="plus">Dafür</b><ul><li>große Matrizen (30+ Aufgaben, 10+ Rollen)</li><li>Muster und Lücken auf einen Blick</li><li>wirkt wie ein Werkzeug, passt zu Tastaturarbeit</li></ul></div>
+      <div><b class="minus">Dagegen</b><ul><li>viel Farbfläche, im Druck nur mit Hintergrundfarben</li><li>„A/R“ als geteilte Fläche weniger klar als ein Kennzeichen</li><li>für Einsteiger nüchtern</li></ul></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="section" id="freu">
+  <div class="caption"><span class="tag">3</span>Freundlich – hell</div>
+  <div class="app s-freu" data-frame></div>
+  <div class="duo">
+    <div><div class="lbl">Dunkel</div><div class="app s-freu dark mini" data-frame="mini"></div></div>
+    <div><div class="lbl">Auswahl an der Zelle (hell / dunkel)</div><div style="display:flex; gap:14px; flex-wrap:wrap"><div class="s-freu" data-pop></div><div class="s-freu dark" data-pop style="background:#15122a; padding:10px; border-radius:22px"></div></div></div>
+  </div>
+  <div class="below">
+    <div class="note"><h2>Merkmale</h2>
+      <ul>
+        <li>Hintergrund mit sanftem Farbverlauf, Karten ohne Rand mit weichem, farbigem Schatten, Rundungen 20 px.</li>
+        <li><b>Rollen mit Farbkreis</b> (Initialen der Person bzw. der Rolle) im Spaltenkopf; ein Engpass bekommt einen Ring.</li>
+        <li>Buchstaben als Pillen mit leichtem Schatten. Prüfung je Zeile als farbige Plakette, Fehler als Punkt vor dem Namen statt Balken am Rand.</li>
+        <li>Überschriften in Inter Display, sehr fett. Akzent Violett, Ausführen in Cyan.</li>
+      </ul>
+      <div class="sw"><span><i style="background:linear-gradient(160deg,#f4f1ff,#fdf2f8,#f0f9ff)"></i>Verlauf</span><span><i style="background:#7c3aed"></i>#7c3aed</span><span><i style="background:#0891b2"></i>#0891b2</span><span><i style="background:#ffedd5"></i>#ffedd5</span><span><i style="background:#1e1b3a"></i>#1e1b3a</span></div>
+    </div>
+    <div class="note"><div class="pc" style="margin:0">
+      <div><b class="plus">Dafür</b><ul><li>einladend für Teams ohne Methoden-Erfahrung</li><li>Personen sichtbarer: Wer ist gemeint?</li><li>moderne Anmutung, gut auf Tablets</li></ul></div>
+      <div><b class="minus">Dagegen</b><ul><li>braucht mehr Platz (48-px-Zeilen, breite Pillen)</li><li>Farbkreise brauchen eine Farbe je Rolle (neu, aber ohne Speicherung ableitbar)</li><li>Schatten und Verlauf kosten im Druck</li></ul></div>
+    </div></div>
+  </div>
+</div>
+
+<div class="caption" style="margin-top:56px">Vergleich</div>
+<table class="cmp">
+  <thead><tr><th></th><th>Heute</th><th>1 · Werkstatt</th><th>2 · Präzise</th><th>3 · Freundlich</th></tr></thead>
+  <tbody>
+    <tr><td>Anmutung</td><td>sachlich, wie die Schwester-Apps</td><td>warm, handwerklich</td><td>technisch, dicht</td><td>weich, verspielt</td></tr>
+    <tr><td>Schrift</td><td>Inter</td><td>Charter + Inter</td><td>Inter + JetBrains Mono</td><td>Inter Display + Inter</td></tr>
+    <tr><td>Kennzeichen</td><td>Quadrat, gerundet</td><td>Stempel: gefüllt / umrandet / gestrichelt</td><td>ganze Zelle gefärbt</td><td>Pille mit Schatten</td></tr>
+    <tr><td>Zeilenhöhe</td><td>44 px</td><td>44 px</td><td>32 px</td><td>48 px</td></tr>
+    <tr><td>Druck schwarzweiß</td><td>gut</td><td>sehr gut (Form trägt)</td><td>mäßig (Flächen)</td><td>gut</td></tr>
+    <tr><td>Stark bei</td><td>Einheit der Methoden-Apps</td><td>Workshops, Aushang</td><td>großen Matrizen, Prüfen auf einen Blick</td><td>Einsteigern, Teams</td></tr>
+    <tr><td>Umbau</td><td>–</td><td>Tokens + Kennzeichen-Formen + Schrift</td><td>Tokens + Zellen-Darstellung</td><td>Tokens + Farbkreise der Rollen</td></tr>
+  </tbody>
+</table>
+<div class="note" style="margin-top:16px">
+  <b>Kombinierbar:</b> Die Stile lassen sich auch als <b>Darstellung je Matrix</b> anbieten (Einstellungen: „Darstellung: Standard · Werkstatt · Präzise · Freundlich“), da sie nur Tokens und Klassen tauschen. Besonders die <b>Stempel-Formen</b> aus 1 lohnen sich unabhängig vom Stil, weil sie C und I ohne Farbe unterscheidbar machen.
+  <p style="margin:8px 0 0; font-size:12.5px; color:#667085">Datenformat unverändert; eine Darstellung je Matrix wäre eine neue Einstellung (rückwärts verträglich, Standard „Standard“).</p>
+</div>
+
+</div>
+
+<script>
+  // Gleicher Inhalt für alle Stile – nur zum Zeichnen des Mockups.
+  const roles = [
+    ['Inhaberin', 'Lea', 'LH', '#7c3aed'], ['Schichtleitung', 'Aylin', 'AY', '#0891b2', 'hot'], ['Technik', 'Fritz', 'FK', '#ea580c'],
+    ['Einkauf', 'Ben', 'BS', '#16a34a'], ['Marketing', 'Mia', 'MW', '#db2777'], ['Service-Team', 'Jonas +2', 'JM', '#2563eb'],
+  ];
+  const L = { A: 'lc-indigo', R: 'lc-teal', C: 'lc-orange', I: 'lc-gray', 'A/R': 'lc-ar' };
+  const rows = [
+    ['ph', 'Vorbereitung'],
+    ['1.1', 'Standplatz beantragen', ['A/R', 'I', '', 'C', '', ''], 'ok', '✓'],
+    ['1.2', 'Speisekarte & Preise festlegen', ['A', 'R', '', 'C', 'C', 'I'], 'ok', '✓'],
+    ['1.3', 'Ware & Getränke bestellen', ['A', 'C', '', 'A/R*', '', ''], 'bad', '× 2× A', 'err sel'],
+    ['1.4', 'Schichtplan erstellen', ['C', 'A/R', '', '', '', 'I'], 'ok', '✓'],
+    ['1.5', 'Social-Media-Ankündigung', ['C', '', '', '', 'R', ''], 'bad', '× kein A', 'err'],
+    ['ph', 'Betrieb'],
+    ['3.1', 'Kasse & Kartenzahlung betreuen', ['', 'A', '', 'C', '', 'R'], 'ok', '✓'],
+    ['3.2', 'Fritteuse & Kühlung überwachen', ['', 'R', 'A', '', '', 'R'], 'ok', '✓'],
+    ['3.3', 'Reklamationen klären', ['C', 'A', '', '', '', 'I'], 'warn', '! kein R', 'wrn'],
+    ['ph', 'Abbau & Abrechnung'],
+    ['4.2', 'Mit Veranstalter abrechnen', ['A', 'C', 'C', 'R', 'C', 'C'], 'warn', '! 5× C', 'wrn'],
+  ];
+  const esc = s => s.replace(/&/g, '&amp;');
+  const chip = v => { if (!v) return ''; const cur = v.endsWith('*'); v = v.replace('*', ''); return `<i class="b ${L[v]}${cur ? ' cur' : ''}">${v}</i>`; };
+  const table = mini => {
+    const rs = mini ? rows.slice(0, 6) : rows;
+    let h = `<table class="mx"><thead><tr><th style="width:32%">Aufgabe</th>`;
+    for (const [n, p, ini, col, hot] of roles) h += `<th class="${hot || ''}"><span class="av" style="background:${col}">${ini}</span><b>${n}</b>${p}</th>`;
+    h += `<th>Prüfung</th></tr></thead><tbody>`;
+    for (const r of rs) {
+      if (r[0] === 'ph') { h += `<tr class="ph"><td colspan="8">${esc(r[1])}</td></tr>`; continue; }
+      const [id, nm, cells, st, stt, cls] = r;
+      h += `<tr class="t ${cls || ''}"><td><span class="id">${id}</span><span class="nm">${esc(nm)}</span></td>${cells.map(c => `<td>${chip(c)}</td>`).join('')}<td><span class="st ${st}">${stt}</span></td></tr>`;
+    }
+    if (!mini) h += `<tr class="sum"><td>A·R·C·I</td><td>6 1 3 0</td><td>5 5 2 2</td><td>2 2 4 0</td><td>1 2 4 0</td><td>0 1 4 0</td><td>0 4 2 4</td><td></td></tr>`;
+    return h + `</tbody></table>`;
+  };
+  const side = `<div class="side"><div class="card">
+      <div class="k">Prüfung</div>
+      <div class="score"><span class="ring">11/14</span><div><b>Aufgaben eindeutig</b><small>genau ein A und mindestens ein R</small></div></div>
+      <div class="f"><span class="fi bad">×</span><div><b>Genau ein A je Aufgabe</b><a>1.3</a> 2× A · <a>1.5</a> kein A</div></div>
+      <div class="f"><span class="fi warn">!</span><div><b>Mindestens ein R</b><a>3.3</a> nur A – erledigt die Schichtleitung es selbst?</div></div>
+      <div class="f"><span class="fi warn">!</span><div><b>Keine Engpässe</b><a>Schichtleitung</a> an 13 von 14 Aufgaben</div></div>
+      <div class="f"><span class="fi good">✓</span><div><b>Jede Rolle hat eine Aufgabe</b></div></div>
+    </div></div>`;
+  const frame = mini => `
+    <div class="hdr"><span class="logo"><i></i><i></i><i></i></span><span class="brand">RACI-Matrix</span><span class="docn">Stadtfest 2026 – Ablauf</span>
+      <div class="nav"><span class="on">Matrix</span><span>Rollen</span>${mini ? '' : '<span>Wer macht was?</span><span>Bericht</span>'}</div>
+      <span class="sp"></span><span class="ic">↶</span><span class="ic">↷</span>${mini ? '' : '<span class="btn">? Methodik</span>'}<span class="btn primary">Datei ▾</span></div>
+    <div class="body">
+      <div class="title"><h3>Stadtfest 2026 – Ablauf</h3><span class="vt">RACI</span><span class="ds">Food-Truck auf dem Stadtfest, 3 Tage</span></div>
+      <div class="card">${table(mini)}</div>${mini ? '' : side}
+    </div>`;
+  const pop = `<div class="pop"><div class="h">1.3 Ware &amp; Getränke bestellen</div><div class="s">Rolle Einkauf &amp; Finanzen (Ben)</div>
+    <div class="pick"><i class="b lc-teal">R</i><i class="b lc-indigo">A</i><i class="b lc-ar cur">A/R</i><i class="b lc-orange">C</i><i class="b lc-gray">I</i><i class="b none">–</i></div>
+    <div class="warnbox">Schon ein <b>A</b> bei <b>Inhaberin</b>. Wer entscheidet am Ende?<br><span class="btn">Inhaberin → C</span><span class="btn">hier nur R</span></div></div>`;
+  document.querySelectorAll('[data-frame]').forEach(el => { el.innerHTML = frame(el.dataset.frame === 'mini'); });
+  document.querySelectorAll('[data-pop]').forEach(el => { el.innerHTML = pop; });
+</script>
+</body>
+</html>

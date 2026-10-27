@@ -81,3 +81,13 @@ Drei Alternativen zum heutigen Aufbau (Kopfzeile mit Ansichten, Matrix, Prüfung
 - **C · Geführte Schritte:** Schrittleiste Aufgaben → Rollen → Zuordnen → Prüfen → Weitergeben; Prüfen als Fragen der Methode („Wer entscheidet am Ende?“) mit nur den betroffenen Aufgaben und Vorschlägen; Schalter „Alles auf einer Seite“ für Geübte.
 
 Empfehlung: **B** (kleinster Umbau, nichts verdeckt die Matrix, senkrecht prüfen ohne Ansichtswechsel); die Fragen aus C später als Darstellung der Prüfung im Inspektor.
+
+## Neue Stile (Vorschlag)
+
+Drei visuelle Stile für denselben Aufbau (Kopfzeile, Matrix, Prüfung, Auswahl an der Zelle), jeweils hell und dunkel, mit Farbwerten, Vor- und Nachteilen und Vergleich zum heutigen Stil: [`stile.html`](stile.html), Bild `stile.png`.
+
+- **1 · Werkstatt:** Papier-Töne, Überschriften in Charter, Petrol und Terrakotta; Kennzeichen als Stempel – gefüllt für entscheidet/führt aus, umrandet für wird gefragt, gestrichelt für wird informiert (auch schwarzweiß lesbar).
+- **2 · Präzise:** dunkle Kopfzeile, Gitter, JetBrains Mono, 32-px-Zeilen; jede Zelle ganz eingefärbt (Heatmap) – für große Matrizen.
+- **3 · Freundlich:** Farbverlauf, schwebende Karten mit großen Rundungen, Buchstaben als Pillen, Rollen mit Farbkreis (Initialen); Prüfung je Zeile als Plakette.
+
+Jeder Stil ist ein Satz Tokens plus wenige Regeln; die Farben der Buchstaben hängen weiter an den Farbnamen (`lc-<Farbe>`), nicht am Kürzel. Denkbar auch als „Darstellung“ je Matrix.
