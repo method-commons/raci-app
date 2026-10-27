@@ -71,3 +71,13 @@ Gewählt und umgesetzt (Kopfzeile und Browser-Symbol): **G – Aufgabenzeilen** 
 ## Reihenfolge der Aufgaben (umgesetzt)
 
 Bisher lässt sich die Reihenfolge nur im Aufgaben-Dialog Schritt für Schritt und nur innerhalb einer Phase ändern. Vorschlag: Griff ⠿ vor jeder Nummer zum Ziehen (auch in eine andere Phase), `Alt`+`↑`/`↓` im Aufgabennamen oder auf dem Griff, mobil ein Modus „Reihenfolge“ mit Griff und ↑ ↓ je Karte: [`reihenfolge.html`](reihenfolge.html), Bild `reihenfolge.png`. Umgesetzt wie vorgeschlagen; ↑ ↓ im Aufgaben-Dialog verschieben jetzt ebenfalls über Phasengrenzen.
+
+## Alternative Layouts (Vorschlag)
+
+Drei Alternativen zum heutigen Aufbau (Kopfzeile mit Ansichten, Matrix, Prüfung als Seitenleiste rechts, Auswahl-Feld an der Zelle), jeweils Desktop und Mobil, mit Vor- und Nachteilen und Vergleich: [`layouts.html`](layouts.html), Bild `layouts.png`. Datenformat und Funktionen bleiben bei allen gleich.
+
+- **A · Navigation links:** App-Rahmen mit Leiste für geöffnete Matrizen und ihre Ansichten, Methodik, Einstellungen, Ablage; Prüfung als einklappbare Leiste unter der Matrix; mobil als Schublade.
+- **B · Inspektor rechts:** Die Seitenleiste zeigt, was ausgewählt ist – Zelle (Buchstaben, Hinweis zum Auflösen, Notiz; ersetzt das Auswahl-Feld), Aufgabe oder Rolle (Verteilung, Engpass, Vorschläge zum Entlasten) –, ohne Auswahl die Prüfung; mobil als Blatt von unten.
+- **C · Geführte Schritte:** Schrittleiste Aufgaben → Rollen → Zuordnen → Prüfen → Weitergeben; Prüfen als Fragen der Methode („Wer entscheidet am Ende?“) mit nur den betroffenen Aufgaben und Vorschlägen; Schalter „Alles auf einer Seite“ für Geübte.
+
+Empfehlung: **B** (kleinster Umbau, nichts verdeckt die Matrix, senkrecht prüfen ohne Ansichtswechsel); die Fragen aus C später als Darstellung der Prüfung im Inspektor.

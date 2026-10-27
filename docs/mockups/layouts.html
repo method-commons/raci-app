@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RACI – Mockup alternative Layouts</title>
+<style>
+  /* Tokens wie in docs/mockups/mockups.html bzw. css/tokens.css */
+  :root {
+    --bg: #f6f7f9; --surface: #fff; --surface-2: #f2f4f7; --surface-3: #eaedf2;
+    --text: #101828; --text-2: #344054; --muted: #667085;
+    --border: #e4e7ec; --border-strong: #d0d5dd;
+    --accent: #4f46e5; --accent-soft: #eef2ff;
+    --bad: #c92a2a; --bad-bg: #fff0f0; --warn: #a35200; --warn-bg: #fff4e0; --warn-line: #f0b35b;
+    --good: #2b8a3e; --good-bg: #e6f7ea;
+    --info: #1864ab; --info-bg: #dbeafe;
+    --shadow-xs: 0 1px 2px rgba(16,24,40,.05);
+    --shadow-lg: 0 12px 32px -8px rgba(16,24,40,.18), 0 4px 8px -4px rgba(16,24,40,.06);
+    --lc-indigo: #4f46e5; --lc-teal: #0e7490; --lc-orange: #ffd8a8; --lc-gray: #e4e7ec;
+    --lt-orange: #a35200; --lt-gray: #667085;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde4; color: var(--text); font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; padding: 0 16px 48px; }
+  .page { max-width: 1320px; margin: 0 auto; }
+  .caption { margin: 40px 0 12px; font-weight: 700; color: #344054; font-size: 15px; }
+  .note { background: var(--surface); border-radius: 12px; padding: 16px 20px; box-shadow: var(--shadow-xs); color: var(--text-2); }
+  .note h1 { font-size: 20px; margin: 0 0 6px; }
+  .note h2 { font-size: 17px; margin: 0 0 6px; color: var(--text); }
+  .note ul, .note ol { margin: 6px 0 0; padding-left: 20px; }
+  .note li { margin: 4px 0; }
+  .sub { color: var(--muted); font-size: 12.5px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 390px; gap: 32px; align-items: start; }
+  @media (max-width: 1100px) { .grid2 { grid-template-columns: 1fr; } }
+  .pc { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+  .pc b.plus { color: var(--good); } .pc b.minus { color: var(--bad); }
+  kbd { font: 600 11px ui-monospace, monospace; background: var(--surface-2); border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; }
+  .section { border-top: 3px solid var(--accent); margin-top: 56px; padding-top: 4px; }
+  .tag { display: inline-block; font: 800 12px Inter, sans-serif; color: #fff; background: var(--accent); border-radius: 7px; padding: 2px 8px; margin-right: 8px; vertical-align: 2px; }
+
+  /* Buchstaben */
+  .b { font-style: normal; display: inline-grid; place-items: center; min-width: 26px; height: 26px; padding: 0 5px; border-radius: 7px; font: 800 12px/1 Inter, ui-sans-serif, system-ui, sans-serif; background: var(--lc); color: var(--lt); }
+  .b.sm { min-width: 20px; height: 20px; font-size: 10.5px; border-radius: 5px; padding: 0 4px; }
+  .b.lg { min-width: 44px; height: 40px; font-size: 15px; border-radius: 10px; }
+  .A { --lc: var(--lc-indigo); --lt: #fff; } .R { --lc: var(--lc-teal); --lt: #fff; }
+  .AR { --lt: #fff; background: linear-gradient(135deg, var(--lc-indigo) 50%, var(--lc-teal) 50%); }
+  .C { --lc: var(--lc-orange); --lt: var(--lt-orange); } .I { --lc: var(--lc-gray); --lt: var(--lt-gray); }
+  .E { --lc: transparent; --lt: #98a2b3; border: 1.5px dashed var(--border-strong); }
+
+  /* App-Rahmen */
+  .app { background: var(--bg); border-radius: 14px; box-shadow: var(--shadow-lg); overflow: hidden; }
+  .hdr { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; box-shadow: 0 2px 6px rgba(79,70,229,.4); flex: none; }
+  .logo i { display: block; width: 14px; height: 2.5px; background: #fff; border-radius: 2px; margin: 1.5px 0; }
+  .brand { font-weight: 700; }
+  .doc { font-weight: 650; padding: 0 10px; border-left: 1px solid var(--border); }
+  .seg { display: flex; gap: 2px; background: var(--surface-2); border-radius: 10px; padding: 3px; }
+  .seg span { padding: 5px 11px; border-radius: 8px; color: var(--muted); font-weight: 550; font-size: 13px; white-space: nowrap; }
+  .seg span.on { background: var(--surface); color: var(--text); box-shadow: var(--shadow-xs); font-weight: 650; }
+  .spacer { flex: 1; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 11px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface); font-weight: 600; font-size: 12.5px; color: var(--text-2); box-shadow: var(--shadow-xs); white-space: nowrap; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.ghost { border-color: transparent; box-shadow: none; background: none; }
+  .icon { color: var(--muted); font-size: 16px; padding: 0 4px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 650; border-radius: 99px; padding: 2px 9px; }
+  .pill.bad { background: var(--bad-bg); color: var(--bad); } .pill.warn { background: var(--warn-bg); color: var(--warn); } .pill.good { background: var(--good-bg); color: var(--good); }
+  .pill.info { background: var(--accent-soft); color: var(--accent); }
+  .k { font: 700 11px Inter, sans-serif; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+
+  /* Matrix-Tabelle (verkleinert) */
+  .card { background: var(--surface); border-radius: 12px; box-shadow: var(--shadow-xs); border: 1px solid var(--border); overflow: hidden; }
+  table.mx { border-collapse: collapse; width: 100%; }
+  .mx th, .mx td { padding: 0; }
+  .mx thead th { font-size: 11.5px; color: var(--muted); font-weight: 600; text-align: center; padding: 8px 4px; border-bottom: 1px solid var(--border); background: var(--surface-2); line-height: 1.25; }
+  .mx thead th b { display: block; color: var(--text-2); font-size: 12px; }
+  .mx thead th:first-child { text-align: left; padding-left: 14px; }
+  .mx thead th.sel { background: var(--accent-soft); box-shadow: inset 0 -2px 0 var(--accent); }
+  .mx thead th.warnc { box-shadow: inset 0 -2px 0 var(--warn-line); }
+  .mx .ph td { padding: 10px 14px 4px; font: 700 11px Inter, sans-serif; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .mx tr.t td { height: 40px; border-bottom: 1px solid var(--border); text-align: center; }
+  .mx tr.t td:first-child { text-align: left; padding: 0 10px 0 14px; white-space: nowrap; }
+  .mx tr.t.err td:first-child { box-shadow: inset 3px 0 0 var(--bad); }
+  .mx tr.t.wrn td:first-child { box-shadow: inset 3px 0 0 var(--warn-line); }
+  .mx tr.t.hl td { background: #f7f8ff; }
+  .mx td.cur { outline: 2px solid var(--accent); outline-offset: -4px; border-radius: 8px; }
+  .mx td.colsel { background: #f7f8ff; }
+  .id { font: 600 11.5px ui-monospace, monospace; color: var(--muted); margin-right: 8px; }
+  .nm { font-weight: 600; font-size: 13px; }
+  .st { font-weight: 700; font-size: 11.5px; }
+  .st.ok { color: var(--good); } .st.bad { color: var(--bad); } .st.warn { color: var(--warn); }
+  .sum td { background: var(--surface-2); font-size: 11px; color: var(--muted); padding: 7px 4px !important; text-align: center; }
+  .sum td:first-child { text-align: left; padding-left: 14px !important; font-weight: 700; letter-spacing: .04em; }
+
+  /* Seitenleisten-Bausteine */
+  .find { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-2); }
+  .find:last-child { border-bottom: 0; }
+  .find .ic { flex: none; width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+  .find .ic.bad { background: var(--bad-bg); color: var(--bad); } .find .ic.warn { background: var(--warn-bg); color: var(--warn); } .find .ic.good { background: var(--good-bg); color: var(--good); }
+  .find b { color: var(--text); display: block; font-size: 13px; }
+  .find a { color: var(--accent); font-weight: 650; text-decoration: none; }
+
+  /* ---------- A: Navigation links ---------- */
+  .a-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 640px; }
+  .rail { background: var(--surface); border-right: 1px solid var(--border); padding: 14px 10px; display: flex; flex-direction: column; gap: 4px; }
+  .rail .brandrow { display: flex; align-items: center; gap: 10px; padding: 2px 6px 12px; }
+  .rail .k { padding: 12px 8px 4px; }
+  .ri { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 8px; color: var(--text-2); font-weight: 550; font-size: 13px; }
+  .ri.on { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+  .ri .cnt { margin-left: auto; font-size: 11px; font-weight: 700; }
+  .ri .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .ri.sub { padding-left: 26px; font-size: 12.5px; }
+  .ri.open { color: var(--text); font-weight: 650; }
+  .rail .foot { margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px; }
+  .a-main { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .a-title { display: flex; align-items: center; gap: 10px; }
+  .a-title h3 { margin: 0; font-size: 19px; }
+  .drawer { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow-xs); }
+  .drawer .bar { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  .drawer .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; padding: 2px 14px 6px; }
+
+  /* ---------- B: Inspektor ---------- */
+  .b-shell { display: grid; grid-template-columns: 1fr 340px; min-height: 640px; }
+  .b-main { padding: 14px 16px; }
+  .tool { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .insp { background: var(--surface); border-left: 1px solid var(--border); padding: 0; display: flex; flex-direction: column; }
+  .insp .ihead { padding: 12px 16px 10px; border-bottom: 1px solid var(--border); }
+  .insp .crumb { font-size: 11.5px; color: var(--muted); }
+  .insp .ibody { padding: 12px 16px; display: flex; flex-direction: column; gap: 14px; }
+  .pick { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pick .b.on { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+  .hint { background: var(--bad-bg); color: var(--bad); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; }
+  .hint .btn { margin-top: 8px; margin-right: 4px; }
+  .field { border: 1px solid var(--border-strong); border-radius: 8px; padding: 7px 10px; font-size: 12.5px; color: var(--text-2); }
+  .row-mini { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2); padding: 3px 0; }
+  .row-mini .who { width: 110px; color: var(--muted); }
+  .itabs { display: flex; gap: 14px; font-size: 12.5px; font-weight: 650; color: var(--muted); padding: 0 16px; border-bottom: 1px solid var(--border); }
+  .itabs span { padding: 9px 0; }
+  .itabs span.on { color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+  .mini3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mini3 > div { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px 6px; }
+  .mini3 b { font-size: 18px; display: block; }
+  .mini3 small { color: var(--muted); font-size: 11px; }
+  .barline { display: flex; height: 8px; border-radius: 4px; overflow: hidden; gap: 2px; }
+  .barline i { display: block; }
+
+  /* ---------- C: Schritte ---------- */
+  .steps { display: flex; align-items: center; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; }
+  .step { display: flex; align-items: center; gap: 9px; padding: 6px 12px 6px 6px; border-radius: 10px; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .step .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; border: 1.5px solid var(--border-strong); background: var(--surface); }
+  .step.done .n { background: var(--good); border-color: var(--good); color: #fff; }
+  .step.on { background: var(--accent-soft); color: var(--accent); }
+  .step.on .n { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .step small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+  .step.on small { color: var(--accent); opacity: .8; }
+  .stepline { flex: 1; height: 2px; background: var(--border); min-width: 16px; max-width: 48px; }
+  .stepline.done { background: var(--good); }
+  .c-shell { display: grid; grid-template-columns: 300px 1fr; min-height: 560px; }
+  .c-list { background: var(--surface); border-right: 1px solid var(--border); padding: 14px 14px; }
+  .c-list h4 { margin: 0 0 2px; font-size: 15px; }
+  .qa { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-top: 10px; font-size: 12.5px; color: var(--text-2); }
+  .qa.cur { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .qa .q { font-weight: 700; color: var(--text); font-size: 13px; margin: 2px 0 6px; }
+  .qa .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .c-main { padding: 14px 16px; }
+  .c-foot { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-top: 1px solid var(--border); background: var(--surface); }
+  .progress { flex: 1; height: 6px; background: var(--surface-3); border-radius: 3px; overflow: hidden; max-width: 260px; }
+  .progress i { display: block; height: 100%; background: var(--good); }
+
+  /* Mobil */
+  .phone { width: 390px; background: var(--bg); border-radius: 22px; box-shadow: var(--shadow-lg); overflow: hidden; border: 8px solid #101828; position: relative; }
+  .m-top { background: var(--surface); padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .m-top b { flex: 1; font-size: 14px; }
+  .m-body { padding: 8px 12px 14px; min-height: 520px; }
+  .m-phase { font: 700 11px Inter, sans-serif; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin: 12px 4px 6px; }
+  .m-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 10px; margin-bottom: 6px; }
+  .m-card .l1 { display: flex; align-items: center; gap: 4px; }
+  .m-card .l1 .nm { flex: 1; }
+  .m-card .l2 { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; font-size: 11px; color: var(--muted); align-items: center; }
+  .m-card.err { box-shadow: inset 3px 0 0 var(--bad); }
+  .m-nav { display: flex; justify-content: space-around; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 0 10px; font-size: 10.5px; color: var(--muted); text-align: center; }
+  .m-nav span { display: grid; gap: 2px; justify-items: center; }
+  .m-nav span.on { color: var(--accent); font-weight: 700; }
+  .m-nav i { font-style: normal; font-size: 17px; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 18px 18px 0 0; box-shadow: 0 -12px 32px -8px rgba(16,24,40,.25); padding: 8px 16px 18px; }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--border-strong); margin: 0 auto 10px; }
+  .scrim { position: absolute; inset: 0; background: rgba(16,24,40,.32); }
+  .m-steps { display: flex; gap: 4px; padding: 8px 14px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .m-steps i { flex: 1; height: 4px; border-radius: 2px; background: var(--surface-3); }
+  .m-steps i.done { background: var(--good); } .m-steps i.on { background: var(--accent); }
+
+  /* Vergleich */
+  table.cmp { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-xs); font-size: 13px; }
+  .cmp th, .cmp td { padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  .cmp thead th { background: var(--surface-2); font-size: 12px; color: var(--muted); }
+  .cmp td:first-child { font-weight: 650; color: var(--text-2); width: 22%; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="caption">Mockup · Drei alternative Layouts der App</div>
+<div class="note">
+  <h1>Wie könnte die App anders aufgebaut sein?</h1>
+  Heute: Kopfzeile mit Logo, Name der Matrix, Ansichten als Umschalter (<i>Matrix · Rollen · Wer macht was? · Bericht</i>), Rückgängig, Methodik, Ablage, Datei. Darunter die Matrix, rechts eine feste Seitenleiste mit Prüfung und offenen Punkten; Buchstaben wählt man im Auswahl-Feld an der Zelle. Mobil eine Aufgabenliste mit Navigation unten.
+  <p style="margin:8px 0 0">Drei Alternativen, jeweils am Beispiel <i>Stadtfest 2026 – Ablauf</i> (Desktop und Mobil). Datenformat, Prüfungen und Funktionen bleiben gleich – es geht nur um <b>Anordnung und Wege</b>.</p>
+  <ul>
+    <li><b>A · Navigation links</b> – fester App-Rahmen: Matrizen und Ansichten in einer Leiste links, Prüfung als Leiste unter der Matrix.</li>
+    <li><b>B · Inspektor rechts</b> – die Matrix bekommt die volle Breite, rechts ein Bereich, der zeigt, was gerade ausgewählt ist: Zelle, Aufgabe, Rolle – oder ohne Auswahl die Prüfung.</li>
+    <li><b>C · Geführte Schritte</b> – die Methode als Ablauf: Aufgaben sammeln → Rollen → Zuordnen → Prüfen → Weitergeben; jeder Schritt zeigt nur, was er braucht.</li>
+  </ul>
+</div>
+
+<!-- =================================================================== A -->
+<div class="section">
+<div class="caption"><span class="tag">A</span>Navigation links – App-Rahmen mit Leiste</div>
+<div class="app">
+  <div class="a-shell">
+    <nav class="rail">
+      <div class="brandrow"><span class="logo"><i></i><i></i><i></i></span><span class="brand">RACI-Matrix</span></div>
+      <div class="ri"><span>⌂</span>Alle Matrizen</div>
+      <div class="k">Geöffnet</div>
+      <div class="ri open"><span class="dot" style="background:var(--bad)"></span>Stadtfest 2026 – Ablauf</div>
+      <div class="ri sub on">▦ Matrix</div>
+      <div class="ri sub">◎ Rollen <span class="cnt" style="color:var(--warn)">1</span></div>
+      <div class="ri sub">☰ Wer macht was?</div>
+      <div class="ri sub">▤ Bericht</div>
+      <div class="ri"><span class="dot" style="background:var(--good)"></span>Tagesbetrieb</div>
+      <div class="ri"><span class="dot" style="background:var(--good)"></span>Kartenzahlung einführen</div>
+      <div class="ri" style="color:var(--accent)">+ Neue Matrix</div>
+      <div class="foot">
+        <div class="ri">? Methodik</div>
+        <div class="ri">⚙ Einstellungen der Matrix</div>
+        <div class="ri">☁ Ablage <span class="cnt" style="color:var(--good)">● aktuell</span></div>
+        <div class="ri">▾ Datei</div>
+      </div>
+    </nav>
+    <div class="a-main">
+      <div class="a-title">
+        <h3>Stadtfest 2026 – Ablauf</h3><span class="pill info">RACI</span>
+        <span class="sub">Food-Truck auf dem Stadtfest, 3 Tage</span>
+        <span class="spacer"></span>
+        <span class="icon">↶</span><span class="icon">↷</span>
+      </div>
+      <div class="card">
+        <table class="mx">
+          <thead><tr><th style="width:34%">Aufgabe</th><th><b>Inhaberin</b>Lea</th><th class="warnc"><b>Schichtleitung</b>Aylin</th><th><b>Technik</b>Fritz</th><th><b>Einkauf</b>Ben</th><th><b>Marketing</b>Mia</th><th><b>Service-Team</b>Jonas +2</th><th>Prüfung</th></tr></thead>
+          <tbody>
+            <tr class="ph"><td colspan="8">Vorbereitung</td></tr>
+            <tr class="t"><td><span class="id">1.1</span><span class="nm">Standplatz beantragen</span></td><td><i class="b AR">A/R</i></td><td><i class="b I">I</i></td><td></td><td><i class="b C">C</i></td><td></td><td></td><td class="st ok">✓</td></tr>
+            <tr class="t"><td><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise festlegen</span></td><td><i class="b A">A</i></td><td><i class="b R">R</i></td><td></td><td><i class="b C">C</i></td><td><i class="b C">C</i></td><td><i class="b I">I</i></td><td class="st ok">✓</td></tr>
+            <tr class="t err hl"><td><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span></td><td><i class="b A">A</i></td><td><i class="b C">C</i></td><td></td><td><i class="b AR">A/R</i></td><td></td><td></td><td class="st bad">× 2× A</td></tr>
+            <tr class="t"><td><span class="id">1.4</span><span class="nm">Schichtplan erstellen</span></td><td><i class="b C">C</i></td><td><i class="b AR">A/R</i></td><td></td><td></td><td></td><td><i class="b I">I</i></td><td class="st ok">✓</td></tr>
+            <tr class="t err"><td><span class="id">1.5</span><span class="nm">Social-Media-Ankündigung</span></td><td><i class="b C">C</i></td><td></td><td></td><td></td><td><i class="b R">R</i></td><td></td><td class="st bad">× kein A</td></tr>
+            <tr class="ph"><td colspan="8">Betrieb</td></tr>
+            <tr class="t"><td><span class="id">3.1</span><span class="nm">Kasse &amp; Kartenzahlung betreuen</span></td><td></td><td><i class="b A">A</i></td><td></td><td></td><td></td><td><i class="b R">R</i></td><td class="st ok">✓</td></tr>
+            <tr class="t wrn"><td><span class="id">3.3</span><span class="nm">Reklamationen klären</span></td><td><i class="b C">C</i></td><td><i class="b A">A</i></td><td></td><td></td><td></td><td><i class="b I">I</i></td><td class="st warn">! kein R</td></tr>
+            <tr class="sum"><td>A·R·C·I</td><td>6 1 3 0</td><td>5 5 2 2</td><td>2 2 4 0</td><td>1 2 4 0</td><td>0 1 4 0</td><td>0 4 2 4</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="drawer">
+        <div class="bar"><span class="k">Prüfung</span><span class="pill bad">2 Fehler</span><span class="pill warn">3 Hinweise</span><span class="pill good">11 / 14 eindeutig</span><span class="pill info">1 offen</span><span class="spacer"></span><span class="btn ghost">▾ Einklappen</span></div>
+        <div class="cols">
+          <div class="find"><span class="ic bad">×</span><div><b>Genau ein A je Aufgabe</b><a>1.3</a> 2× A · <a>1.5</a> kein A</div></div>
+          <div class="find"><span class="ic warn">!</span><div><b>Mindestens ein R</b><a>3.3</a> nur A – Schichtleitung als A/R?</div></div>
+          <div class="find"><span class="ic warn">!</span><div><b>Keine Engpässe</b><a>Schichtleitung</a> an 13 von 14 Aufgaben</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="caption">Was sich ändert</div>
+    <div class="note">
+      <ol>
+        <li><b>Leiste links</b> statt Kopfzeile: alle geöffneten Matrizen untereinander, die Ansichten der aktiven Matrix eingerückt darunter. Ein Punkt zeigt den Prüfstand je Matrix (rot = Fehler), eine Zahl an „Rollen“ die Hinweise je Rolle.</li>
+        <li><b>Prüfung als Leiste unter der Matrix</b> statt rechts: Kennzahlen immer sichtbar, Einzelheiten in drei Spalten, einklappbar. Die Matrix gewinnt rund 400 px Breite – Platz für 2–3 Rollen mehr.</li>
+        <li>Methodik, Einstellungen der Matrix, Ablage und Datei unten in der Leiste – nicht mehr versteckt im Menü „Datei“.</li>
+        <li>Leiste einklappbar auf Symbole (56 px), etwa für die Präsentation am Beamer.</li>
+        <li><b>Mobil</b> unverändert: Navigation unten, die Leiste öffnet sich über ☰ als Schublade.</li>
+      </ol>
+      <div class="pc">
+        <div><b class="plus">Dafür</b><ul><li>vertrautes Muster (Notion, Linear, Mail)</li><li>Wechsel zwischen Matrizen mit einem Klick</li><li>wächst mit: weitere Ansichten passen ohne Gedränge</li></ul></div>
+        <div><b class="minus">Dagegen</b><ul><li>weicht von den Schwester-Apps ab (dort Kopfzeile)</li><li>Prüfung unter der Matrix bei langen Matrizen erst nach Scrollen im Blick – Leiste muss daher haften</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="caption">Mobil (390 px): Schublade geöffnet</div>
+    <div class="phone">
+      <div class="m-top"><span class="icon">☰</span><b>Stadtfest 2026 – Ablauf</b><span class="pill bad">2</span></div>
+      <div class="m-body">
+        <div class="m-phase">Vorbereitung</div>
+        <div class="m-card"><div class="l1"><span class="id">1.1</span><span class="nm">Standplatz beantragen</span><span class="st ok">✓</span></div></div>
+        <div class="m-card err"><div class="l1"><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span><span class="st bad">× 2× A</span></div></div>
+      </div>
+      <div class="scrim"></div>
+      <div style="position:absolute; inset:0 90px 0 0; background:var(--surface); padding:16px 10px; display:flex; flex-direction:column; gap:4px; box-shadow:var(--shadow-lg)">
+        <div class="brandrow" style="display:flex; gap:10px; align-items:center; padding:0 6px 12px"><span class="logo"><i></i><i></i><i></i></span><b>RACI-Matrix</b></div>
+        <div class="ri">⌂ Alle Matrizen</div>
+        <div class="k" style="padding:12px 8px 4px">Geöffnet</div>
+        <div class="ri open"><span class="dot" style="background:var(--bad)"></span>Stadtfest 2026 – Ablauf</div>
+        <div class="ri"><span class="dot" style="background:var(--good)"></span>Tagesbetrieb</div>
+        <div class="ri" style="color:var(--accent)">+ Neue Matrix</div>
+        <div style="margin-top:auto; border-top:1px solid var(--border); padding-top:8px">
+          <div class="ri">? Methodik</div><div class="ri">⚙ Einstellungen</div><div class="ri">☁ Ablage</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- =================================================================== B -->
+<div class="section">
+<div class="caption"><span class="tag">B</span>Inspektor rechts – die Seitenleiste zeigt, was ausgewählt ist</div>
+<div class="app">
+  <div class="hdr">
+    <span class="logo"><i></i><i></i><i></i></span><span class="brand">RACI</span>
+    <span class="doc">Stadtfest 2026 – Ablauf</span>
+    <div class="seg"><span class="on">▦ Matrix</span><span>◎ Rollen</span><span>☰ Wer macht was?</span><span>▤ Bericht</span></div>
+    <span class="spacer"></span>
+    <span class="icon">↶</span><span class="icon">↷</span><span class="btn ghost">? Methodik</span><span class="btn">Datei ▾</span>
+  </div>
+  <div class="b-shell">
+    <div class="b-main">
+      <div class="tool">
+        <span class="pill bad">2 Fehler</span><span class="pill warn">3 Hinweise</span><span class="pill good">11 / 14 eindeutig</span>
+        <span class="spacer"></span>
+        <span class="sub">Zelle wählen: Klick oder Pfeiltasten · Buchstabe tippen</span>
+      </div>
+      <div class="card">
+        <table class="mx">
+          <thead><tr><th style="width:32%">Aufgabe</th><th><b>Inhaberin</b>Lea</th><th><b>Schichtleitung</b>Aylin</th><th><b>Technik</b>Fritz</th><th class="sel"><b>Einkauf</b>Ben</th><th><b>Marketing</b>Mia</th><th><b>Service-Team</b>Jonas +2</th><th><b>Veranstalter</b>extern</th><th>Prüfung</th></tr></thead>
+          <tbody>
+            <tr class="ph"><td colspan="9">Vorbereitung</td></tr>
+            <tr class="t"><td><span class="id">1.1</span><span class="nm">Standplatz beantragen</span></td><td><i class="b AR">A/R</i></td><td><i class="b I">I</i></td><td></td><td class="colsel"><i class="b C">C</i></td><td></td><td></td><td><i class="b C">C</i></td><td class="st ok">✓</td></tr>
+            <tr class="t"><td><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise festlegen</span></td><td><i class="b A">A</i></td><td><i class="b R">R</i></td><td></td><td class="colsel"><i class="b C">C</i></td><td><i class="b C">C</i></td><td><i class="b I">I</i></td><td></td><td class="st ok">✓</td></tr>
+            <tr class="t err hl"><td><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span></td><td><i class="b A">A</i></td><td><i class="b C">C</i></td><td></td><td class="cur"><i class="b AR">A/R</i></td><td></td><td></td><td></td><td class="st bad">× 2× A</td></tr>
+            <tr class="t"><td><span class="id">1.4</span><span class="nm">Schichtplan erstellen</span></td><td><i class="b C">C</i></td><td><i class="b AR">A/R</i></td><td></td><td class="colsel"></td><td></td><td><i class="b I">I</i></td><td></td><td class="st ok">✓</td></tr>
+            <tr class="t err"><td><span class="id">1.5</span><span class="nm">Social-Media-Ankündigung</span></td><td><i class="b C">C</i></td><td></td><td></td><td class="colsel"></td><td><i class="b R">R</i></td><td></td><td><i class="b I">I</i></td><td class="st bad">× kein A</td></tr>
+            <tr class="ph"><td colspan="9">Betrieb</td></tr>
+            <tr class="t"><td><span class="id">3.1</span><span class="nm">Kasse &amp; Kartenzahlung betreuen</span></td><td></td><td><i class="b A">A</i></td><td></td><td class="colsel"></td><td></td><td><i class="b R">R</i></td><td></td><td class="st ok">✓</td></tr>
+            <tr class="t"><td><span class="id">3.2</span><span class="nm">Fritteuse &amp; Kühlung überwachen</span></td><td></td><td><i class="b R">R</i></td><td><i class="b A">A</i></td><td class="colsel"></td><td></td><td><i class="b R">R</i></td><td></td><td class="st ok">✓</td></tr>
+            <tr class="t wrn"><td><span class="id">3.3</span><span class="nm">Reklamationen klären</span></td><td><i class="b C">C</i></td><td><i class="b A">A</i></td><td></td><td class="colsel"></td><td></td><td><i class="b I">I</i></td><td></td><td class="st warn">! kein R</td></tr>
+            <tr class="ph"><td colspan="9">Abbau &amp; Abrechnung</td></tr>
+            <tr class="t wrn"><td><span class="id">4.2</span><span class="nm">Mit Veranstalter abrechnen</span></td><td><i class="b A">A</i></td><td><i class="b C">C</i></td><td><i class="b C">C</i></td><td class="colsel"><i class="b R">R</i></td><td><i class="b C">C</i></td><td><i class="b C">C</i></td><td><i class="b C">C</i></td><td class="st warn">! 5× C</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <aside class="insp">
+      <div class="ihead">
+        <div class="crumb">Zelle · <a style="color:var(--accent)">1.3</a> × <a style="color:var(--accent)">Einkauf</a> · <kbd>Esc</kbd> zurück zur Prüfung</div>
+        <div style="font-weight:700; font-size:15px; margin-top:2px">Ware &amp; Getränke bestellen</div>
+        <div class="sub">Rolle Einkauf &amp; Finanzen (Ben)</div>
+      </div>
+      <div class="itabs"><span class="on">Zelle</span><span>Aufgabe</span><span>Rolle</span></div>
+      <div class="ibody">
+        <div class="pick"><i class="b lg R">R</i><i class="b lg A">A</i><i class="b lg AR on">A/R</i><i class="b lg C">C</i><i class="b lg I">I</i><i class="b lg E">–</i></div>
+        <div class="hint">Diese Aufgabe hat schon ein <b>A</b> bei <b>Inhaberin</b>. Wer entscheidet am Ende?<br><span class="btn">Inhaberin → C</span><span class="btn">hier nur R</span></div>
+        <div><div class="k" style="margin-bottom:6px">Ganze Aufgabe</div>
+          <div class="row-mini"><span class="who">Inhaberin</span><i class="b sm A">A</i></div>
+          <div class="row-mini"><span class="who">Schichtleitung</span><i class="b sm C">C</i></div>
+          <div class="row-mini"><span class="who"><b style="color:var(--accent)">Einkauf</b></span><i class="b sm AR">A/R</i></div>
+        </div>
+        <div><div class="k" style="margin-bottom:6px">Rolle Einkauf – 4 Aufgaben</div>
+          <div class="barline"><i style="width:10%; background:var(--lc-indigo)"></i><i style="width:30%; background:var(--lc-teal)"></i><i style="width:60%; background:var(--lc-orange)"></i></div>
+          <div class="sub" style="margin-top:4px">1 A · 2 R · 4 C · 0 I – kein Engpass</div>
+        </div>
+        <div><div class="k" style="margin-bottom:6px">Notiz zur Zelle</div><div class="field">Bestellt bis 500 €, darüber gibt Lea frei</div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="caption">B · ohne Auswahl: der Inspektor zeigt die Prüfung (wie die heutige Seitenleiste)</div>
+<div style="display:grid; grid-template-columns: 340px 340px 1fr; gap:20px; align-items:start">
+  <div class="app" style="background:var(--surface)">
+    <div class="ihead" style="padding:12px 16px 10px; border-bottom:1px solid var(--border)"><div class="crumb sub">Nichts ausgewählt</div><div style="font-weight:700; font-size:15px">Prüfung</div></div>
+    <div style="padding:6px 16px 10px">
+      <div class="mini3" style="margin:6px 0 6px"><div><b>11/14</b><small>eindeutig</small></div><div><b style="color:var(--bad)">2</b><small>Fehler</small></div><div><b>1</b><small>offen</small></div></div>
+      <div class="find"><span class="ic bad">×</span><div><b>Genau ein A je Aufgabe</b><a>1.3</a> 2× A · <a>1.5</a> kein A</div></div>
+      <div class="find"><span class="ic warn">!</span><div><b>Mindestens ein R</b><a>3.3</a> nur A</div></div>
+      <div class="find"><span class="ic warn">!</span><div><b>Keine Engpässe</b><a>Schichtleitung</a> an 13 von 14</div></div>
+      <div class="find"><span class="ic good">✓</span><div><b>Jede Rolle hat eine Aufgabe</b></div></div>
+    </div>
+  </div>
+  <div class="app" style="background:var(--surface)">
+    <div class="ihead" style="padding:12px 16px 10px; border-bottom:1px solid var(--border)"><div class="crumb sub">Rolle · Klick auf Spaltenkopf</div><div style="font-weight:700; font-size:15px">Schichtleitung <span class="sub">Aylin</span></div></div>
+    <div style="padding:10px 16px 14px; display:flex; flex-direction:column; gap:12px">
+      <div class="hint" style="background:var(--warn-bg); color:var(--warn)"><b>Engpass:</b> an 13 von 14 Aufgaben beteiligt, 10× A oder R.<br><span class="btn">3.1 R an Service-Team</span><span class="btn">1.2 C → I</span></div>
+      <div><div class="barline"><i style="width:36%; background:var(--lc-indigo)"></i><i style="width:36%; background:var(--lc-teal)"></i><i style="width:14%; background:var(--lc-orange)"></i><i style="width:14%; background:var(--lc-gray)"></i></div><div class="sub" style="margin-top:4px">5 A · 5 R · 2 C · 2 I</div></div>
+      <div class="sub">Person, Vertretung, intern/extern – wie heute in der Ansicht „Rollen“.</div>
+    </div>
+  </div>
+  <div class="note">
+    <h2>Was sich ändert</h2>
+    <ol>
+      <li>Das <b>Auswahl-Feld an der Zelle entfällt</b>; Buchstaben, Hinweis zum Auflösen und Notiz stehen rechts. Die Matrix bleibt frei sichtbar – nichts verdeckt Nachbarzellen.</li>
+      <li>Der Inspektor folgt der <b>Auswahl</b>: Zelle, Aufgabe (Klick auf Nummer: Phase, Verweis, alle Buchstaben), Rolle (Klick auf Spaltenkopf: Verteilung, Hinweis, Vorschläge zum Entlasten). <kbd>Esc</kbd> führt zur Prüfung zurück.</li>
+      <li>Kennzahlen rücken als Pillen über die Matrix; Klick filtert die betroffenen Zeilen.</li>
+      <li>Senkrecht prüfen geht ohne Ansichtswechsel – die Ansicht „Rollen“ bleibt für den Überblick aller Rollen.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="note" style="margin-top:20px">
+      <div class="pc" style="margin-top:0">
+        <div><b class="plus">Dafür</b><ul><li>Tastatur-Arbeit bleibt flüssig: Pfeiltasten wandern, der Inspektor zeigt mit</li><li>waagerecht und senkrecht prüfen an einem Ort</li><li>nah am heutigen Aufbau – geringster Umbau</li></ul></div>
+        <div><b class="minus">Dagegen</b><ul><li>Auge pendelt zwischen Zelle und rechtem Rand</li><li>auf 1280 px bleiben ~7 Rollen; Inspektor sollte ausblendbar sein</li><li>Prüfung ist nur ohne Auswahl zu sehen</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="caption">Mobil (390 px): Inspektor als Blatt von unten</div>
+    <div class="phone">
+      <div class="m-top"><span class="icon">‹</span><b>Stadtfest 2026 – Ablauf</b><span class="pill bad">2</span></div>
+      <div class="m-body">
+        <div class="m-phase">Vorbereitung</div>
+        <div class="m-card"><div class="l1"><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise</span><span class="st ok">✓</span></div></div>
+        <div class="m-card err"><div class="l1"><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span><span class="st bad">× 2× A</span></div></div>
+      </div>
+      <div class="scrim"></div>
+      <div class="sheet">
+        <div class="grab"></div>
+        <div class="sub">Aufgabe 1.3</div>
+        <div style="font-weight:700; font-size:15px; margin-bottom:8px">Ware &amp; Getränke bestellen</div>
+        <div class="row-mini"><span class="who">Inhaberin</span><i class="b sm A">A</i></div>
+        <div class="row-mini"><span class="who">Schichtleitung</span><i class="b sm C">C</i></div>
+        <div class="row-mini" style="background:var(--accent-soft); border-radius:8px; padding:6px"><span class="who"><b style="color:var(--accent)">Einkauf</b></span><span class="pick"><i class="b R">R</i><i class="b A">A</i><i class="b AR on">A/R</i><i class="b C">C</i><i class="b I">I</i><i class="b E">–</i></span></div>
+        <div class="row-mini"><span class="who">Marketing</span><span class="sub">–</span></div>
+        <div class="hint" style="margin-top:8px">Schon ein <b>A</b> bei Inhaberin. <span class="btn">Inhaberin → C</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- =================================================================== C -->
+<div class="section">
+<div class="caption"><span class="tag">C</span>Geführte Schritte – die Methode als Ablauf (hier Schritt 4 „Prüfen“)</div>
+<div class="app">
+  <div class="hdr">
+    <span class="logo"><i></i><i></i><i></i></span><span class="brand">RACI</span>
+    <span class="doc">Stadtfest 2026 – Ablauf</span>
+    <span class="spacer"></span>
+    <span class="icon">↶</span><span class="icon">↷</span><span class="btn ghost">? Methodik</span><span class="btn">Datei ▾</span>
+  </div>
+  <div class="steps">
+    <div class="step done"><span class="n">✓</span><div>Aufgaben<small>14 in 4 Phasen</small></div></div>
+    <span class="stepline done"></span>
+    <div class="step done"><span class="n">✓</span><div>Rollen<small>7, davon 1 extern</small></div></div>
+    <span class="stepline done"></span>
+    <div class="step done"><span class="n">✓</span><div>Zuordnen<small>alle Zeilen belegt</small></div></div>
+    <span class="stepline"></span>
+    <div class="step on"><span class="n">4</span><div>Prüfen<small>4 von 5 Fragen offen</small></div></div>
+    <span class="stepline"></span>
+    <div class="step"><span class="n">5</span><div>Weitergeben<small>Wer macht was? · Bericht</small></div></div>
+  </div>
+  <div class="c-shell">
+    <div class="c-list">
+      <h4>Prüfen – eine Frage nach der anderen</h4>
+      <div class="sub">Die Matrix rechts zeigt nur die betroffenen Aufgaben.</div>
+      <div class="qa" style="opacity:.6"><span class="pill good">✓ erledigt</span><div class="q">Hat jede Rolle eine Aufgabe?</div></div>
+      <div class="qa cur"><span class="pill bad">2 Aufgaben</span><div class="q">Wer entscheidet am Ende? – genau ein A</div>
+        <b>1.3</b> hat zwei A (Inhaberin, Einkauf), <b>1.5</b> keines.
+        <div class="acts"><span class="btn">1.3: Inhaberin → C</span><span class="btn">1.5: Marketing A/R</span><span class="btn ghost">Überspringen</span></div>
+      </div>
+      <div class="qa"><span class="pill warn">1 Aufgabe</span><div class="q">Wer führt aus? – mindestens ein R</div></div>
+      <div class="qa"><span class="pill warn">1 Rolle</span><div class="q">Ist eine Rolle überlastet?</div></div>
+      <div class="qa"><span class="pill warn">1 Aufgabe</span><div class="q">Werden zu viele gefragt?</div></div>
+    </div>
+    <div class="c-main">
+      <div class="tool"><span class="seg"><span class="on">Betroffene</span><span>Alle Aufgaben</span></span><span class="spacer"></span><span class="sub">Zellen bleiben hier direkt änderbar</span></div>
+      <div class="card">
+        <table class="mx">
+          <thead><tr><th style="width:36%">Aufgabe</th><th><b>Inhaberin</b>Lea</th><th><b>Schichtleitung</b>Aylin</th><th><b>Technik</b>Fritz</th><th><b>Einkauf</b>Ben</th><th><b>Marketing</b>Mia</th><th><b>Service-Team</b>Jonas +2</th><th>Prüfung</th></tr></thead>
+          <tbody>
+            <tr class="t err hl"><td><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span></td><td class="cur"><i class="b A">A</i></td><td><i class="b C">C</i></td><td></td><td class="cur"><i class="b AR">A/R</i></td><td></td><td></td><td class="st bad">× 2× A</td></tr>
+            <tr class="t err hl"><td><span class="id">1.5</span><span class="nm">Social-Media-Ankündigung</span></td><td><i class="b C">C</i></td><td></td><td></td><td></td><td class="cur"><i class="b R">R</i></td><td></td><td class="st bad">× kein A</td></tr>
+          </tbody>
+        </table>
+        <div style="padding:10px 14px; color:var(--muted); font-size:12.5px; border-top:1px solid var(--border)">12 weitere Aufgaben ohne Befund · <a style="color:var(--accent)">alle zeigen</a></div>
+      </div>
+      <div class="note" style="margin-top:14px; box-shadow:none; border:1px solid var(--border); font-size:12.5px">
+        <b>Faustregel:</b> Das A trägt die Verantwortung für das Ergebnis und kann nicht geteilt werden. Wer bei 1.3 frei entscheiden soll, ist A; die andere Rolle wird gefragt (C) oder informiert (I).
+      </div>
+    </div>
+  </div>
+  <div class="c-foot"><span class="btn">← Zuordnen</span><span class="spacer"></span><span class="sub">1 von 5 Fragen geklärt</span><div class="progress"><i style="width:20%"></i></div><span class="btn primary">Nächste Frage →</span></div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="caption">Was sich ändert</div>
+    <div class="note">
+      <ol>
+        <li><b>Schrittleiste</b> statt Ansichten-Umschalter: 1 Aufgaben (Liste, Phasen, Verben) · 2 Rollen (Spalten, Personen, extern) · 3 Zuordnen (die Matrix wie heute) · 4 Prüfen · 5 Weitergeben (Wer macht was?, Bericht, Teilen). Jeder Schritt ist jederzeit anklickbar – kein Zwang zur Reihenfolge.</li>
+        <li><b>Prüfen als Fragen</b> in der Sprache der Methode („Wer entscheidet am Ende?“) statt als Regel-Liste; je Frage nur die betroffenen Aufgaben, Vorschläge als Knöpfe, Faustregel dazu.</li>
+        <li>Unter den Schritten eine kurze Zusammenfassung (14 Aufgaben, 7 Rollen …) – zeigt, wo man steht, ohne Status im Sinne von Projektmanagement.</li>
+        <li>Neue Matrix startet in Schritt 1; geöffnete Matrizen springen in den zuletzt genutzten Schritt.</li>
+        <li>Für Geübte: Schalter „Alles auf einer Seite“ blendet die Schrittleiste aus und zeigt das heutige Layout.</li>
+      </ol>
+      <div class="pc">
+        <div><b class="plus">Dafür</b><ul><li>lehrt die Methode beim Benutzen – passt zum Anspruch „Methodik unterstützen“</li><li>Workshop-tauglich: ein Schritt je Moderationsphase am Beamer</li><li>Prüfung wird zur Aufgabe statt zur Fehlerliste</li></ul></div>
+        <div><b class="minus">Dagegen</b><ul><li>größter Umbau (neue Ansichten für Schritt 1 und 2)</li><li>für schnelle Änderungen an einer fertigen Matrix ein Umweg</li><li>„erledigt“ an Fragen darf nicht zu Aufgabenstatus werden</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="caption">Mobil (390 px): Schritt 4, eine Frage</div>
+    <div class="phone">
+      <div class="m-top"><span class="icon">‹</span><b>Schritt 4 · Prüfen</b><span class="sub">Frage 2 / 5</span></div>
+      <div class="m-steps"><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i></i></div>
+      <div class="m-body">
+        <div class="qa cur" style="background:var(--surface)"><span class="pill bad">2 Aufgaben</span><div class="q">Wer entscheidet am Ende?</div>Genau ein A je Aufgabe.</div>
+        <div class="m-card err" style="margin-top:10px"><div class="l1"><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span></div>
+          <div class="l2">Inhaberin <i class="b sm A">A</i> · Einkauf <i class="b sm AR">A/R</i> · Schichtl. <i class="b sm C">C</i></div>
+          <div class="l2"><span class="btn">Inhaberin → C</span><span class="btn">Einkauf nur R</span></div></div>
+        <div class="m-card err"><div class="l1"><span class="id">1.5</span><span class="nm">Social-Media-Ankündigung</span></div>
+          <div class="l2">Marketing <i class="b sm R">R</i> · Inhaberin <i class="b sm C">C</i></div>
+          <div class="l2"><span class="btn">Marketing A/R</span><span class="btn">Inhaberin → A</span></div></div>
+      </div>
+      <div class="c-foot" style="padding:10px 14px"><span class="btn">Überspringen</span><span class="spacer"></span><span class="btn primary">Nächste Frage →</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- =================================================================== Vergleich -->
+<div class="caption" style="margin-top:56px">Vergleich</div>
+<table class="cmp">
+  <thead><tr><th></th><th>A · Navigation links</th><th>B · Inspektor rechts</th><th>C · Geführte Schritte</th></tr></thead>
+  <tbody>
+    <tr><td>Platz für die Matrix</td><td>mehr Breite (Prüfung unten)</td><td>wie heute (Inspektor statt Seitenleiste)</td><td>je Schritt nur das Nötige</td></tr>
+    <tr><td>Buchstaben wählen</td><td>Auswahl-Feld an der Zelle (wie heute)</td><td>im Inspektor, Matrix bleibt frei</td><td>Schritt 3 wie heute, in Schritt 4 als Vorschlag</td></tr>
+    <tr><td>Prüfen</td><td>Leiste unter der Matrix</td><td>ohne Auswahl rechts; Rolle per Spaltenkopf</td><td>als Fragen der Methode, eine nach der anderen</td></tr>
+    <tr><td>Mehrere Matrizen</td><td>Leiste: ein Klick</td><td>wie heute über Startseite</td><td>wie heute über Startseite</td></tr>
+    <tr><td>Für wen</td><td>wer viele Matrizen pflegt</td><td>wer viel mit der Tastatur arbeitet</td><td>Einsteiger, Workshops</td></tr>
+    <tr><td>Nähe zu den Schwester-Apps</td><td>gering (neuer Rahmen)</td><td>hoch</td><td>mittel (Kopfzeile bleibt)</td></tr>
+    <tr><td>Umbau</td><td>mittel: Kopfzeile, Seitenleiste, mobil Schublade</td><td>klein: Seitenleiste wird kontextabhängig, Auswahl-Feld zieht um</td><td>groß: zwei neue Ansichten, Prüfung als Fragen</td></tr>
+  </tbody>
+</table>
+<div class="note" style="margin-top:16px">
+  <b>Empfehlung:</b> <b>B</b> als nächster Schritt – kleinster Umbau, löst das Verdecken durch das Auswahl-Feld und holt die senkrechte Prüfung (Rolle) in die Matrix-Ansicht. Die Fragen aus <b>C</b> („Wer entscheidet am Ende?“) lassen sich später als Darstellung der Prüfung im Inspektor übernehmen, ohne die Schrittleiste. <b>A</b> lohnt erst, wenn alle Schwester-Apps den Rahmen gemeinsam wechseln.
+  <p class="sub" style="margin:8px 0 0">Datenformat unverändert bei allen drei Varianten.</p>
+</div>
+
+</div>
+</body>
+</html>
