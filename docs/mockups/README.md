@@ -91,3 +91,7 @@ Drei visuelle Stile für denselben Aufbau (Kopfzeile, Matrix, Prüfung, Auswahl 
 - **3 · Freundlich:** Farbverlauf, schwebende Karten mit großen Rundungen, Buchstaben als Pillen, Rollen mit Farbkreis (Initialen); Prüfung je Zeile als Plakette.
 
 Jeder Stil ist ein Satz Tokens plus wenige Regeln; die Farben der Buchstaben hängen weiter an den Farbnamen (`lc-<Farbe>`), nicht am Kürzel. Denkbar auch als „Darstellung“ je Matrix.
+
+## Stil „Schlank“ (Vorschlag)
+
+Professioneller, ruhiger Stil bei gleichem Aufbau: gedecktes Navy als einziger Akzent, Schiefergrau, Haarlinien statt Schatten, Rundungen 4–6 px, Kopfzeile 48 px mit Text-Reitern, Zeilen 36 px, Kennzeichen 24 × 20 px. Rangfolge der Buchstaben über die Füllung statt über vier Farben: entscheidet voll, führt aus getönt, wird gefragt umrandet, wird informiert nur Text (alle WCAG AA). Prüfung mit kleinen Punkten, ✓ grau. Desktop hell und dunkel, Vergleich mit dem heutigen Stil im gleichen Ausschnitt, Auswahl an der Zelle, mobil, Änderungen an `css/tokens.css` (neu: Randfarbe `--lb-<Farbe>`): [`stil-schlank.html`](stil-schlank.html), Bild `stil-schlank.png`.

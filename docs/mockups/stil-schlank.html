@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RACI – Mockup Stil „Schlank“</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d9dde4; color: #101828; font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; padding: 0 16px 48px; }
+  .page { max-width: 1320px; margin: 0 auto; }
+  .caption { margin: 40px 0 12px; font-weight: 700; color: #344054; font-size: 15px; }
+  .note { background: #fff; border-radius: 12px; padding: 16px 20px; box-shadow: 0 1px 2px rgba(16,24,40,.05); color: #344054; }
+  .note h1 { font-size: 20px; margin: 0 0 6px; color: #101828; }
+  .note h2 { font-size: 16px; margin: 0 0 6px; color: #101828; }
+  .note ul, .note ol { margin: 6px 0 0; padding-left: 20px; }
+  .note li { margin: 4px 0; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  .three { display: grid; grid-template-columns: 1fr 1fr 390px; gap: 20px; align-items: start; }
+  @media (max-width: 1100px) { .two, .three { grid-template-columns: 1fr; } }
+  .lbl { font-size: 12px; font-weight: 700; color: #475467; margin: 0 0 6px 2px; }
+  .sw { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .sw span { display: inline-flex; align-items: center; gap: 6px; font: 600 11.5px ui-monospace, monospace; color: #475467; background: #f2f4f7; border-radius: 6px; padding: 3px 8px 3px 4px; }
+  .sw i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+  table.cmp { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; font-size: 13px; }
+  .cmp th, .cmp td { padding: 8px 12px; border-bottom: 1px solid #e4e7ec; text-align: left; vertical-align: top; }
+  .cmp thead th { background: #f2f4f7; font-size: 12px; color: #667085; }
+  .cmp td:first-child { font-weight: 650; color: #344054; width: 24%; }
+  .cmp code { font-size: 12px; }
+
+  /* ===================================================================
+     Gerüst – beide Stile (Heute, Schlank) setzen nur Variablen.
+     Buchstaben-Farben über Farbnamen (lc-indigo …), nie über das Kürzel.
+     =================================================================== */
+  .app { background: var(--bg); color: var(--text); border-radius: var(--frame-r); overflow: hidden; box-shadow: 0 12px 32px -8px rgba(16,24,40,.22); font-variant-numeric: tabular-nums; }
+  .hdr { display: flex; align-items: center; gap: var(--hdr-gap); height: var(--hdr-h); padding: 0 18px; background: var(--hdr-bg); border-bottom: 1px solid var(--border); }
+  .hdr > * { white-space: nowrap; }
+  .logo { width: var(--logo-s); height: var(--logo-s); border-radius: var(--logo-r); background: var(--logo-bg); display: grid; place-items: center; flex: none; }
+  .logo i { display: block; width: 55%; height: 2px; background: #fff; border-radius: 1px; margin: 1.3px 0; }
+  .brand { font-weight: var(--brand-w); font-size: 14.5px; letter-spacing: -.01em; }
+  .docn { font-weight: 500; color: var(--text-2); padding-left: 14px; border-left: 1px solid var(--border); }
+  .nav { display: flex; gap: var(--nav-gap); background: var(--nav-bg); border-radius: 10px; padding: var(--nav-pad); align-self: stretch; align-items: center; }
+  .nav span { padding: 5px 11px; border-radius: 8px; color: var(--muted); font-weight: 550; font-size: 13px; }
+  .nav span.on { color: var(--text); font-weight: 650; background: var(--nav-on-bg); box-shadow: var(--nav-on-shadow); }
+  .sp { flex: 1; }
+  .btn { display: inline-flex; align-items: center; height: var(--btn-h); padding: 0 11px; border-radius: var(--ctl-r); border: 1px solid var(--border-strong); background: var(--surface); color: var(--text-2); font-weight: 550; font-size: 12.5px; box-shadow: var(--btn-shadow); }
+  .btn.ghost { border-color: transparent; background: none; box-shadow: none; }
+  .ic { color: var(--muted); font-size: 15px; }
+  .sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .sync i { width: 6px; height: 6px; border-radius: 50%; background: var(--good); }
+
+  .body { display: grid; grid-template-columns: 1fr var(--side-w); gap: var(--gap); padding: var(--pad); }
+  .title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; }
+  .title h3 { margin: 0; font-weight: var(--title-w); font-size: var(--title-size); letter-spacing: -.015em; }
+  .title .vt { font-size: 11px; font-weight: 600; color: var(--vt-text); background: var(--vt-bg); border: 1px solid var(--vt-border); border-radius: var(--pill-r); padding: 1px 7px; }
+  .title .ds { color: var(--muted); font-size: 13px; }
+  .title .opt { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .title .opt a { color: var(--accent); font-weight: 550; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--card-r); box-shadow: var(--card-shadow); overflow: hidden; }
+  table.mx { border-collapse: collapse; width: 100%; }
+  .mx th, .mx td { padding: 0; }
+  .mx thead th { font-size: 11px; color: var(--muted); font-weight: 500; text-align: center; padding: 10px 4px 8px; background: var(--thead-bg); border-bottom: 1px solid var(--border); line-height: 1.3; vertical-align: bottom; }
+  .mx thead th b { display: block; color: var(--text-2); font-size: 12px; font-weight: var(--role-w); }
+  .mx thead th:first-child { text-align: left; padding-left: 14px; font-size: var(--th-first-size); text-transform: var(--th-tt); letter-spacing: var(--th-ls); }
+  .mx thead th.hot b { color: var(--warn); }
+  .mx thead th.hot { box-shadow: inset 0 -2px 0 var(--warn-line); }
+  .mx .ph td { padding: var(--ph-pad); font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--ph-bg); }
+  .mx tr.t td { height: var(--row-h); border-bottom: 1px solid var(--row-line); text-align: center; }
+  .mx tr.t td:first-child { text-align: left; padding: 0 10px 0 14px; white-space: nowrap; }
+  .mx tr.t.err td:first-child { box-shadow: inset var(--mark-w) 0 0 var(--bad); }
+  .mx tr.t.wrn td:first-child { box-shadow: inset var(--mark-w) 0 0 var(--warn-line); }
+  .mx tr.t.sel td { background: var(--row-sel); }
+  .id { font: 500 11.5px var(--num-font); color: var(--muted); margin-right: 8px; }
+  .nm { font-weight: var(--task-w); font-size: 13px; }
+  .st { font-weight: 600; font-size: 11.5px; }
+  .st.ok { color: var(--good); } .st.bad { color: var(--bad); } .st.warn { color: var(--warn); }
+  .sum td { background: var(--thead-bg); font: 500 11px var(--num-font); color: var(--muted); padding: 7px 4px; text-align: center; letter-spacing: .08em; border-top: 1px solid var(--border); }
+  .sum td:first-child { text-align: left; padding-left: 14px; letter-spacing: .04em; }
+  .add td { padding: 8px 14px; font-size: 12.5px; color: var(--accent); font-weight: 550; text-align: left; }
+  .add span { color: var(--muted); font-weight: 500; margin-left: 10px; }
+
+  /* Kennzeichen */
+  .b { font-style: normal; display: inline-grid; place-items: center; min-width: var(--b-w); height: var(--b-h); padding: 0 4px; border-radius: var(--b-r); font: var(--b-weight) var(--b-size)/1 Inter, sans-serif; background: var(--lc); color: var(--lt); border: 1px solid var(--lb, transparent); letter-spacing: .01em; }
+  .lc-indigo { --lc: var(--lc-indigo); --lt: var(--lt-indigo); --lb: var(--lb-indigo); }
+  .lc-teal   { --lc: var(--lc-teal);   --lt: var(--lt-teal);   --lb: var(--lb-teal); }
+  .lc-orange { --lc: var(--lc-orange); --lt: var(--lt-orange); --lb: var(--lb-orange); }
+  .lc-gray   { --lc: var(--lc-gray);   --lt: var(--lt-gray);   --lb: var(--lb-gray); }
+  .lc-ar     { --lt: var(--lt-indigo); background: var(--ar-bg); }
+  .b.cur { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--accent); }
+
+  /* Seitenleiste */
+  .side { display: flex; flex-direction: column; gap: var(--gap); }
+  .side .card { padding: 14px 16px; }
+  .k { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .k .n { margin-left: auto; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text-2); }
+  .score { padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .score .big { font-size: 22px; font-weight: 650; letter-spacing: -.02em; }
+  .score .big small { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 6px; letter-spacing: 0; }
+  .meter { height: 4px; background: var(--track); border-radius: 2px; overflow: hidden; margin: 6px 0 4px; }
+  .meter i { display: block; height: 100%; width: 79%; background: var(--meter); }
+  .score .s { font-size: 12px; color: var(--muted); }
+  .f { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--row-line); font-size: 12.5px; color: var(--text-2); }
+  .f:last-child { border-bottom: 0; padding-bottom: 0; }
+  .f .fi { flex: none; width: var(--fi-s); height: var(--fi-s); border-radius: var(--fi-r); display: grid; place-items: center; font-weight: 800; font-size: 11px; margin-top: var(--fi-mt); }
+  .fi.bad { background: var(--bad-dot); color: var(--bad); } .fi.warn { background: var(--warn-dot); color: var(--warn); } .fi.good { background: var(--good-dot); color: var(--good); }
+  .f b { display: block; color: var(--text); font-size: 13px; font-weight: 600; }
+  .f a { color: var(--accent); font-weight: 600; }
+
+  /* Auswahl an der Zelle */
+  .pop { color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--card-r); box-shadow: var(--pop-shadow); padding: 14px; width: 320px; font-variant-numeric: tabular-nums; }
+  .pop .h { font-weight: 650; font-size: 13.5px; }
+  .pop .s { color: var(--muted); font-size: 12px; margin-bottom: 10px; }
+  .pick { display: flex; gap: 6px; }
+  .pick .b { --b-w: 40px; --b-h: 32px; --b-size: 13px; }
+  .pick .none { --lc: transparent; --lt: var(--muted); --lb: var(--border-strong); border-style: dashed; }
+  .warnbox { margin-top: 10px; background: var(--bad-bg); color: var(--bad); border: var(--warnbox-border); border-radius: var(--ctl-r); padding: 9px 11px; font-size: 12.5px; }
+  .warnbox .btn { margin: 7px 4px 0 0; height: 26px; }
+  .pop .k { margin: 12px 0 6px; }
+  .field { border: 1px solid var(--border-strong); border-radius: var(--ctl-r); padding: 6px 9px; font-size: 12.5px; color: var(--text-2); }
+  .keys { margin-top: 10px; font-size: 11.5px; color: var(--muted); }
+  .keys kbd { font: 600 10.5px "JetBrains Mono", monospace; border: 1px solid var(--border-strong); border-radius: 4px; padding: 0 4px; color: var(--text-2); }
+
+  /* Mobil */
+  .phone { width: 390px; border-radius: 26px; border: 8px solid #101828; overflow: hidden; box-shadow: 0 12px 32px -8px rgba(16,24,40,.3); }
+  .phone .app { border-radius: 0; box-shadow: none; }
+  .m-top { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 14px; background: var(--hdr-bg); border-bottom: 1px solid var(--border); }
+  .m-top b { flex: 1; font-size: 14px; font-weight: 600; }
+  .m-sum { display: flex; gap: 14px; padding: 9px 14px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface); }
+  .m-sum b { color: var(--text); font-weight: 650; }
+  .m-sum .bad b { color: var(--bad); }
+  .m-body { padding: 0 0 8px; min-height: 470px; background: var(--bg); }
+  .m-ph { font-size: 11px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 14px 14px 6px; }
+  .m-row { background: var(--surface); border-top: 1px solid var(--row-line); padding: 10px 14px; }
+  .m-row:last-child { border-bottom: 1px solid var(--row-line); }
+  .m-row.err { box-shadow: inset 2px 0 0 var(--bad); }
+  .m-row .l1 { display: flex; align-items: baseline; gap: 4px; }
+  .m-row .l1 .nm { flex: 1; }
+  .m-row .l2 { display: flex; gap: 10px; margin-top: 5px; font-size: 11.5px; color: var(--muted); flex-wrap: wrap; align-items: center; }
+  .m-row .l2 span { display: inline-flex; gap: 4px; align-items: center; }
+  .m-row .b { --b-w: 20px; --b-h: 18px; --b-size: 10.5px; }
+  .m-nav { display: flex; justify-content: space-around; background: var(--hdr-bg); border-top: 1px solid var(--border); padding: 8px 0 12px; font-size: 10.5px; color: var(--muted); }
+  .m-nav span { display: grid; justify-items: center; gap: 2px; }
+  .m-nav span.on { color: var(--accent); font-weight: 650; }
+  .m-nav i { font-style: normal; font-size: 15px; }
+
+  /* =================================================================== Heute (css/tokens.css) */
+  .s-heute {
+    --bg: #f6f7f9; --surface: #fff; --text: #101828; --text-2: #344054; --muted: #667085; --border: #e4e7ec; --border-strong: #d0d5dd; --row-line: #e4e7ec; --track: #eaedf2;
+    --accent: #4f46e5; --num-font: ui-monospace, monospace;
+    --hdr-bg: #fff; --hdr-h: 60px; --hdr-gap: 14px; --logo-s: 28px; --logo-r: 8px; --logo-bg: #4f46e5; --brand-w: 700;
+    --nav-bg: #f2f4f7; --nav-pad: 3px; --nav-gap: 2px; --nav-on-bg: #fff; --nav-on-shadow: 0 1px 2px rgba(16,24,40,.08);
+    --btn-h: 34px; --ctl-r: 8px; --btn-shadow: 0 1px 2px rgba(16,24,40,.05); --pill-r: 7px;
+    --frame-r: 14px; --side-w: 330px; --gap: 18px; --pad: 22px; --title-size: 24px; --title-w: 700;
+    --vt-bg: #eef2ff; --vt-text: #4f46e5; --vt-border: transparent;
+    --card-r: 12px; --card-shadow: 0 12px 32px -8px rgba(16,24,40,.18), 0 4px 8px -4px rgba(16,24,40,.06); --pop-shadow: 0 12px 32px -8px rgba(16,24,40,.25);
+    --thead-bg: #f2f4f7; --role-w: 650; --th-first-size: 12px; --th-tt: none; --th-ls: 0;
+    --ph-pad: 14px 14px 6px; --ph-bg: transparent; --row-h: 44px; --row-sel: #eef2ff; --mark-w: 3px; --task-w: 600;
+    --bad: #c92a2a; --bad-bg: #fff0f0; --warn: #a35200; --warn-line: #f0b35b; --good: #2b8a3e;
+    --bad-dot: #fff0f0; --warn-dot: #fff4e0; --good-dot: #e6f7ea; --fi-s: 24px; --fi-r: 7px; --fi-mt: 0; --meter: #a35200; --warnbox-border: 0;
+    --b-w: 30px; --b-h: 28px; --b-r: 8px; --b-size: 12.5px; --b-weight: 800;
+    --lc-indigo: #4f46e5; --lt-indigo: #fff; --lb-indigo: transparent;
+    --lc-teal: #0e7490; --lt-teal: #fff; --lb-teal: transparent;
+    --lc-orange: #ffd8a8; --lt-orange: #a35200; --lb-orange: #f0b35b;
+    --lc-gray: #e4e7ec; --lt-gray: #667085; --lb-gray: #d0d5dd;
+    --ar-bg: linear-gradient(135deg, #4f46e5 50%, #0e7490 50%);
+  }
+
+  /* =================================================================== Schlank */
+  .s-schlank {
+    --bg: #f8f9fb; --surface: #fff; --text: #0f172a; --text-2: #334155; --muted: #64748b; --border: #e2e8f0; --border-strong: #cbd5e1; --row-line: #eef1f5; --track: #e2e8f0;
+    --accent: #1e3a8a; --num-font: Inter, sans-serif;
+    --hdr-bg: #fff; --hdr-h: 48px; --hdr-gap: 16px; --logo-s: 22px; --logo-r: 5px; --logo-bg: #0f172a; --brand-w: 600;
+    --nav-bg: transparent; --nav-pad: 0; --nav-gap: 4px; --nav-on-bg: transparent; --nav-on-shadow: inset 0 -2px 0 #1e3a8a;
+    --btn-h: 28px; --ctl-r: 6px; --btn-shadow: none; --pill-r: 4px;
+    --frame-r: 10px; --side-w: 272px; --gap: 16px; --pad: 20px 24px; --title-size: 18px; --title-w: 600;
+    --vt-bg: transparent; --vt-text: #334155; --vt-border: #cbd5e1;
+    --card-r: 6px; --card-shadow: none; --pop-shadow: 0 8px 24px -6px rgba(15,23,42,.18), 0 1px 2px rgba(15,23,42,.06);
+    --thead-bg: #fff; --role-w: 600; --th-first-size: 11px; --th-tt: uppercase; --th-ls: .06em;
+    --ph-pad: 9px 14px 5px; --ph-bg: #fafbfc; --row-h: 36px; --row-sel: #f1f5fb; --mark-w: 2px; --task-w: 500;
+    --bad: #b91c1c; --bad-bg: #fef2f2; --warn: #b45309; --warn-line: #f59e0b; --good: #15803d;
+    --bad-dot: #b91c1c; --warn-dot: #f59e0b; --good-dot: #16a34a; --fi-s: 7px; --fi-r: 50%; --fi-mt: 6px; --meter: #1e3a8a; --warnbox-border: 1px solid #fecaca;
+    --b-w: 24px; --b-h: 20px; --b-r: 4px; --b-size: 11px; --b-weight: 650;
+    /* Rangfolge über die Füllung: entscheidet voll, führt aus getönt, gefragt umrandet, informiert nur Text */
+    --lc-indigo: #1e3a8a; --lt-indigo: #fff; --lb-indigo: #1e3a8a;
+    --lc-teal: #dbe4f3; --lt-teal: #1e3a8a; --lb-teal: #dbe4f3;
+    --lc-orange: #fff; --lt-orange: #334155; --lb-orange: #cbd5e1;
+    --lc-gray: transparent; --lt-gray: #64748b; --lb-gray: transparent;
+    --ar-bg: linear-gradient(135deg, #1e3a8a 50%, #3f5ea8 50%);
+  }
+  .s-schlank .fi { font-size: 0; }
+  .s-schlank .title { padding-bottom: 2px; }
+  .s-schlank .st.ok { color: #64748b; font-weight: 500; }
+  .s-schlank .nav span { border-radius: 0; padding: 0 2px; margin: 0 8px; height: 100%; display: inline-flex; align-items: center; }
+  .s-schlank.dark {
+    --bg: #0b0e14; --surface: #11151c; --text: #e6e9ef; --text-2: #c3cad5; --muted: #8590a2; --border: #222833; --border-strong: #343c4a; --row-line: #1a1f28; --track: #222833;
+    --accent: #8ea6e8; --hdr-bg: #11151c; --logo-bg: #e6e9ef; --nav-on-shadow: inset 0 -2px 0 #8ea6e8;
+    --vt-text: #c3cad5; --vt-border: #343c4a; --pop-shadow: 0 10px 28px -6px rgba(0,0,0,.6);
+    --thead-bg: #11151c; --ph-bg: #0f1319; --row-sel: #161d2b;
+    --bad: #f87171; --bad-bg: #2a1215; --warn: #fbbf24; --warn-line: #d97706; --good: #4ade80;
+    --bad-dot: #f87171; --warn-dot: #f59e0b; --good-dot: #4ade80; --meter: #8ea6e8; --warnbox-border: 1px solid #4c1d1d;
+    --lc-indigo: #3d5bc4; --lt-indigo: #fff; --lb-indigo: #3d5bc4;
+    --lc-teal: #1c2742; --lt-teal: #b4c3ee; --lb-teal: #1c2742;
+    --lc-orange: transparent; --lt-orange: #c3cad5; --lb-orange: #3a4352;
+    --lc-gray: transparent; --lt-gray: #8590a2; --lb-gray: transparent;
+    --ar-bg: linear-gradient(135deg, #3d5bc4 50%, #5a74c9 50%);
+  }
+  .s-schlank.dark .logo i { background: #0b0e14; }
+  .s-schlank.dark .st.ok { color: #8590a2; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="caption">Mockup · Stil „Schlank“ – professionell und ruhig</div>
+<div class="note">
+  <h1>Weniger Farbe, weniger Fläche, klare Rangfolge</h1>
+  Der heutige Stil ist freundlich, wirkt aber durch kräftiges Indigo, Schatten, große Kennzeichen und viele farbige Flächen schnell bunt und schwer. Der Stil <b>„Schlank“</b> behält Aufbau und Funktionen und nimmt optisch zurück:
+  <ul>
+    <li><b>Eine Farbe:</b> gedecktes Navy als einziger Akzent, sonst Schiefergrau. Rot und Bernstein nur für Befunde.</li>
+    <li><b>Rangfolge über die Füllung</b> statt über vier Farben: <i>entscheidet</i> voll gefüllt, <i>führt aus</i> getönt, <i>wird gefragt</i> umrandet, <i>wird informiert</i> nur als Text. Das A springt ins Auge, die Matrix wird ruhig.</li>
+    <li><b>Haarlinien statt Schatten</b>, Rundungen 4–6 px, Kopfzeile 48 statt 60 px, Zeilen 36 statt 44 px, Kennzeichen 24 × 20 statt 30 × 28 px.</li>
+    <li><b>Ruhige Schrift:</b> Inter mit gleich breiten Ziffern, Gewichte 500–650 statt 700–800, Titel 18 px.</li>
+    <li><b>Prüfung leiser:</b> kleine Punkte statt Kacheln, ✓ in Grau. Auffällig ist nur, was zu tun ist.</li>
+  </ul>
+</div>
+
+<div class="caption">1 · Desktop hell – Matrix mit Prüfung</div>
+<div class="app s-schlank" data-frame="full"></div>
+
+<div class="caption">2 · Heute und „Schlank“ im Vergleich (gleicher Ausschnitt, gleicher Maßstab)</div>
+<div class="two">
+  <div><div class="lbl">Heute</div><div class="app s-heute" data-frame="cut"></div></div>
+  <div><div class="lbl">Schlank</div><div class="app s-schlank" data-frame="cut"></div></div>
+</div>
+
+<div class="caption">3 · Dunkel</div>
+<div class="app s-schlank dark" data-frame="full"></div>
+
+<div class="caption">4 · Auswahl an der Zelle (hell, dunkel) und mobil</div>
+<div class="three">
+  <div class="s-schlank" data-pop></div>
+  <div class="s-schlank dark" style="background:#0b0e14; padding:12px; border-radius:10px" data-pop></div>
+  <div class="phone"><div class="app s-schlank">
+    <div class="m-top"><span class="logo"><i></i><i></i><i></i></span><b>Stadtfest 2026 – Ablauf</b><span class="ic">⋯</span></div>
+    <div class="m-sum"><span><b>11/14</b> eindeutig</span><span class="bad"><b>2</b> Fehler</span><span><b>3</b> Hinweise</span></div>
+    <div class="m-body">
+      <div class="m-ph">Vorbereitung</div>
+      <div class="m-row"><div class="l1"><span class="id">1.1</span><span class="nm">Standplatz beantragen</span></div><div class="l2"><span><i class="b lc-ar">A/R</i>Inhaberin</span><span><i class="b lc-orange">C</i>Einkauf</span><span><i class="b lc-gray">I</i>Schichtl.</span></div></div>
+      <div class="m-row"><div class="l1"><span class="id">1.2</span><span class="nm">Speisekarte &amp; Preise festlegen</span></div><div class="l2"><span><i class="b lc-indigo">A</i>Inhaberin</span><span><i class="b lc-teal">R</i>Schichtl.</span><span><i class="b lc-orange">C</i>2</span><span><i class="b lc-gray">I</i>1</span></div></div>
+      <div class="m-row err"><div class="l1"><span class="id">1.3</span><span class="nm">Ware &amp; Getränke bestellen</span><span class="st bad">2× A</span></div><div class="l2"><span><i class="b lc-indigo">A</i>Inhaberin</span><span><i class="b lc-ar">A/R</i>Einkauf</span><span><i class="b lc-orange">C</i>Schichtl.</span></div></div>
+      <div class="m-row"><div class="l1"><span class="id">1.4</span><span class="nm">Schichtplan erstellen</span></div><div class="l2"><span><i class="b lc-ar">A/R</i>Schichtl.</span><span><i class="b lc-orange">C</i>Inhaberin</span><span><i class="b lc-gray">I</i>Team</span></div></div>
+      <div class="m-row err"><div class="l1"><span class="id">1.5</span><span class="nm">Social-Media-Ankündigung</span><span class="st bad">kein A</span></div><div class="l2"><span><i class="b lc-teal">R</i>Marketing</span><span><i class="b lc-orange">C</i>Inhaberin</span></div></div>
+    </div>
+    <div class="m-nav"><span class="on"><i>▦</i>Matrix</span><span><i>◎</i>Rollen</span><span><i>☰</i>Wer macht was?</span><span><i>▤</i>Bericht</span></div>
+  </div></div>
+</div>
+
+<div class="two" style="margin-top:28px">
+  <div class="note">
+    <h2>Farben</h2>
+    <div class="sw"><span><i style="background:#0f172a"></i>#0f172a Text</span><span><i style="background:#1e3a8a"></i>#1e3a8a Akzent, A</span><span><i style="background:#dbe4f3"></i>#dbe4f3 R</span><span><i style="background:#cbd5e1"></i>#cbd5e1 Linie, C</span><span><i style="background:#64748b"></i>#64748b gedämpft</span><span><i style="background:#f8f9fb"></i>#f8f9fb Grund</span></div>
+    <div class="sw"><span><i style="background:#b91c1c"></i>#b91c1c Fehler</span><span><i style="background:#f59e0b"></i>#f59e0b Hinweis</span><span><i style="background:#15803d"></i>#15803d gut</span></div>
+    <p style="font-size:12.5px; margin:10px 0 0">Eigene Buchstaben mit anderen Farben (Cyan, Violett, Pink …) bekommen dieselbe Behandlung: kräftige Farben als volle Fläche im gedeckten Ton, helle Farben als Tönung bzw. Umrandung. Die Zuordnung bleibt an den Farbnamen <code>lc-&lt;Farbe&gt;</code>, nicht an den Kürzeln.</p>
+  </div>
+  <div class="note">
+    <h2>Abwägung</h2>
+    <ul>
+      <li><b style="color:#2b8a3e">Dafür:</b> wirkt sachlich und hochwertig, passt in Unterlagen für Geschäftsführung oder Kunden. Mehr Aufgaben im Blick (≈ 20 % pro Bildschirm). Druck und Bericht sehen fast gleich aus.</li>
+      <li><b style="color:#c92a2a">Dagegen:</b> C und I sind weniger auffällig. Das ist gewollt, aber wer stark nach Farben sortiert, braucht die Legende. Der Stil weicht von den Schwester-Apps ab; er ließe sich dort aber genauso über die Tokens übernehmen.</li>
+      <li>Kontraste: Text und Kennzeichen erfüllen WCAG AA (Navy auf Weiß 10,4 : 1, Navy auf Tönung 8,1 : 1, „I“ und gedämpfter Text in Grau 4,8 : 1).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="caption">Was sich in <code>css/tokens.css</code> und den Bausteinen ändert</div>
+<table class="cmp">
+  <thead><tr><th></th><th>Heute</th><th>Schlank</th></tr></thead>
+  <tbody>
+    <tr><td>Akzent</td><td><code>--accent: #4f46e5</code> (Indigo)</td><td><code>--accent: #1e3a8a</code> (Navy), Logo-Fläche Schiefer <code>#0f172a</code></td></tr>
+    <tr><td>Kopfzeile</td><td>60 px, Ansichten als Segment-Umschalter</td><td>48 px, Ansichten als Text-Reiter mit Unterstrich</td></tr>
+    <tr><td>Karten</td><td>Rundung 12 px, großer Schatten</td><td>Rundung 6 px, nur 1-px-Linie <code>#e2e8f0</code></td></tr>
+    <tr><td>Knöpfe</td><td>34 px, Schatten</td><td>28 px, ohne Schatten</td></tr>
+    <tr><td>Matrix-Zeile</td><td>44 px, Name 600</td><td>36 px, Name 500, Trennlinie heller als Rahmen</td></tr>
+    <tr><td>Kennzeichen</td><td>30 × 28 px, Gewicht 800, vier Farbflächen</td><td>24 × 20 px, Gewicht 650; voll · getönt · umrandet · Text</td></tr>
+    <tr><td>Farben der Buchstaben</td><td><code>--lc-indigo/teal/orange/gray</code> als Flächen</td><td>gleiche Namen, neue Werte plus Randfarbe <code>--lb-&lt;Farbe&gt;</code> (neu)</td></tr>
+    <tr><td>Prüfung</td><td>Kacheln mit ×/!, Ring</td><td>Punkt 7 px, Zahl mit dünnem Balken, ✓ grau</td></tr>
+    <tr><td>Ziffern</td><td>Monospace für Nummern</td><td>Inter mit <code>tabular-nums</code> (bündig, ohne Schriftwechsel)</td></tr>
+    <tr><td>Datenformat</td><td colspan="2">unverändert – reine Darstellung</td></tr>
+  </tbody>
+</table>
+
+</div>
+
+<script>
+  // Gleicher Inhalt für beide Stile – nur zum Zeichnen des Mockups.
+  const roles = [['Inhaberin', 'Lea'], ['Schichtleitung', 'Aylin', 'hot'], ['Technik', 'Fritz'], ['Einkauf', 'Ben'], ['Marketing', 'Mia'], ['Service-Team', 'Jonas +2'], ['Veranstalter', 'extern']];
+  const L = { A: 'lc-indigo', R: 'lc-teal', C: 'lc-orange', I: 'lc-gray', 'A/R': 'lc-ar' };
+  const rows = [
+    ['ph', 'Vorbereitung'],
+    ['1.1', 'Standplatz beantragen', ['A/R', 'I', '', 'C', '', '', 'C'], 'ok', '✓'],
+    ['1.2', 'Speisekarte & Preise festlegen', ['A', 'R', '', 'C', 'C', 'I', ''], 'ok', '✓'],
+    ['1.3', 'Ware & Getränke bestellen', ['A', 'C', '', 'A/R*', '', '', ''], 'bad', '2× A', 'err sel'],
+    ['1.4', 'Schichtplan erstellen', ['C', 'A/R', '', '', '', 'I', ''], 'ok', '✓'],
+    ['1.5', 'Social-Media-Ankündigung', ['C', '', '', '', 'R', '', 'I'], 'bad', 'kein A', 'err'],
+    ['ph', 'Aufbau'],
+    ['2.1', 'Strom- und Gasanschluss prüfen', ['', 'I', 'A/R', '', '', '', 'C'], 'ok', '✓'],
+    ['2.2', 'Aushilfen in Hygiene unterweisen', ['A', 'R', '', '', '', 'I', ''], 'ok', '✓'],
+    ['2.3', 'Stand aufbauen & dekorieren', ['', 'A', 'C', '', '', 'R', ''], 'ok', '✓'],
+    ['ph', 'Betrieb'],
+    ['3.1', 'Kasse & Kartenzahlung betreuen', ['', 'A', '', 'C', '', 'R', ''], 'ok', '✓'],
+    ['3.2', 'Fritteuse & Kühlung überwachen', ['', 'R', 'A', '', '', 'R', ''], 'ok', '✓'],
+    ['3.3', 'Reklamationen klären', ['C', 'A', '', '', '', 'I', ''], 'warn', 'kein R', 'wrn'],
+    ['ph', 'Abbau & Abrechnung'],
+    ['4.1', 'Stand abbauen & reinigen', ['', 'A', 'R', '', '', 'R', 'I'], 'ok', '✓'],
+    ['4.2', 'Mit Veranstalter abrechnen', ['A', 'C', 'C', 'R', 'C', 'C', 'C'], 'warn', '5× C', 'wrn'],
+  ];
+  const esc = s => s.replace(/&/g, '&amp;');
+  const chip = v => { if (!v) return ''; const cur = v.endsWith('*'); v = v.replace('*', ''); return `<i class="b ${L[v]}${cur ? ' cur' : ''}">${v}</i>`; };
+  const table = cut => {
+    const rs = cut ? rows.slice(0, 6) : rows;
+    const rl = cut ? roles.slice(0, 4) : roles;
+    let h = `<table class="mx"><thead><tr><th style="width:${cut ? 40 : 30}%">Aufgabe</th>`;
+    for (const [n, p, hot] of rl) h += `<th class="${hot || ''}"><b>${n}</b>${p}</th>`;
+    h += `<th>Prüfung</th></tr></thead><tbody>`;
+    for (const r of rs) {
+      if (r[0] === 'ph') { h += `<tr class="ph"><td colspan="${rl.length + 2}">${esc(r[1])}</td></tr>`; continue; }
+      const [id, nm, cells, st, stt, cls] = r;
+      h += `<tr class="t ${cls || ''}"><td><span class="id">${id}</span><span class="nm">${esc(nm)}</span></td>${cells.slice(0, rl.length).map(c => `<td>${chip(c)}</td>`).join('')}<td><span class="st ${st}">${stt}</span></td></tr>`;
+    }
+    if (!cut) h += `<tr class="add"><td colspan="${rl.length + 2}">+ Aufgabe<span>+ Phase</span></td></tr><tr class="sum"><td>A·R·C·I</td><td>6 1 3 0</td><td>5 5 2 2</td><td>2 2 4 0</td><td>1 2 4 0</td><td>0 1 4 0</td><td>0 4 2 4</td><td>0 0 3 2</td><td></td></tr>`;
+    return h + `</tbody></table>`;
+  };
+  const side = `<div class="side"><div class="card">
+      <div class="k">Prüfung</div>
+      <div class="score"><div class="big">11 / 14<small>eindeutig</small></div><div class="meter"><i></i></div><div class="s">genau ein A und mindestens ein R</div></div>
+      <div class="f"><span class="fi bad">×</span><div><b>Genau ein A je Aufgabe</b><a>1.3</a> 2× A · <a>1.5</a> kein A</div></div>
+      <div class="f"><span class="fi warn">!</span><div><b>Mindestens ein R</b><a>3.3</a> nur A – erledigt die Schichtleitung es selbst? Dann A/R.</div></div>
+      <div class="f"><span class="fi warn">!</span><div><b>C sparsam</b><a>4.2</a> 5× C – reicht bei manchen ein I?</div></div>
+      <div class="f"><span class="fi warn">!</span><div><b>Keine Engpässe</b><a>Schichtleitung</a> an 13 von 14 Aufgaben, 10× A oder R</div></div>
+      <div class="f"><span class="fi good">✓</span><div><b>Jede Rolle hat eine Aufgabe</b></div></div>
+    </div>
+    <div class="card"><div class="k">Offen zu klären<span class="n">1</span></div>
+      <div class="f" style="padding-top:0"><div><b>4.3 · Marketing</b>„Soll Mia beim Rückblick dabei sein oder reicht das Protokoll?“</div></div>
+    </div></div>`;
+  const frame = cut => `
+    <div class="hdr"><span class="logo"><i></i><i></i><i></i></span><span class="brand">RACI-Matrix</span><span class="docn">Stadtfest 2026 – Ablauf</span>
+      ${cut ? '' : '<div class="nav"><span class="on">Matrix</span><span>Rollen</span><span>Wer macht was?</span><span>Bericht</span></div>'}
+      <span class="sp"></span><span class="ic">↶</span><span class="ic">↷</span>${cut ? '' : '<span class="sync"><i></i>Ablage aktuell</span><span class="btn ghost">? Methodik</span>'}<span class="btn">Datei ▾</span></div>
+    <div class="body" ${cut ? 'style="grid-template-columns:1fr"' : ''}>
+      <div class="title"><h3>Stadtfest 2026 – Ablauf</h3><span class="vt">RACI</span><span class="ds">Food-Truck auf dem Stadtfest, 3 Tage</span>${cut ? '' : '<span class="opt">Optional an: Phasen · A/R in einer Zelle · <a>Einstellungen</a></span>'}</div>
+      <div class="card">${table(cut)}</div>${cut ? '' : side}
+    </div>`;
+  const pop = `<div class="pop"><div class="h">1.3 Ware &amp; Getränke bestellen</div><div class="s">Rolle Einkauf &amp; Finanzen (Ben)</div>
+    <div class="pick"><i class="b lc-teal">R</i><i class="b lc-indigo">A</i><i class="b lc-ar cur">A/R</i><i class="b lc-orange">C</i><i class="b lc-gray" style="--lb:var(--border)">I</i><i class="b none">–</i></div>
+    <div class="warnbox">Diese Aufgabe hat schon ein <b>A</b> bei <b>Inhaberin</b>. Wer entscheidet am Ende?<br><span class="btn">Inhaberin → C</span><span class="btn">hier nur R</span></div>
+    <div class="k">Notiz zur Zelle</div><div class="field">Bestellt bis 500 €, darüber gibt Lea frei</div>
+    <div class="keys">Tasten <kbd>R</kbd> <kbd>A</kbd> <kbd>C</kbd> <kbd>I</kbd> <kbd>Entf</kbd> · Pfeiltasten wechseln die Zelle</div></div>`;
+  document.querySelectorAll('[data-frame]').forEach(el => { el.innerHTML = frame(el.dataset.frame === 'cut'); });
+  document.querySelectorAll('[data-pop]').forEach(el => { el.innerHTML = pop; });
+</script>
+</body>
+</html>
